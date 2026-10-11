@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 
-import { chatKatara, speakKatara } from "@/lib/api/katara.functions";
+import { chatKatara, lipsyncKatara, speakKatara } from "@/lib/api/katara.functions";
 
 type KataraMode = "chill" | "crunk" | "glam";
 
@@ -57,6 +57,15 @@ const MODES: Record<
 const GREETING =
   "Hey. Welcome to the SCI-FI NOODLES universe. I'm Katara. Are we chilling, getting hyped, or checking the front row?";
 
+function bytesFromBase64(value: string) {
+  const binary = atob(value);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  return bytes;
+}
+
 function speechRecognitionCtor(): SpeechRecognitionCtor | null {
   if (typeof window === "undefined") return null;
   const host = window as Window & {
@@ -72,6 +81,7 @@ export function KataraHost() {
   const [busy, setBusy] = useState(false);
   const [listening, setListening] = useState(false);
   const [talking, setTalking] = useState(false);
+  const [clipUrl, setClipUrl] = useState<string | null>(null);
   const [feed, setFeed] = useState<FeedItem[]>([
     { id: 1, kind: "katara", text: GREETING },
   ]);
@@ -80,6 +90,9 @@ export function KataraHost() {
   const idRef = useRef(2);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioUrlRef = useRef<string | null>(null);
+  const clipUrlRef = useRef<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const speechTurnRef = useRef(0);
   const recognitionRef = useRef<BrowserSpeechRecognition | null>(null);
   const modeRef = useRef(mode);
   modeRef.current = mode;
@@ -94,6 +107,7 @@ export function KataraHost() {
       window.speechSynthesis?.cancel();
       audioRef.current?.pause();
       if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+      if (clipUrlRef.current) URL.revokeObjectURL(clipUrlRef.current);
     };
   }, []);
 
@@ -103,48 +117,109 @@ export function KataraHost() {
   }
 
   function switchMode(next: KataraMode) {
+    stopSpeech();
     setMode(next);
     pushItem({ kind: "note", text: `Switched to Katara ${MODES[next].label} mode.` });
   }
 
+  function clearClip() {
+    if (clipUrlRef.current) URL.revokeObjectURL(clipUrlRef.current);
+    clipUrlRef.current = null;
+    setClipUrl(null);
+  }
+
   function stopSpeech() {
+    speechTurnRef.current += 1;
     window.speechSynthesis?.cancel();
     audioRef.current?.pause();
     if (audioUrlRef.current) {
       URL.revokeObjectURL(audioUrlRef.current);
       audioUrlRef.current = null;
     }
+    clearClip();
     setTalking(false);
+  }
+
+  async function playStudioAudio(onDone?: () => void) {
+    const audio = audioRef.current;
+    if (!audio) {
+      onDone?.();
+      return;
+    }
+    audio.onended = () => onDone?.();
+    audio.onerror = () => onDone?.();
+    try {
+      await audio.play();
+    } catch {
+      onDone?.();
+    }
+  }
+
+  async function playAudioFallback() {
+    clearClip();
+    setTalking(true);
+    await playStudioAudio(() => setTalking(false));
+  }
+
+  async function playClip(video: HTMLVideoElement) {
+    setTalking(true);
+    try {
+      video.muted = false;
+      await video.play();
+      return;
+    } catch {
+      video.muted = true;
+    }
+    try {
+      await video.play();
+      void playStudioAudio();
+    } catch {
+      setTalking(true);
+    }
   }
 
   async function speak(text: string, activeMode: KataraMode) {
     stopSpeech();
-    setTalking(true);
+    const turn = speechTurnRef.current;
+    let audioBase64: string | null = null;
+    let speechId: string | null = null;
     try {
       const spoken = await speakKatara({ data: { text, mode: activeMode } });
-      if (spoken.audioBase64) {
-        const binary = atob(spoken.audioBase64);
-        const bytes = new Uint8Array(binary.length);
-        for (let index = 0; index < binary.length; index += 1) {
-          bytes[index] = binary.charCodeAt(index);
-        }
-        const url = URL.createObjectURL(new Blob([bytes], { type: "audio/mpeg" }));
-        audioUrlRef.current = url;
-        const audio = new Audio(url);
-        audioRef.current = audio;
-        audio.onended = () => setTalking(false);
-        audio.onerror = () => setTalking(false);
-        await audio.play();
-        return;
-      }
+      audioBase64 = spoken.audioBase64;
+      speechId = spoken.speechId;
     } catch {
-      // Browser speech still carries the line.
+      audioBase64 = null;
     }
+    if (speechTurnRef.current !== turn) return;
 
-    if (!window.speechSynthesis) {
-      setTalking(false);
+    if (audioBase64) {
+      const audioUrl = URL.createObjectURL(new Blob([bytesFromBase64(audioBase64)], { type: "audio/mpeg" }));
+      audioUrlRef.current = audioUrl;
+      audioRef.current = new Audio(audioUrl);
+      if (speechId) {
+        try {
+          const synced = await lipsyncKatara({ data: { speechId, mode: activeMode } });
+          if (speechTurnRef.current !== turn) return;
+          if (synced.videoBase64) {
+            const videoUrl = URL.createObjectURL(
+              new Blob([bytesFromBase64(synced.videoBase64)], { type: "video/mp4" }),
+            );
+            clipUrlRef.current = videoUrl;
+            setClipUrl(videoUrl);
+            setTalking(true);
+            return;
+          }
+        } catch {
+          // Studio audio still plays over the still.
+        }
+      }
+      if (speechTurnRef.current !== turn) return;
+      await playAudioFallback();
       return;
     }
+
+    if (speechTurnRef.current !== turn || !window.speechSynthesis) return;
+    setTalking(true);
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.pitch = 1.15;
     utterance.rate = activeMode === "crunk" ? 1.2 : 1;
@@ -243,8 +318,33 @@ export function KataraHost() {
             </button>
           ))}
         </div>
-        <figure className={`host-portrait${talking ? " is-talking" : ""}`} data-mode={mode}>
-          <img alt={`Katara in ${look.label} mode`} src={look.image} />
+        <figure
+          className={`host-portrait${talking && !clipUrl ? " is-talking" : ""}`}
+          data-mode={mode}
+          onClick={() => {
+            const video = videoRef.current;
+            if (video?.paused) void playClip(video);
+          }}
+        >
+          {clipUrl ? (
+            <video
+              aria-label={`Katara speaking in ${look.label} mode`}
+              onEnded={() => {
+                audioRef.current?.pause();
+                clearClip();
+                setTalking(false);
+              }}
+              onError={() => void playAudioFallback()}
+              onLoadedMetadata={(event) => {
+                void playClip(event.currentTarget);
+              }}
+              playsInline
+              ref={videoRef}
+              src={clipUrl}
+            />
+          ) : (
+            <img alt={`Katara in ${look.label} mode`} src={look.image} />
+          )}
           <figcaption>
             <span className="host-dot" />
             {look.status}

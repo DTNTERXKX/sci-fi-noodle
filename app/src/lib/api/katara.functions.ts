@@ -38,5 +38,26 @@ export const speakKatara = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { synthesizeKataraSpeech } = await import("../katara.server");
     const result = await synthesizeKataraSpeech(data);
-    return { audioBase64: result.audioBase64 };
+    return { audioBase64: result.audioBase64, speechId: result.speechId };
+  });
+
+const speechIdSchema = z
+  .string()
+  .regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+
+export const lipsyncKatara = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      speechId: speechIdSchema,
+      mode: modeSchema,
+    }),
+  )
+  .handler(async ({ data }) => {
+    try {
+      const { lipsyncKataraSpeech } = await import("../katara.server");
+      return await lipsyncKataraSpeech(data);
+    } catch {
+      console.error("Katara lipsync failed");
+      return { videoBase64: null as string | null };
+    }
   });

@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import process from "node:process";
@@ -125,7 +126,7 @@ export async function completeKataraTurn(input: {
 export async function synthesizeKataraSpeech(input: { text: string; mode: KataraMode }) {
   const apiKey = serverEnv("ELEVENLABS_API_KEY");
   if (!apiKey) {
-    return { audioBase64: null as string | null };
+    return { audioBase64: null as string | null, speechId: null as string | null };
   }
 
   const voiceId = serverEnv("ELEVENLABS_VOICE_ID") || "21m00Tcm4TlvDq8ikWAM";
@@ -151,9 +152,92 @@ export async function synthesizeKataraSpeech(input: { text: string; mode: Katara
 
   if (!response.ok) {
     console.error("Katara speech failed", response.status);
-    return { audioBase64: null as string | null };
+    return { audioBase64: null as string | null, speechId: null as string | null };
   }
 
-  const audioBase64 = Buffer.from(await response.arrayBuffer()).toString("base64");
-  return { audioBase64 };
+  const audio = Buffer.from(await response.arrayBuffer());
+  return { audioBase64: audio.toString("base64"), speechId: rememberSpeech(audio) };
+}
+
+const speechCache = new Map<string, { audio: Buffer; expires: number }>();
+
+function rememberSpeech(audio: Buffer) {
+  const now = Date.now();
+  for (const [id, entry] of speechCache) {
+    if (entry.expires <= now) speechCache.delete(id);
+  }
+  const speechId = randomUUID();
+  speechCache.set(speechId, { audio, expires: now + 3 * 60 * 1000 });
+  return speechId;
+}
+
+function takeSpeech(speechId: string) {
+  const entry = speechCache.get(speechId);
+  speechCache.delete(speechId);
+  if (!entry || entry.expires <= Date.now()) return null;
+  return entry.audio;
+}
+
+function sadtalkerOrigin() {
+  const raw = serverEnv("SADTALKER_URL") || "http://127.0.0.1:8787";
+  try {
+    const url = new URL(raw);
+    const host = url.hostname.replace(/^\[|\]$/g, "");
+    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+    if (host !== "127.0.0.1" && host !== "localhost" && host !== "::1") return null;
+    return url.origin;
+  } catch {
+    return null;
+  }
+}
+
+function portraitPath(mode: KataraMode) {
+  const filename = `katara-${mode}.png`;
+  const candidates = [
+    resolve(process.cwd(), "public", "brand", filename),
+    resolve(process.cwd(), "app", "public", "brand", filename),
+  ];
+  return candidates.find((path) => existsSync(path)) ?? null;
+}
+
+export async function lipsyncKataraSpeech(input: { speechId: string; mode: KataraMode }) {
+  const audio = takeSpeech(input.speechId);
+  const origin = sadtalkerOrigin();
+  const imagePath = portraitPath(input.mode);
+  if (!audio || !origin || !imagePath) return { videoBase64: null as string | null };
+
+  try {
+    const health = await fetch(`${origin}/health`, { signal: AbortSignal.timeout(2000) });
+    if (!health.ok) return { videoBase64: null as string | null };
+    const status = (await health.json()) as { ready?: boolean };
+    if (!status.ready) return { videoBase64: null as string | null };
+
+    const form = new FormData();
+    form.append(
+      "image",
+      new File([Uint8Array.from(readFileSync(imagePath))], `katara-${input.mode}.png`, {
+        type: "image/png",
+      }),
+    );
+    form.append(
+      "audio",
+      new File([Uint8Array.from(audio)], "speech.mp3", { type: "audio/mpeg" }),
+    );
+    const response = await fetch(`${origin}/talk`, {
+      method: "POST",
+      body: form,
+      signal: AbortSignal.timeout(170_000),
+    });
+    if (!response.ok) {
+      console.error("Katara lipsync failed", response.status);
+      return { videoBase64: null as string | null };
+    }
+    const video = Buffer.from(await response.arrayBuffer());
+    if (video.byteLength < 1000 || video.byteLength > 20_000_000) {
+      return { videoBase64: null as string | null };
+    }
+    return { videoBase64: video.toString("base64") };
+  } catch {
+    return { videoBase64: null as string | null };
+  }
 }

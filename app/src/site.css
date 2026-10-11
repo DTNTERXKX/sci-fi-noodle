@@ -978,11 +978,14 @@ summary:focus-visible {
   box-shadow: 0 0 35px color-mix(in srgb, var(--cyan) 45%, transparent);
 }
 
-.host-portrait img {
+.host-portrait img,
+.host-portrait video {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center 10%;
+  background: var(--space);
 }
 
 .host-portrait.is-talking {
@@ -1012,6 +1015,7 @@ summary:focus-visible {
   background: color-mix(in srgb, black 62%, transparent);
   color: var(--ink);
   font-family: var(--mono);
+  z-index: 1;
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
