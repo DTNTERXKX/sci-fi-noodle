@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { EnterBracket, ExploreOrbit, WatchMark } from "@/components/site/ctas";
+import { EnterBracket, ExploreOrbit, SignalLink, WatchMark } from "@/components/site/ctas";
 import { JoinForm } from "@/components/site/join-form";
 import { NoodleRule, SiteFooter, SiteNav } from "@/components/site/site-frame";
 import { ScrollScrub } from "@/components/scroll-scrub/scroll-scrub";
@@ -121,6 +121,16 @@ function Index() {
           <ExploreOrbit href="/lab" />
         </div>
         <img alt="A dark edit bay with a bowl of glowing noodles" src="/assets/stills/lab.png" />
+      </section>
+
+      <section className="host-tease">
+        <img alt="Katara in chill mode, the SCI-FI NOODLES host" src="/brand/katara-chill.png" />
+        <div>
+          <p className="kicker">Studio host</p>
+          <h2>Katara</h2>
+          <p>Chill, crunk, or glam. Talk to the face of the channel.</p>
+          <SignalLink href="/host">Meet Katara</SignalLink>
+        </div>
       </section>
 
       <section className="kitchen" id="kitchen">

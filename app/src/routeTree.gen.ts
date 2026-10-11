@@ -16,6 +16,7 @@ import { Route as ShortsRouteImport } from './routes/shorts'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as RightsRouteImport } from './routes/rights'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as HostRouteImport } from './routes/host'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AtmospheresRouteImport } from './routes/atmospheres'
 import { Route as AppRouteImport } from './routes/app'
@@ -62,6 +63,11 @@ const RightsRoute = RightsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HostRoute = HostRouteImport.update({
+  id: '/host',
+  path: '/host',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/atmospheres': typeof AtmospheresRoute
   '/contact': typeof ContactRoute
+  '/host': typeof HostRoute
   '/privacy': typeof PrivacyRoute
   '/rights': typeof RightsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/atmospheres': typeof AtmospheresRoute
   '/contact': typeof ContactRoute
+  '/host': typeof HostRoute
   '/privacy': typeof PrivacyRoute
   '/rights': typeof RightsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -174,6 +182,7 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/atmospheres': typeof AtmospheresRoute
   '/contact': typeof ContactRoute
+  '/host': typeof HostRoute
   '/privacy': typeof PrivacyRoute
   '/rights': typeof RightsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/atmospheres'
     | '/contact'
+    | '/host'
     | '/privacy'
     | '/rights'
     | '/robots.txt'
@@ -218,6 +228,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/atmospheres'
     | '/contact'
+    | '/host'
     | '/privacy'
     | '/rights'
     | '/robots.txt'
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/atmospheres'
     | '/contact'
+    | '/host'
     | '/privacy'
     | '/rights'
     | '/robots.txt'
@@ -261,6 +273,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   AtmospheresRoute: typeof AtmospheresRoute
   ContactRoute: typeof ContactRoute
+  HostRoute: typeof HostRoute
   PrivacyRoute: typeof PrivacyRoute
   RightsRoute: typeof RightsRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -326,6 +339,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/host': {
+      id: '/host'
+      path: '/host'
+      fullPath: '/host'
+      preLoaderRoute: typeof HostRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -421,6 +441,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRoute,
   AtmospheresRoute: AtmospheresRoute,
   ContactRoute: ContactRoute,
+  HostRoute: HostRoute,
   PrivacyRoute: PrivacyRoute,
   RightsRoute: RightsRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,

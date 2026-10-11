@@ -9,6 +9,7 @@ const links = [
   ["Docs", "/docs"],
   ["Atmospheres", "/atmospheres"],
   ["Lab", "/lab"],
+  ["Katara", "/host"],
   ["About", "/about"],
 ] as const;
 
@@ -55,6 +56,7 @@ export function SiteFooter() {
       </div>
       <div>
         <p className="footer-label">Studio</p>
+        <a href="/host">Katara</a>
         <a href="/about">About</a>
         <a href="/contact">Contact</a>
         <a href={studio.youtube} rel="noreferrer" target="_blank">
