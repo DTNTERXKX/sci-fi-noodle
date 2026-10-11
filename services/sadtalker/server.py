@@ -98,17 +98,17 @@ def prepare_runtime(home: Path) -> None:
     align = home / "src" / "face3d" / "util" / "preprocess.py"
     if align.is_file():
         text = align.read_text(encoding="utf-8")
-        old = "    k, _, _, _ = np.linalg.lstsq(A, b)\n"
-        if old in text:
-            align.write_text(
-                text.replace(
-                    old,
-                    "    k, _, _, _ = np.linalg.lstsq(A, b, rcond=None)\n"
-                    "    k = np.asarray(k).reshape(-1)\n",
-                    1,
-                ),
-                encoding="utf-8",
+        needle = "np.linalg.lstsq(A, b)"
+        if needle in text and "lstsq(A, b, rcond=None)" not in text:
+            text = text.replace(needle, "np.linalg.lstsq(A, b, rcond=None)", 1)
+        assign = "k, _, _, _ = np.linalg.lstsq(A, b, rcond=None)"
+        if assign in text and "np.asarray(k).reshape(-1)" not in text:
+            text = text.replace(
+                assign,
+                assign + "\n    k = np.asarray(k).reshape(-1)",
+                1,
             )
+            align.write_text(text, encoding="utf-8")
 
     networks = home / "src" / "face3d" / "models" / "networks.py"
     if networks.is_file():
@@ -228,7 +228,24 @@ def render(image_bytes: bytes, audio_bytes: bytes) -> bytes:
         videos = sorted(result_dir.glob("*.mp4"), key=lambda path: path.stat().st_mtime)
         if not videos:
             raise HTTPException(status_code=500, detail="inference_failed")
-        payload = videos[-1].read_bytes()
+        playable = job / "talk.mp4"
+        run_ffmpeg(
+            [
+                "-y",
+                "-i",
+                str(videos[-1]),
+                "-c:v",
+                "libx264",
+                "-pix_fmt",
+                "yuv420p",
+                "-c:a",
+                "aac",
+                "-movflags",
+                "+faststart",
+                str(playable),
+            ]
+        )
+        payload = playable.read_bytes()
         if len(payload) < 1000:
             raise HTTPException(status_code=500, detail="inference_failed")
         return payload
