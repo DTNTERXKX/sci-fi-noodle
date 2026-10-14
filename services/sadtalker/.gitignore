@@ -1,0 +1,7 @@
+# Runtime output stays on this machine. The clone and weights live in
+# %LOCALAPPDATA%\sci-fi-noodle\sadtalker, outside this repo.
+work/
+vendor/
+.venv/
+__pycache__/
+*.pyc

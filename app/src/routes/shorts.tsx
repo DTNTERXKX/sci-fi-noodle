@@ -1,41 +1,32 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
-import { WatchMark } from "@/components/site/ctas";
-import { SiteFrame } from "@/components/site/site-frame";
-import { shorts, youtubeFor } from "@/content/catalog";
+import { FlavorLanding } from "@/components/site/flavor-landing";
+import { bowlTitle, flavorBowl, isPillarId, type PillarId } from "@/content/catalog";
+
+const bowl = flavorBowl("quantum-fire");
 
 export const Route = createFileRoute("/shorts")({
+  validateSearch: (search: Record<string, unknown>): { pillar?: PillarId } => ({
+    pillar: isPillarId(search.pillar) ? search.pillar : undefined,
+  }),
   head: () => ({
     meta: [
-      { title: "Shorts | SCI-FI NOODLES" },
-      {
-        name: "description",
-        content: "Micro-stories and experiments from SCI-FI NOODLES, cut to land in under a minute.",
-      },
+      { title: bowlTitle(bowl) },
+      { name: "description", content: `${bowl.tagline} ${bowl.description}` },
     ],
   }),
   component: ShortsPage,
 });
 
 function ShortsPage() {
+  const { pillar } = Route.useSearch();
+  const navigate = useNavigate({ from: Route.fullPath });
   return (
-    <SiteFrame
-      lede="Micro-stories, teasers, and experiments. Something new before the kettle boils."
-      title="Shorts"
-    >
-      <ul className="short-row">
-        {shorts.map((item) => (
-          <li key={item.slug}>
-            <img alt="" src={item.image} />
-            <h2>{item.title}</h2>
-            <p>{item.hook}</p>
-            <p className="meta-line">
-              {item.runtime} · {item.date}
-            </p>
-            <WatchMark href={youtubeFor(item.title)} />
-          </li>
-        ))}
-      </ul>
-    </SiteFrame>
+    <FlavorLanding
+      flavor="quantum-fire"
+      lede="Micro-stories, twists, and standalone encounters. Something new before the kettle boils, from every pillar on the menu."
+      onPillar={(value) => navigate({ search: { pillar: value }, replace: true, resetScroll: false })}
+      pillar={pillar}
+    />
   );
 }

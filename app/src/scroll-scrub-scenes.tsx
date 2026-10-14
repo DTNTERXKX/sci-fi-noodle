@@ -12,15 +12,15 @@ export const scrollScrubScenes: ScrollScrubScene[] = [
   {
     actions: (
       <>
-        <WatchMark href="/watch" />
-        <ExploreOrbit href="/originals" />
+        <WatchMark href="/watch" title="everything" />
+        <ExploreOrbit href="/originals" title="the original universes" />
       </>
     ),
     align: "left",
     body: "Original worlds, reimagined classics, and strange futures.",
     clip: "/assets/world/scene-01.mp4",
     id: "studio",
-    kicker: "AI-cooked sci-fi for curious minds",
+    kicker: "Different Flavors. Infinite Universes.",
     label: "Studio",
     mobileClip: "/assets/world/scene-01-mobile.mp4",
     mobileObjectPosition: "50% 100%",

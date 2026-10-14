@@ -16,6 +16,7 @@ import { Route as ShortsRouteImport } from './routes/shorts'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as RightsRouteImport } from './routes/rights'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as HostRouteImport } from './routes/host'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AtmospheresRouteImport } from './routes/atmospheres'
 import { Route as AppRouteImport } from './routes/app'
@@ -28,6 +29,7 @@ import { Route as DocsIndexRouteImport } from './routes/docs/index'
 import { Route as PublicDomainSlugRouteImport } from './routes/public-domain/$slug'
 import { Route as OriginalsSlugRouteImport } from './routes/originals/$slug'
 import { Route as LabSlugRouteImport } from './routes/lab/$slug'
+import { Route as ApiKataraTalkRouteImport } from './routes/api/katara/talk'
 
 const WatchRoute = WatchRouteImport.update({
   id: '/watch',
@@ -62,6 +64,11 @@ const RightsRoute = RightsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HostRoute = HostRouteImport.update({
+  id: '/host',
+  path: '/host',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -124,6 +131,11 @@ const LabSlugRoute = LabSlugRouteImport.update({
   path: '/lab/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiKataraTalkRoute = ApiKataraTalkRouteImport.update({
+  id: '/api/katara/talk',
+  path: '/api/katara/talk',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -131,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/atmospheres': typeof AtmospheresRoute
   '/contact': typeof ContactRoute
+  '/host': typeof HostRoute
   '/privacy': typeof PrivacyRoute
   '/rights': typeof RightsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -145,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/lab/': typeof LabIndexRoute
   '/originals/': typeof OriginalsIndexRoute
   '/public-domain/': typeof PublicDomainIndexRoute
+  '/api/katara/talk': typeof ApiKataraTalkRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -152,6 +166,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/atmospheres': typeof AtmospheresRoute
   '/contact': typeof ContactRoute
+  '/host': typeof HostRoute
   '/privacy': typeof PrivacyRoute
   '/rights': typeof RightsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -166,6 +181,7 @@ export interface FileRoutesByTo {
   '/lab': typeof LabIndexRoute
   '/originals': typeof OriginalsIndexRoute
   '/public-domain': typeof PublicDomainIndexRoute
+  '/api/katara/talk': typeof ApiKataraTalkRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -174,6 +190,7 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/atmospheres': typeof AtmospheresRoute
   '/contact': typeof ContactRoute
+  '/host': typeof HostRoute
   '/privacy': typeof PrivacyRoute
   '/rights': typeof RightsRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -188,6 +205,7 @@ export interface FileRoutesById {
   '/lab/': typeof LabIndexRoute
   '/originals/': typeof OriginalsIndexRoute
   '/public-domain/': typeof PublicDomainIndexRoute
+  '/api/katara/talk': typeof ApiKataraTalkRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -197,6 +215,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/atmospheres'
     | '/contact'
+    | '/host'
     | '/privacy'
     | '/rights'
     | '/robots.txt'
@@ -211,6 +230,7 @@ export interface FileRouteTypes {
     | '/lab/'
     | '/originals/'
     | '/public-domain/'
+    | '/api/katara/talk'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -218,6 +238,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/atmospheres'
     | '/contact'
+    | '/host'
     | '/privacy'
     | '/rights'
     | '/robots.txt'
@@ -232,6 +253,7 @@ export interface FileRouteTypes {
     | '/lab'
     | '/originals'
     | '/public-domain'
+    | '/api/katara/talk'
   id:
     | '__root__'
     | '/'
@@ -239,6 +261,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/atmospheres'
     | '/contact'
+    | '/host'
     | '/privacy'
     | '/rights'
     | '/robots.txt'
@@ -253,6 +276,7 @@ export interface FileRouteTypes {
     | '/lab/'
     | '/originals/'
     | '/public-domain/'
+    | '/api/katara/talk'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -261,6 +285,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   AtmospheresRoute: typeof AtmospheresRoute
   ContactRoute: typeof ContactRoute
+  HostRoute: typeof HostRoute
   PrivacyRoute: typeof PrivacyRoute
   RightsRoute: typeof RightsRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -275,6 +300,7 @@ export interface RootRouteChildren {
   LabIndexRoute: typeof LabIndexRoute
   OriginalsIndexRoute: typeof OriginalsIndexRoute
   PublicDomainIndexRoute: typeof PublicDomainIndexRoute
+  ApiKataraTalkRoute: typeof ApiKataraTalkRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -326,6 +352,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/host': {
+      id: '/host'
+      path: '/host'
+      fullPath: '/host'
+      preLoaderRoute: typeof HostRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -412,6 +445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LabSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/katara/talk': {
+      id: '/api/katara/talk'
+      path: '/api/katara/talk'
+      fullPath: '/api/katara/talk'
+      preLoaderRoute: typeof ApiKataraTalkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -421,6 +461,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRoute,
   AtmospheresRoute: AtmospheresRoute,
   ContactRoute: ContactRoute,
+  HostRoute: HostRoute,
   PrivacyRoute: PrivacyRoute,
   RightsRoute: RightsRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
@@ -435,6 +476,7 @@ const rootRouteChildren: RootRouteChildren = {
   LabIndexRoute: LabIndexRoute,
   OriginalsIndexRoute: OriginalsIndexRoute,
   PublicDomainIndexRoute: PublicDomainIndexRoute,
+  ApiKataraTalkRoute: ApiKataraTalkRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

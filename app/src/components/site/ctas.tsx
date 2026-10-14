@@ -1,4 +1,4 @@
-export function WatchMark({ href }: { href: string }) {
+export function WatchMark({ href, title }: { href: string; title?: string }) {
   const external = href.startsWith("http");
   return (
     <a
@@ -6,24 +6,29 @@ export function WatchMark({ href }: { href: string }) {
       href={href}
       {...(external ? { rel: "noreferrer", target: "_blank" } : {})}
     >
-      <span>Watch</span>
+      <span>
+        Watch
+        {title ? <i className="sr-only"> {title}{external ? " on YouTube" : ""}</i> : null}
+      </span>
     </a>
   );
 }
 
-export function ExploreOrbit({ href }: { href: string }) {
+export function ExploreOrbit({ href, title }: { href: string; title?: string }) {
   return (
     <a className="cta-explore" href={href}>
       Explore
+      {title ? <span className="sr-only"> {title}</span> : null}
     </a>
   );
 }
 
-export function EnterBracket({ href }: { href: string }) {
+export function EnterBracket({ href, title }: { href: string; title?: string }) {
   return (
     <a className="cta-enter" href={href}>
       <i aria-hidden="true" />
       Enter
+      {title ? <span className="sr-only"> {title}</span> : null}
       <i aria-hidden="true" />
     </a>
   );
