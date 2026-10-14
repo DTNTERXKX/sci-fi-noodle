@@ -1,7 +1,7 @@
 import { pillarBowls, studio } from "@/content/catalog";
 
 const plateAlt =
-  "A lone figure sits in a chair on a starship observation deck, facing a giant ringed planet through a tall arched window, its light pooling on a mirror-black floor.";
+  "A man in a rose-colored jacket sits in a chair on a reflective observation deck, facing a giant ringed planet through a tall arched window.";
 
 /** Homepage title sequence: the observation deck plate with the wordmark, orbit, and pillar row drawn live on top. */
 export function CosmicHero({ menuId }: { menuId: string }) {
