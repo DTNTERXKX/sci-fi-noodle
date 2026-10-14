@@ -3,7 +3,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { DetailHero, TitleNav } from "@/components/site/detail-hero";
 import { Rail } from "@/components/site/rail";
 import { NextShelf, SiteShell } from "@/components/site/site-frame";
-import { classics, neighbours, sections, youtubeFor } from "@/content/catalog";
+import { cardBowl, classics, neighbours, sections, youtubeFor } from "@/content/catalog";
 
 export const Route = createFileRoute("/public-domain/$slug")({
   loader: ({ params }) => {
@@ -60,7 +60,7 @@ function ProjectPage() {
         trail={{ href: "/public-domain", label: "Public Domain" }}
       />
 
-      <div className="detail-body">
+      <div className="detail-body" data-bowl="timewarp">
         <section aria-labelledby="source" className="detail-section" data-reveal>
           <h2 id="source" tabIndex={-1}>
             Source and rights
@@ -99,6 +99,7 @@ function ProjectPage() {
           kicker: `${item.date} · after ${item.creator}`,
           hook: item.hook,
           image: item.image,
+          bowl: cardBowl(item.flavors, "public-domain"),
         }))}
         lede="The rest of the public-domain slate, in premiere order."
         seeAll={{ href: "/public-domain", label: "All classics" }}

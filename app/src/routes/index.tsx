@@ -4,11 +4,13 @@ import { EnterBracket, ExploreOrbit, SignalLink } from "@/components/site/ctas";
 import { CosmicHero } from "@/components/site/cosmic-hero";
 import { FeatureHero } from "@/components/site/feature-hero";
 import { JoinForm } from "@/components/site/join-form";
+import { openKataraDock } from "@/components/site/katara-dock";
 import { RamenMenu } from "@/components/site/ramen-menu";
 import { Rail } from "@/components/site/rail";
 import { SiteShell } from "@/components/site/site-frame";
 import {
   atmospheres,
+  cardBowl,
   classics,
   docs,
   features,
@@ -43,7 +45,7 @@ const timewarpRail = classics.map((item) => ({
   kicker: `${item.date} · after ${item.creator}`,
   hook: item.hook,
   image: item.image,
-  bowl: timewarp.id,
+  bowl: cardBowl(item.flavors, "public-domain"),
 }));
 
 const flightRail = [
@@ -79,7 +81,7 @@ function Index() {
         </div>
         <div className="universe-split">
           {universes.map((universe) => (
-            <article key={universe.slug}>
+            <article data-bowl={cardBowl(universe.flavors, "originals")} key={universe.slug}>
               <img alt={universe.imageAlt ?? ""} src={universe.image} />
               <div>
                 <p className="meta-line">{universe.status}</p>
@@ -122,10 +124,18 @@ function Index() {
       <section className="host-tease" data-reveal>
         <img alt="Katara in chill mode, the SCI-FI NOODLES host" src="/brand/katara-chill.png" />
         <div>
-          <p className="kicker">Studio host</p>
+          <p className="kicker">Your host // At the counter</p>
           <h2>Katara</h2>
-          <p>Chill, crunk, or glam. Talk to the face of the channel.</p>
-          <SignalLink href="/host">Meet Katara</SignalLink>
+          <p>
+            Tell her your mood and she pours the bowl. Chill, crunk, or glam, she knows every flavor on the menu and
+            sends you straight to the film.
+          </p>
+          <div className="host-tease-actions">
+            <button className="host-ask" onClick={openKataraDock} type="button">
+              Ask Katara
+            </button>
+            <SignalLink href="/host">Meet Katara</SignalLink>
+          </div>
         </div>
       </section>
 

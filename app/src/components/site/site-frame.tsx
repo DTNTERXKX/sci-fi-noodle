@@ -10,7 +10,7 @@ import {
   type Bowl,
   type Section,
 } from "@/content/catalog";
-import { RamenVessel } from "@/components/site/ramen-vessels";
+import { RamenVessel, VesselGlyph } from "@/components/site/ramen-vessels";
 import { RevealWatcher } from "@/components/site/reveal";
 import { SiteHeader, usePathname } from "@/components/site/site-header";
 
@@ -26,7 +26,10 @@ function FooterBowls({ label, items }: { label: string; items: Bowl[] }) {
         {items.map((bowl) => (
           <li data-bowl={bowl.id} key={bowl.id}>
             <a href={bowl.href}>
-              <span className="footer-flavor">{bowl.name}</span>
+              <span className="footer-flavor">
+                <VesselGlyph bowl={bowl.id} className="footer-glyph" />
+                {bowl.name}
+              </span>
               {bowl.category}
             </a>
           </li>
@@ -107,8 +110,10 @@ export function SiteFooter() {
         </div>
       </nav>
       <p className="footer-legal">
-        © {studio.year} {studio.owner}. All rights reserved. SCI-FI NOODLES is the
-        channel. Each series keeps its own story.
+        SCI-FI NOODLES is the channel. Each series keeps its own story. All rights reserved.
+      </p>
+      <p className="footer-copyright">
+        © <span suppressHydrationWarning>{new Date().getFullYear()}</span> {studio.owner}
       </p>
     </footer>
   );

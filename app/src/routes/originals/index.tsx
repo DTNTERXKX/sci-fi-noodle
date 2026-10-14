@@ -5,6 +5,7 @@ import { FilterStatus, FlavorChips, ShelfList } from "@/components/site/flavor-f
 import { SiteFrame } from "@/components/site/site-frame";
 import {
   bowlTitle,
+  cardBowl,
   filterShelf,
   isFlavorId,
   pillarBowl,
@@ -42,7 +43,7 @@ function OriginalsPage() {
     >
       <div className="universe-split page-block">
         {universes.map((universe) => (
-          <article key={universe.slug}>
+          <article data-bowl={cardBowl(universe.flavors, "originals")} key={universe.slug}>
             <img alt={universe.imageAlt ?? ""} src={universe.image} />
             <div>
               <p className="meta-line">{universe.status}</p>

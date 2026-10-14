@@ -33,6 +33,7 @@ export function FlavorLanding({
         <ShelfList
           empty={`No ${bowl.short} titles in this pillar yet. Try another pillar.`}
           items={visible}
+          tint="pillar"
           titleAs="h3"
         />
         <a className="cta-flavor-board" data-bowl={bowl.id} href={`/watch?flavor=${flavor}`}>

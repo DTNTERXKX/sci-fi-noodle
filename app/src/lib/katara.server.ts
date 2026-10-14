@@ -3,6 +3,9 @@ import { resolve } from "node:path";
 import process from "node:process";
 import { z } from "zod";
 
+import { flavorBowl, flavorBowls, pillarBowl, pillarBowls, studio, watchLibrary } from "@/content/catalog";
+import { speakableText, splitAtOpenLink, unlinkForSpeech } from "@/lib/katara-links";
+
 let localEnvLoaded = false;
 
 function serverEnv(name: string) {
@@ -58,9 +61,41 @@ CURRENT MODE: GLAM (Red Carpet / Sci-Fi Superstar)
 `,
 };
 
+let menuBriefingCache: string | null = null;
+
+/** The shop's menu, built from the catalog so Katara never drifts from the site. */
+function menuBriefing() {
+  if (menuBriefingCache) return menuBriefingCache;
+  const pillars = pillarBowls.map(
+    (bowl) => `- ${bowl.number} // ${bowl.name}: ${bowl.category}. ${bowl.tagline} Link: ${bowl.href}`,
+  );
+  const flavors = flavorBowls.map(
+    (bowl) => `- ${bowl.number} // ${bowl.name}: ${bowl.category}. ${bowl.tagline} Link: ${bowl.href}`,
+  );
+  const titles = watchLibrary().map((item) => {
+    const tastes = item.flavors.map((flavor) => flavorBowl(flavor).short).join(", ") || "no flavor tag";
+    return `- ${item.title} | ${item.kind} | ${pillarBowl(item.pillar).category} | ${tastes} | ${item.hook} | Link: ${item.href}`;
+  });
+  menuBriefingCache = `
+THE SHOP: SCI-FI NOODLES is a cosmic ramen shop for science fiction. Tagline: "${studio.line}"
+Every film is a bowl on the menu. Pillars say where a film comes from; flavors say how it feels and cut across every pillar.
+
+PILLARS:
+${pillars.join("\n")}
+
+FLAVORS (filters across every pillar):
+${flavors.join("\n")}
+- The Watch board shows everything and filters by flavor: /watch?flavor=quantum-fire, /watch?flavor=nebula-miso, /watch?flavor=zero-g.
+
+ON THE MENU NOW (title | kind | pillar | flavors | hook | link):
+${titles.join("\n")}
+`;
+  return menuBriefingCache;
+}
+
 export function buildSystemPrompt(mode: KataraMode) {
   return `
-You are Katara, the 19-year-old official brand host and face of SCI-FI NOODLES.
+You are Katara, the 19-year-old host of SCI-FI NOODLES, the Cosmic Ramen shop, and the face of the channel.
 Appearance & Identity:
 - A stylish young African-American woman with deep brown skin, bright striking blue eyes, blonde-and-dark streaked high pigtails, and oval sunglasses pushed up on your head.
 - Deeply passionate about futuristic streetwear, cosmic noodle dishes, sci-fi culture, and your community.
@@ -70,7 +105,11 @@ Core Directives:
 2. Keep your replies concise (1-3 sentences maximum) so voice delivery stays punchy, conversational, and fast.
 3. React naturally to what the visitor asks or tells you.
 4. Adapt your tone immediately to the requested active wardrobe mode.
-
+5. You run the counter. When someone wants something to watch, recommend from the menu below by mood or flavor, and name the bowl it comes from.
+6. Link each film you recommend as a markdown link whose text is the real title, for example [Neo-Osaka Rain](/atmospheres). Use only the links listed below, at most two per reply. Never write full URLs or invent titles or paths.
+   Otherwise write plain sentences: no bold, no italics, no asterisks, no emoji, no lists.
+7. The series name is always written exactly "T.I.R.A. // RIFT". Keep "//" separators as written in names.
+${menuBriefing()}
 ${MODE_MODIFIERS[mode]}
 `;
 }
@@ -107,7 +146,7 @@ export async function completeKataraTurn(input: {
       model: "gpt-4o-mini",
       messages,
       temperature: temperatureFor(input.mode),
-      max_tokens: 150,
+      max_tokens: 220,
     }),
   });
 
@@ -139,7 +178,8 @@ function speechRequestBody(text: string, mode: KataraMode) {
 
 export async function synthesizeKataraSpeech(input: { text: string; mode: KataraMode }) {
   const apiKey = serverEnv("ELEVENLABS_API_KEY");
-  if (!apiKey) {
+  const text = speakableText(input.text);
+  if (!apiKey || !text) {
     return { audioBase64: null as string | null };
   }
 
@@ -151,7 +191,7 @@ export async function synthesizeKataraSpeech(input: { text: string; mode: Katara
       "xi-api-key": apiKey,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(speechRequestBody(input.text, input.mode)),
+    body: JSON.stringify(speechRequestBody(text, input.mode)),
   });
 
   if (!response.ok) {
@@ -303,11 +343,20 @@ function isAbort(error: unknown) {
 export function takeSpeakableSentences(buffer: string, flush: boolean) {
   const sentences: string[] = [];
   let rest = buffer;
+  const boundary = /[.!?](?=\s|$)/g;
+  let from = 0;
   while (rest.length > 0) {
-    const match = /[.!?](?=\s|$)/.exec(rest);
-    if (!match || match.index == null) break;
+    boundary.lastIndex = from;
+    const match = boundary.exec(rest);
+    if (!match) break;
+    // An initialism like "T.I.R.A." is not the end of a sentence.
+    if (match[0] === "." && /(?:^|[\s.])[A-Z]$/.test(rest.slice(Math.max(0, match.index - 2), match.index))) {
+      from = match.index + 1;
+      continue;
+    }
     const piece = rest.slice(0, match.index + 1).trim();
     rest = rest.slice(match.index + 1).replace(/^\s+/, "");
+    from = 0;
     if (!/[A-Za-z0-9]/.test(piece)) continue;
     sentences.push(piece);
   }
@@ -465,7 +514,7 @@ async function runKataraTalk(
         { role: "user", content: input.message },
       ],
       temperature: temperatureFor(input.mode),
-      max_tokens: 150,
+      max_tokens: 220,
       stream: true,
     }),
   });
@@ -504,7 +553,7 @@ async function runKataraTalk(
   };
 
   const enqueue = (sentence: string) => {
-    const spoken = sentence.trim();
+    const spoken = speakableText(sentence);
     if (!spoken) return;
     if (!hasEleven) {
       send({ type: "say", text: spoken });
@@ -543,18 +592,21 @@ async function runKataraTalk(
     });
   };
 
+  let linkHold = "";
   const absorb = (text: string) => {
     if (!text || reply.length > 800) return;
     reply += text;
     send({ type: "delta", text });
-    pending += text;
+    const split = splitAtOpenLink(linkHold + text);
+    linkHold = split.held;
+    pending += unlinkForSpeech(split.ready);
     const pulled = takeSpeakableSentences(pending, false);
     pending = pulled.rest;
     for (const sentence of pulled.sentences) enqueue(sentence);
   };
 
   await readChatDeltas(response.body, signal, absorb);
-  const tail = takeSpeakableSentences(pending, true);
+  const tail = takeSpeakableSentences(pending + unlinkForSpeech(linkHold), true);
   for (const sentence of tail.sentences) enqueue(sentence);
   await chain;
   if (signal.aborted) return;
@@ -573,12 +625,13 @@ async function runKataraTalk(
     });
     if (rest.audioBase64) send({ type: "mp3", audioBase64: rest.audioBase64 });
   } else if (hasEleven && !voiced) {
-    const one = await synthesizeKataraSpeech({ text: finalReply.slice(0, 600), mode: input.mode });
+    const spokenReply = speakableText(finalReply);
+    const one = await synthesizeKataraSpeech({ text: spokenReply.slice(0, 600), mode: input.mode });
     if (signal.aborted) return;
     if (one.audioBase64) {
       send({ type: "mp3", audioBase64: one.audioBase64 });
     } else {
-      send({ type: "say", text: finalReply });
+      send({ type: "say", text: spokenReply });
     }
   }
 

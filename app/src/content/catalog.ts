@@ -4,7 +4,6 @@ export const studio = {
   menu: "COSMIC RAMEN // MENU 001",
   signoff: "Choose your flavor. Explore the multiverse.",
   owner: "NVESTED REALITY LLC",
-  year: 2026,
   youtube: "https://www.youtube.com/results?search_query=SCI-FI+NOODLES",
 } as const;
 
@@ -140,6 +139,11 @@ export function pillarBowl(id: PillarId) {
 
 export function flavorBowl(id: FlavorId) {
   return flavorBowls.find((bowl) => bowl.flavor === id) as Bowl & { role: "flavor" };
+}
+
+/** The bowl a title card wears: its first flavor, or its pillar when it has none. */
+export function cardBowl(flavors: FlavorId[], pillar: PillarId): BowlId {
+  return flavors[0] ? flavorBowl(flavors[0]).id : pillarBowl(pillar).id;
 }
 
 /** Page title in the menu pattern, e.g. "Black Hole Tonkotsu // Original Universes | SCI-FI NOODLES". */

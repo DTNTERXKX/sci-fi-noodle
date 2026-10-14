@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Link } from "@tanstack/react-router";
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode, type RefObject } from "react";
 
 import { chatKatara, speakKatara } from "@/lib/api/katara.functions";
+import { KATARA_LINK, kataraTarget, speakableText, splitAtOpenLink } from "@/lib/katara-links";
 
-type KataraMode = "chill" | "crunk" | "glam";
+export type KataraMode = "chill" | "crunk" | "glam";
 
 type ChatTurn = {
   role: "user" | "assistant";
@@ -46,7 +48,7 @@ type BrowserSpeechRecognition = {
 
 type SpeechRecognitionCtor = new () => BrowserSpeechRecognition;
 
-const MODES: Record<
+export const MODES: Record<
   KataraMode,
   { label: string; image: string; face: string; caption: string; status: string }
 > = {
@@ -74,7 +76,47 @@ const MODES: Record<
 };
 
 const GREETING =
-  "Hey. Welcome to the SCI-FI NOODLES universe. I'm Katara. Are we chilling, getting hyped, or checking the front row?";
+  "Hey, welcome to SCI-FI NOODLES, the Cosmic Ramen shop. I'm Katara, your host. Tell me your mood and I'll pour you a bowl.";
+
+/** Katara's words with her recommendations as real links. Unknown or half-streamed links stay plain text. */
+function KataraText({ text, onFollow }: { text: string; onFollow?: () => void }) {
+  const { ready, held } = splitAtOpenLink(text.replace(/\*+/g, ""));
+  const parts: ReactNode[] = [];
+  let last = 0;
+  for (const match of ready.matchAll(KATARA_LINK)) {
+    const index = match.index ?? 0;
+    if (index > last) parts.push(ready.slice(last, index));
+    const [, title, href] = match;
+    const target = kataraTarget(href);
+    parts.push(
+      target ? (
+        <Link
+          className="host-link"
+          key={index}
+          onClick={onFollow}
+          search={target.search as never}
+          to={target.pathname as never}
+        >
+          {title}
+        </Link>
+      ) : (
+        title
+      ),
+    );
+    last = index + match[0].length;
+  }
+  if (last < ready.length) parts.push(ready.slice(last));
+  if (held) parts.push(held.slice(1).split("](")[0]);
+  return <>{parts}</>;
+}
+
+type KataraHostProps = {
+  variant?: "page" | "dock";
+  initialMode?: KataraMode;
+  onModeChange?: (mode: KataraMode) => void;
+  onFollowLink?: () => void;
+  inputRef?: RefObject<HTMLInputElement | null>;
+};
 
 const KEY_NOTE =
   "Katara's line is quiet until OPENAI_API_KEY is set in app/.env on this machine.";
@@ -525,8 +567,15 @@ function speechRecognitionCtor(): SpeechRecognitionCtor | null {
   return host.SpeechRecognition ?? host.webkitSpeechRecognition ?? null;
 }
 
-export function KataraHost() {
-  const [mode, setMode] = useState<KataraMode>("chill");
+export function KataraHost({
+  variant = "page",
+  initialMode = "chill",
+  onModeChange,
+  onFollowLink,
+  inputRef,
+}: KataraHostProps = {}) {
+  const draftId = useId();
+  const [mode, setMode] = useState<KataraMode>(initialMode);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [listening, setListening] = useState(false);
@@ -598,12 +647,14 @@ export function KataraHost() {
     busyRef.current = false;
     setBusy(false);
     setMode(next);
+    onModeChange?.(next);
     pushItem({ kind: "note", text: `Switched to Katara ${MODES[next].label} mode.` });
   }
 
   function sayBrowser(text: string, activeMode: KataraMode, turn: number) {
-    if (speechTurnRef.current !== turn || !window.speechSynthesis) return;
-    const utterance = new SpeechSynthesisUtterance(text);
+    const spoken = speakableText(text);
+    if (speechTurnRef.current !== turn || !window.speechSynthesis || !spoken) return;
+    const utterance = new SpeechSynthesisUtterance(spoken);
     utterance.pitch = 1.15;
     utterance.rate = activeMode === "crunk" ? 1.2 : 1;
     utterance.onstart = () => {
@@ -620,7 +671,7 @@ export function KataraHost() {
 
   async function playOneShot(text: string, activeMode: KataraMode, turn: number) {
     try {
-      const spoken = await speakKatara({ data: { text, mode: activeMode } });
+      const spoken = await speakKatara({ data: { text: speakableText(text).slice(0, 600) || "Okay.", mode: activeMode } });
       if (speechTurnRef.current !== turn) return;
       if (spoken.audioBase64) {
         const player = ensurePlayback();
@@ -857,13 +908,14 @@ export function KataraHost() {
   const look = MODES[mode];
 
   return (
-    <section className={`host-stage host-stage-${mode}`}>
+    <section className={`host-stage host-stage-${mode} host-stage-${variant}`}>
       <div className="host-look">
         <div className="host-modes" role="group" aria-label="Katara mode">
           {(Object.keys(MODES) as KataraMode[]).map((key) => (
             <button
               aria-pressed={mode === key}
               className="host-mode"
+              data-mode={key}
               key={key}
               onClick={() => switchMode(key)}
               type="button"
@@ -878,8 +930,8 @@ export function KataraHost() {
         >
           <img
             alt={talking ? `Katara speaking in ${look.label} mode` : `Katara in ${look.label} mode`}
-            className={talking ? "is-face" : undefined}
-            src={talking ? look.face : look.image}
+            className={talking || variant === "dock" ? "is-face" : undefined}
+            src={talking || variant === "dock" ? look.face : look.image}
           />
           <canvas aria-hidden="true" className="host-lips" hidden={!talking} ref={lipsRef} />
           <figcaption>
@@ -887,12 +939,14 @@ export function KataraHost() {
             {look.status}
           </figcaption>
         </figure>
-        <div className="host-id">
-          <h2>
-            Katara <span>19 · UGC Host</span>
-          </h2>
-          <p>{look.caption}</p>
-        </div>
+        {variant === "page" ? (
+          <div className="host-id">
+            <h2>
+              Katara <span>Cosmic Ramen // Host</span>
+            </h2>
+            <p>{look.caption}</p>
+          </div>
+        ) : null}
       </div>
       <div className="host-chat">
         <div aria-live="polite" className="host-feed" ref={feedRef} role="log">
@@ -904,7 +958,7 @@ export function KataraHost() {
             ) : (
               <div className={`host-line host-line-${item.kind}`} key={item.id}>
                 {item.kind === "katara" ? <span aria-hidden="true">K</span> : null}
-                <p>{item.text}</p>
+                <p>{item.kind === "katara" ? <KataraText onFollow={onFollowLink} text={item.text} /> : item.text}</p>
               </div>
             ),
           )}
@@ -923,14 +977,16 @@ export function KataraHost() {
               <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
             </svg>
           </button>
-          <label className="sr-only" htmlFor="katara-draft">
+          <label className="sr-only" htmlFor={draftId}>
             Message Katara
           </label>
           <input
             autoComplete="off"
-            id="katara-draft"
+            id={draftId}
+            maxLength={500}
             onChange={(event) => setDraft(event.target.value)}
-            placeholder={busy ? "Katara is talking..." : "Type a message or ask Katara anything"}
+            placeholder={busy ? "Katara is talking..." : "Ask for a bowl by mood or flavor"}
+            ref={inputRef}
             value={draft}
           />
           <button className="cta-send" disabled={busy || draft.trim().length === 0} type="submit">

@@ -98,6 +98,7 @@ export function FeatureHero({ features, id }: { features: Feature[]; id: string 
               <button
                 aria-current={index === active ? "true" : undefined}
                 className="feature-pick"
+                data-bowl={item.bowl}
                 onClick={() => setActive(index)}
                 type="button"
               >

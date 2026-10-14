@@ -1,4 +1,5 @@
 import {
+  cardBowl,
   flavorBowl,
   flavorBowls,
   flavorCounts,
@@ -130,10 +131,13 @@ export function ShelfList({
   items,
   empty,
   titleAs: Title = "h2",
+  tint = "flavor",
 }: {
   items: ShelfItem[];
   empty: string;
   titleAs?: "h2" | "h3";
+  /** Which identity colors each row. Flavor pages pass "pillar", since every row shares their flavor. */
+  tint?: "flavor" | "pillar";
 }) {
   if (items.length === 0) return <p className="empty-shelf">{empty}</p>;
   return (
@@ -141,7 +145,7 @@ export function ShelfList({
       {items.map((item) => {
         const pillar = pillarBowl(item.pillar);
         return (
-          <li data-bowl={pillar.id} key={item.slug}>
+          <li data-bowl={tint === "pillar" ? pillar.id : cardBowl(item.flavors, item.pillar)} key={item.slug}>
             <a className="watch-still" href={item.href}>
               <img alt={item.imageAlt ?? ""} src={item.image} />
             </a>

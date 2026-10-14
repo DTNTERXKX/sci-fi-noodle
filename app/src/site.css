@@ -5155,3 +5155,884 @@ summary:focus-visible {
     transform: translateY(-6px);
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Flavor color pass: menus, title cards, and the copyright line       */
+/* ------------------------------------------------------------------ */
+
+:root {
+  /* Text tints per flavor: kicker (full identity), title (bright tint), sub (soft tint). All pass AA on the dark surfaces. */
+  --flavor-blackhole-kicker: var(--flavor-blackhole-glow);
+  --flavor-blackhole-title: color-mix(in srgb, var(--flavor-blackhole-glow) 30%, var(--starlight));
+  --flavor-blackhole-sub: color-mix(in srgb, var(--flavor-blackhole-glow) 30%, var(--silver));
+  --flavor-timewarp-kicker: var(--flavor-timewarp-glow);
+  --flavor-timewarp-title: color-mix(in srgb, var(--flavor-timewarp-glow) 40%, var(--starlight));
+  --flavor-timewarp-sub: color-mix(in srgb, var(--flavor-timewarp-metal) 40%, var(--silver));
+  --flavor-quantumfire-kicker: color-mix(in srgb, var(--flavor-quantumfire-glow) 85%, var(--starlight));
+  --flavor-quantumfire-title: color-mix(in srgb, var(--flavor-quantumfire-glow) 32%, var(--starlight));
+  --flavor-quantumfire-sub: color-mix(in srgb, var(--flavor-quantumfire-glow) 30%, var(--silver));
+  --flavor-nebula-kicker: var(--flavor-nebula-glow);
+  --flavor-nebula-title: color-mix(in srgb, var(--flavor-nebula-metal) 40%, var(--starlight));
+  --flavor-nebula-sub: color-mix(in srgb, var(--flavor-nebula-glow) 32%, var(--silver));
+  --flavor-zerog-kicker: var(--flavor-zerog-glow);
+  --flavor-zerog-title: color-mix(in srgb, var(--flavor-zerog-glow) 40%, var(--starlight));
+  --flavor-zerog-sub: color-mix(in srgb, var(--flavor-zerog-glow) 45%, var(--silver));
+  --flavor-cyberpunk-kicker: color-mix(in srgb, var(--flavor-cyberpunk-glow) 72%, var(--starlight));
+  --flavor-cyberpunk-title: color-mix(in srgb, var(--flavor-cyberpunk-glow) 34%, var(--starlight));
+  --flavor-cyberpunk-sub: color-mix(in srgb, var(--flavor-cyberpunk-metal) 30%, var(--silver));
+
+  --bowl-kicker: var(--cyan);
+  --bowl-title: var(--ink);
+  --bowl-sub: var(--ice);
+}
+
+[data-bowl="black-hole"] {
+  --bowl-kicker: var(--flavor-blackhole-kicker);
+  --bowl-title: var(--flavor-blackhole-title);
+  --bowl-sub: var(--flavor-blackhole-sub);
+}
+
+[data-bowl="timewarp"] {
+  --bowl-kicker: var(--flavor-timewarp-kicker);
+  --bowl-title: var(--flavor-timewarp-title);
+  --bowl-sub: var(--flavor-timewarp-sub);
+}
+
+[data-bowl="quantum-fire"] {
+  --bowl-kicker: var(--flavor-quantumfire-kicker);
+  --bowl-title: var(--flavor-quantumfire-title);
+  --bowl-sub: var(--flavor-quantumfire-sub);
+}
+
+[data-bowl="nebula-miso"] {
+  --bowl-kicker: var(--flavor-nebula-kicker);
+  --bowl-title: var(--flavor-nebula-title);
+  --bowl-sub: var(--flavor-nebula-sub);
+}
+
+[data-bowl="zero-g"] {
+  --bowl-kicker: var(--flavor-zerog-kicker);
+  --bowl-title: var(--flavor-zerog-title);
+  --bowl-sub: var(--flavor-zerog-sub);
+}
+
+[data-bowl="cyberpunk"] {
+  --bowl-kicker: var(--flavor-cyberpunk-kicker);
+  --bowl-title: var(--flavor-cyberpunk-title);
+  --bowl-sub: var(--flavor-cyberpunk-sub);
+}
+
+/* Header pillar nav: a flavor dot, the flavor kicker, and a glowing flavor underline. */
+.site-nav-links > a .nav-flavor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--bowl-kicker);
+}
+
+.site-nav-links > a .nav-flavor::before {
+  width: 0.42rem;
+  height: 0.42rem;
+  flex: none;
+  content: "";
+  border-radius: 50%;
+  background: var(--bowl-glow);
+  box-shadow: 0 0 0.45rem color-mix(in srgb, var(--bowl-glow) 70%, transparent);
+  opacity: 0.75;
+  transition:
+    opacity 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.site-nav-links > a::after {
+  box-shadow: 0 0 0.6rem color-mix(in srgb, var(--bowl-glow) 80%, transparent);
+}
+
+.site-nav-links > a:is(:hover, :focus-visible, [aria-current]) .nav-flavor::before {
+  opacity: 1;
+  box-shadow: 0 0 0.7rem var(--bowl-glow);
+}
+
+.site-nav-links > a:is(:hover, :focus-visible, [aria-current]) .nav-category {
+  color: var(--bowl-title);
+}
+
+.site-nav-links > a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.site-nav-links > a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bowl-glow) 80%, transparent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Flavors dropdown */
+.flavors-panel-number {
+  color: var(--bowl-kicker);
+}
+
+.flavors-panel strong {
+  color: var(--bowl-title);
+}
+
+.flavors-panel li a:is(:hover, :focus-visible, [aria-current]) strong {
+  color: var(--bowl-kicker);
+}
+
+.flavors-panel li a:is(:hover, :focus-visible, [aria-current]) {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bowl-glow) 30%, transparent);
+}
+
+.flavors-panel li a:focus-visible {
+  outline: 2px solid var(--bowl-glow);
+  outline-offset: 1px;
+}
+
+/* Mobile full-screen menu */
+.site-menu-index {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 0.35rem;
+  color: var(--bowl-kicker);
+}
+
+.site-menu-glyph {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.site-menu-flavor {
+  color: var(--bowl-kicker);
+}
+
+.site-menu-nav em {
+  color: var(--bowl-sub);
+}
+
+.site-menu-nav a {
+  position: relative;
+}
+
+.site-menu-nav a::before {
+  position: absolute;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  left: -0.75rem;
+  width: 2px;
+  content: "";
+  border-radius: 2px;
+  background: var(--bowl-glow);
+  box-shadow: 0 0 0.6rem var(--bowl-glow);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.site-menu-nav a:is(:hover, :focus-visible, [aria-current])::before {
+  opacity: 1;
+}
+
+.site-menu-nav a:is(:hover, :focus-visible, [aria-current]) strong {
+  color: var(--bowl-title);
+}
+
+.site-menu-nav a:focus-visible {
+  outline: 2px solid var(--bowl-glow);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Footer sitemap */
+.footer-flavor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--bowl-kicker);
+}
+
+.footer-glyph {
+  width: 1rem;
+  height: 1rem;
+}
+
+.footer-map li[data-bowl] a:is(:hover, :focus-visible) {
+  color: var(--bowl-title);
+}
+
+.footer-map li[data-bowl] a:is(:hover, :focus-visible) .footer-flavor {
+  text-shadow: 0 0 0.7rem color-mix(in srgb, var(--bowl-glow) 60%, transparent);
+}
+
+.footer-map a:focus-visible {
+  outline: 2px solid var(--bowl-glow);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.footer-copyright {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+}
+
+/* Homepage hero pillar row: colored marks and flavor labels, still accents only. */
+.cosmic-pillar-mark {
+  border-color: color-mix(in srgb, var(--bowl-glow) 65%, transparent);
+}
+
+.cosmic-pillar-mark::after {
+  opacity: 0.85;
+  box-shadow: 0 0 0.35rem color-mix(in srgb, var(--bowl-glow) 60%, transparent);
+}
+
+.cosmic-pillar-flavor {
+  color: var(--bowl-kicker);
+}
+
+.cosmic-pillars a:is(:hover, :focus-visible) .cosmic-pillar-flavor {
+  color: var(--bowl-title);
+  text-shadow: 0 0 0.8rem color-mix(in srgb, var(--bowl-glow) 70%, transparent);
+}
+
+.cosmic-pillars a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--bowl-glow) 80%, transparent);
+  outline-offset: 2px;
+}
+
+/* Title cards: kicker in the full flavor color, title in a bright tint, logline in a soft tint. */
+.rail-card .rail-card-kicker,
+.feature-copy .feature-kicker,
+.detail-hero .detail-kicker,
+:is(.watch-list > li, .classic-grid > li, .lab-index > li, .universe-split article)[data-bowl] .meta-line,
+.detail-body[data-bowl] .episode-list .meta-line,
+[data-bowl] .cta-title-nav-label {
+  color: var(--bowl-kicker);
+}
+
+.rail-card strong,
+.feature-copy h2,
+.detail-hero h1,
+:is(.watch-list > li, .classic-grid > li, .lab-index > li, .universe-split article)[data-bowl] :is(h2, h3),
+:is(.watch-list > li, .classic-grid > li, .lab-index > li, .universe-split article)[data-bowl] :is(h2, h3) a,
+.detail-body[data-bowl] .episode-list h3,
+[data-bowl] .cta-title-nav strong,
+.page-main[data-bowl] .page-hero h1 {
+  color: var(--bowl-title);
+}
+
+.rail-card .rail-card-hook,
+.feature-copy .feature-logline,
+.detail-hero .detail-logline,
+:is(.watch-list > li, .classic-grid > li, .lab-index > li, .universe-split article)[data-bowl] p:not(.meta-line),
+.detail-body[data-bowl] .episode-list p:not(.meta-line),
+.detail-body[data-bowl] .lead-line,
+.page-main[data-bowl] .page-hero > p:not(.bowl-kicker, .bowl-tagline) {
+  color: var(--bowl-sub);
+}
+
+.bowl-kicker span {
+  color: var(--bowl-kicker);
+}
+
+.detail-body[data-bowl] .episode-number {
+  color: var(--bowl-kicker);
+}
+
+.rail-card[data-bowl] .rail-card-body {
+  border-top: 2px solid color-mix(in srgb, var(--bowl-glow) 55%, transparent);
+}
+
+.rail-card[data-bowl] a:is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--bowl-glow) 60%, transparent);
+  box-shadow: 0 22px 44px -22px color-mix(in srgb, var(--bowl-glow) 55%, transparent);
+}
+
+.rail-card[data-bowl] a:focus-visible {
+  outline: 2px solid var(--bowl-glow);
+  outline-offset: 3px;
+}
+
+:is(.classic-grid > li, .universe-split article)[data-bowl] {
+  box-shadow: inset 0 2px 0 color-mix(in srgb, var(--bowl-glow) 55%, transparent);
+}
+
+.lab-index > li[data-bowl] img {
+  border-color: color-mix(in srgb, var(--bowl-glow) 35%, transparent);
+}
+
+[data-bowl] .cta-title-nav svg {
+  stroke: var(--bowl-glow);
+}
+
+[data-bowl] .cta-title-nav:is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--bowl-glow) 65%, transparent);
+}
+
+/* Now showing reel: each pick wears its feature's flavor. */
+.feature-pick[data-bowl] .feature-pick-index {
+  color: var(--bowl-kicker);
+}
+
+.feature-pick[data-bowl]:is(:hover, [aria-current]) .feature-pick-title {
+  color: var(--bowl-title);
+}
+
+.feature-pick[data-bowl] .feature-pick-bar i {
+  background: var(--bowl-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-nav-links > a .nav-flavor::before,
+  .site-menu-nav a::before {
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Katara: the Cosmic Ramen host, on her page and in the site dock     */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --katara-chill: var(--flavor-zerog-glow);
+  --katara-crunk: var(--flavor-quantumfire-glow);
+  --katara-glam: var(--flavor-cyberpunk-glow);
+  --katara-gold: var(--flavor-nebula-glow);
+  --katara-accent: var(--katara-chill);
+  --katara-trim: var(--katara-chill);
+}
+
+.host-stage-chill,
+.katara-dock[data-mode="chill"],
+.host-mode[data-mode="chill"] {
+  --katara-accent: var(--katara-chill);
+  --katara-trim: var(--katara-chill);
+}
+
+.host-stage-crunk,
+.katara-dock[data-mode="crunk"],
+.host-mode[data-mode="crunk"] {
+  --katara-accent: var(--katara-crunk);
+  --katara-trim: var(--katara-crunk);
+}
+
+.host-stage-glam,
+.katara-dock[data-mode="glam"],
+.host-mode[data-mode="glam"] {
+  --katara-accent: var(--katara-glam);
+  --katara-trim: var(--katara-gold);
+}
+
+/* Host stage: an instrument panel, accent set by her current look. */
+.host-stage,
+.host-stage-crunk,
+.host-stage-glam {
+  position: relative;
+  border-color: color-mix(in srgb, var(--katara-accent) 34%, transparent);
+  background:
+    radial-gradient(ellipse at 12% 0%, color-mix(in srgb, var(--katara-accent) 20%, transparent), transparent 52%),
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--cyan) 5%, transparent) 0 1px,
+      transparent 1px 48px
+    ),
+    var(--space);
+  transition: border-color 300ms ease;
+}
+
+.host-stage-page::before {
+  content: "SFN // HOST CONSOLE";
+  position: absolute;
+  top: -0.6rem;
+  right: 1.5rem;
+  padding: 0 0.5rem;
+  background: var(--space);
+  color: color-mix(in srgb, var(--katara-accent) 70%, var(--starlight));
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+}
+
+.host-modes {
+  border-color: color-mix(in srgb, var(--cyan) 22%, transparent);
+  background: color-mix(in srgb, var(--navy) 90%, transparent);
+}
+
+.host-mode {
+  border: 1px solid transparent;
+  color: color-mix(in srgb, var(--katara-accent) 45%, var(--silver));
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+
+.host-mode:hover {
+  color: color-mix(in srgb, var(--katara-accent) 70%, var(--starlight));
+}
+
+.host-mode:focus-visible {
+  outline: 2px solid var(--katara-accent);
+  outline-offset: 2px;
+}
+
+.host-mode[aria-pressed="true"] {
+  border-color: var(--katara-trim);
+  background: color-mix(in srgb, var(--katara-accent) 24%, var(--navy));
+  color: color-mix(in srgb, var(--katara-accent) 40%, var(--starlight));
+  box-shadow: 0 0 14px color-mix(in srgb, var(--katara-accent) 40%, transparent);
+}
+
+.host-portrait,
+.host-portrait[data-mode="crunk"],
+.host-portrait[data-mode="glam"] {
+  border-color: color-mix(in srgb, var(--katara-trim) 70%, var(--starlight));
+  box-shadow: 0 0 30px color-mix(in srgb, var(--katara-accent) 40%, transparent);
+}
+
+.host-dot {
+  background: var(--katara-accent);
+  box-shadow: 0 0 8px var(--katara-accent);
+}
+
+.host-id h2 span {
+  border-color: color-mix(in srgb, var(--katara-trim) 60%, transparent);
+  background: color-mix(in srgb, var(--katara-accent) 16%, transparent);
+  color: color-mix(in srgb, var(--katara-accent) 45%, var(--starlight));
+}
+
+.host-chat {
+  border-color: color-mix(in srgb, var(--cyan) 20%, transparent);
+}
+
+.host-line-katara p {
+  border-color: color-mix(in srgb, var(--katara-accent) 26%, transparent);
+  border-left: 2px solid var(--katara-accent);
+}
+
+.host-line-user p {
+  border: 1px solid color-mix(in srgb, var(--katara-accent) 40%, transparent);
+  background: color-mix(in srgb, var(--katara-accent) 16%, var(--navy));
+  color: var(--starlight);
+}
+
+.host-line-katara > span {
+  border: 1px solid var(--katara-trim);
+  background: color-mix(in srgb, var(--katara-accent) 28%, var(--space));
+  color: var(--starlight);
+  font-family: var(--mono);
+}
+
+.host-link {
+  color: color-mix(in srgb, var(--katara-accent) 55%, var(--starlight));
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--katara-accent) 70%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+.host-link:hover {
+  color: var(--starlight);
+  text-decoration-color: var(--katara-accent);
+}
+
+.host-link:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid var(--katara-accent);
+  outline-offset: 2px;
+}
+
+.host-form input {
+  border-color: color-mix(in srgb, var(--cyan) 24%, transparent);
+}
+
+.host-form input:focus-visible {
+  border-color: var(--katara-accent);
+  outline: 1px solid var(--katara-accent);
+}
+
+.host-mic {
+  color: var(--katara-accent);
+}
+
+.host-mic:focus-visible,
+.cta-send:focus-visible {
+  outline: 2px solid var(--katara-accent);
+  outline-offset: 2px;
+}
+
+.host-mic.is-live {
+  border-color: var(--katara-crunk);
+  background: color-mix(in srgb, var(--katara-crunk) 30%, var(--navy));
+  color: var(--starlight);
+}
+
+.cta-send {
+  border: 1px solid var(--katara-trim);
+  background: color-mix(in srgb, var(--katara-accent) 26%, var(--navy));
+  color: var(--starlight);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Homepage tease */
+.host-tease img {
+  border-color: color-mix(in srgb, var(--katara-chill) 34%, transparent);
+  box-shadow: 0 0 40px color-mix(in srgb, var(--katara-chill) 16%, transparent);
+}
+
+.host-tease .kicker {
+  color: var(--katara-chill);
+}
+
+.host-tease-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+
+.host-ask {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 1.2rem;
+  border: 1px solid var(--katara-chill);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--katara-chill) 14%, var(--navy));
+  color: var(--starlight);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.host-ask::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--katara-chill);
+  box-shadow: 0 0 8px var(--katara-chill);
+}
+
+.host-ask:hover {
+  background: color-mix(in srgb, var(--katara-chill) 24%, var(--navy));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--katara-chill) 30%, transparent);
+}
+
+.host-ask:focus-visible {
+  outline: 2px solid var(--katara-chill);
+  outline-offset: 3px;
+}
+
+/* Site-wide dock */
+.katara-launcher {
+  position: fixed;
+  z-index: 50;
+  right: clamp(0.75rem, 2vw, 1.5rem);
+  bottom: clamp(0.75rem, 2vw, 1.5rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 1rem 0.3rem 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--katara-trim) 70%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--space) 86%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 10px 30px color-mix(in srgb, black 50%, transparent),
+    0 0 18px color-mix(in srgb, var(--katara-accent) 24%, transparent);
+  color: var(--starlight);
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.katara-launcher:hover {
+  border-color: var(--katara-trim);
+  box-shadow:
+    0 10px 30px color-mix(in srgb, black 50%, transparent),
+    0 0 26px color-mix(in srgb, var(--katara-accent) 40%, transparent);
+}
+
+.katara-launcher:focus-visible {
+  outline: 2px solid var(--katara-accent);
+  outline-offset: 3px;
+}
+
+.katara-launcher-face {
+  position: relative;
+  display: block;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: none;
+  border: 1px solid var(--katara-trim);
+  border-radius: 999px;
+}
+
+.katara-launcher-face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.katara-dock[data-open="false"] .katara-launcher-face::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--katara-accent);
+  border-radius: 999px;
+  opacity: 0;
+  animation: katara-ping 2.8s ease-out infinite;
+}
+
+@keyframes katara-ping {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.92);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+.katara-panel {
+  position: fixed;
+  z-index: 50;
+  right: clamp(0.75rem, 2vw, 1.5rem);
+  bottom: calc(clamp(0.75rem, 2vw, 1.5rem) + 4rem);
+  display: flex;
+  width: min(25rem, calc(100vw - 1.5rem));
+  height: min(40rem, calc(100dvh - var(--nav-h) - 6.5rem));
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--katara-trim) 55%, transparent);
+  border-radius: 18px;
+  background: var(--space);
+  box-shadow:
+    0 24px 60px color-mix(in srgb, black 65%, transparent),
+    0 0 40px color-mix(in srgb, var(--katara-accent) 18%, transparent);
+}
+
+.katara-panel[hidden] {
+  display: none;
+}
+
+.katara-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.75rem 0.75rem 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--cyan) 18%, transparent);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--katara-accent) 16%, transparent), transparent 70%),
+    var(--navy);
+}
+
+.katara-panel-head > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.katara-panel-kicker {
+  margin: 0;
+  color: color-mix(in srgb, var(--katara-accent) 60%, var(--starlight));
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.katara-panel-head h2 {
+  margin: 0.1rem 0 0;
+  color: var(--starlight);
+  font-size: 1.15rem;
+  line-height: 1.1;
+}
+
+.katara-panel-page {
+  color: var(--ice);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--katara-accent) 60%, transparent);
+  text-underline-offset: 0.25em;
+}
+
+.katara-panel-page:hover {
+  color: var(--starlight);
+}
+
+.katara-panel-close {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--cyan) 22%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ice);
+  cursor: pointer;
+}
+
+.katara-panel-close svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.katara-panel-close:hover {
+  border-color: var(--katara-accent);
+  color: var(--starlight);
+}
+
+.katara-panel-page:focus-visible,
+.katara-panel-close:focus-visible {
+  outline: 2px solid var(--katara-accent);
+  outline-offset: 2px;
+}
+
+.host-stage-dock {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.host-stage-dock .host-look {
+  flex-direction: row;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--cyan) 14%, transparent);
+}
+
+.host-stage-dock .host-portrait {
+  width: 3.4rem;
+  flex: none;
+  border-width: 1px;
+  border-radius: 12px;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--katara-accent) 30%, transparent);
+}
+
+.host-stage-dock .host-portrait figcaption {
+  display: none;
+}
+
+.host-stage-dock .host-modes {
+  flex: 1;
+}
+
+.host-stage-dock .host-chat {
+  min-height: 0;
+  flex: 1;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.host-stage-dock .host-feed {
+  padding: 1rem;
+  overscroll-behavior: contain;
+}
+
+.host-stage-dock .host-line p {
+  max-width: 88%;
+  font-size: 0.94rem;
+}
+
+.host-stage-dock .host-form {
+  padding: 0.7rem;
+  border-top-color: color-mix(in srgb, var(--cyan) 14%, transparent);
+}
+
+.host-stage-dock .host-form input,
+.host-stage-dock .host-mic,
+.host-stage-dock .cta-send {
+  min-height: 2.75rem;
+}
+
+.host-stage-dock .host-mic {
+  width: 2.75rem;
+}
+
+.footer-copyright {
+  padding-bottom: 4.5rem;
+}
+
+[data-site-menu="open"] .katara-dock {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .katara-launcher {
+    padding-right: 0.85rem;
+    font-size: 0.68rem;
+  }
+
+  .katara-launcher-face {
+    width: 2.3rem;
+    height: 2.3rem;
+  }
+
+  .katara-panel {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
+    border-width: 1px 0 0;
+    border-radius: 18px 18px 0 0;
+  }
+
+  .katara-dock[data-open="true"] .katara-launcher {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .host-stage,
+  .host-mode,
+  .host-ask,
+  .katara-launcher {
+    transition: none;
+  }
+
+  .katara-dock[data-open="false"] .katara-launcher-face::after {
+    animation: none;
+    opacity: 0;
+  }
+}

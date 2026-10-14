@@ -4,7 +4,7 @@ import { WatchMark } from "@/components/site/ctas";
 import { DetailHero, TitleNav } from "@/components/site/detail-hero";
 import { Rail } from "@/components/site/rail";
 import { NextShelf, SiteShell } from "@/components/site/site-frame";
-import { classics, neighbours, sections, universes, youtubeFor } from "@/content/catalog";
+import { cardBowl, classics, neighbours, sections, universes, youtubeFor } from "@/content/catalog";
 
 export const Route = createFileRoute("/originals/$slug")({
   loader: ({ params }) => {
@@ -61,7 +61,7 @@ function UniversePage() {
         trail={{ href: "/originals", label: "Original Universes" }}
       />
 
-      <div className="detail-body">
+      <div className="detail-body" data-bowl="black-hole">
         <p className="lead-line" data-reveal>
           {universe.premise}
         </p>
@@ -101,6 +101,7 @@ function UniversePage() {
           kicker: `Timewarp Shoyu · after ${item.creator}`,
           hook: item.hook,
           image: item.image,
+          bowl: cardBowl(item.flavors, "public-domain"),
         }))}
         lede="Different worlds, same kitchen."
         seeAll={{ href: "/public-domain", label: "All Public Domain" }}

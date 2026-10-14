@@ -3,7 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { EnterBracket } from "@/components/site/ctas";
 import { FilterStatus, FlavorChips } from "@/components/site/flavor-filter";
 import { SiteFrame } from "@/components/site/site-frame";
-import { bowlTitle, flavorBowl, isFlavorId, labEntries, pillarBowl, type FlavorId } from "@/content/catalog";
+import { bowlTitle, cardBowl, flavorBowl, isFlavorId, labEntries, pillarBowl, type FlavorId } from "@/content/catalog";
 
 const bowl = pillarBowl("lab");
 
@@ -44,7 +44,7 @@ function LabPage() {
       ) : (
         <ul className="lab-index">
           {visible.map((entry) => (
-            <li key={entry.slug}>
+            <li data-bowl={cardBowl(entry.flavors, "lab")} key={entry.slug}>
               <img alt="" src={entry.image} />
               <div>
                 <p className="meta-line">

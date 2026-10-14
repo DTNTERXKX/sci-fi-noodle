@@ -115,7 +115,10 @@ function MenuBowl({ bowl, index, pathname }: { bowl: Bowl; index: number; pathna
   return (
     <li style={{ "--i": index } as CSSProperties}>
       <a aria-current={currentFor(pathname, bowl.href)} data-bowl={bowl.id} href={bowl.href}>
-        <span className="site-menu-index">{bowl.number}</span>
+        <span className="site-menu-index">
+          <VesselGlyph bowl={bowl.id} className="site-menu-glyph" />
+          {bowl.number}
+        </span>
         <span className="site-menu-flavor">{bowl.name}</span>
         <strong>{bowl.category}</strong>
         <em>{bowl.tagline}</em>
@@ -164,9 +167,10 @@ export function SiteHeader() {
     const priorOverflow = body.style.overflow;
     body.style.overflow = "hidden";
     const background = Array.from(
-      document.querySelectorAll<HTMLElement>(".skip-link, .site-nav, #content, .site-footer"),
+      document.querySelectorAll<HTMLElement>(".skip-link, .site-nav, #content, .site-footer, .katara-dock"),
     );
     for (const element of background) element.inert = true;
+    document.documentElement.dataset.siteMenu = "open";
     panel?.querySelector<HTMLElement>("[data-autofocus]")?.focus();
 
     const onKey = (event: KeyboardEvent) => {
@@ -196,6 +200,7 @@ export function SiteHeader() {
       document.removeEventListener("keydown", onKey);
       body.style.overflow = priorOverflow;
       for (const element of background) element.inert = false;
+      delete document.documentElement.dataset.siteMenu;
       toggle?.focus();
     };
   }, [open]);

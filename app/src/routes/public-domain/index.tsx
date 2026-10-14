@@ -3,7 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { EnterBracket } from "@/components/site/ctas";
 import { FilterStatus, FlavorChips } from "@/components/site/flavor-filter";
 import { SiteFrame } from "@/components/site/site-frame";
-import { bowlTitle, classics, flavorBowl, isFlavorId, pillarBowl, type FlavorId } from "@/content/catalog";
+import { bowlTitle, cardBowl, classics, flavorBowl, isFlavorId, pillarBowl, type FlavorId } from "@/content/catalog";
 
 const bowl = pillarBowl("public-domain");
 
@@ -44,7 +44,7 @@ function PublicDomainPage() {
       ) : (
         <ul className="classic-grid">
           {visible.map((item) => (
-            <li key={item.slug}>
+            <li data-bowl={cardBowl(item.flavors, "public-domain")} key={item.slug}>
               <img alt={item.imageAlt ?? ""} src={item.image} />
               <p className="meta-line">
                 {item.creator}, {item.published}
