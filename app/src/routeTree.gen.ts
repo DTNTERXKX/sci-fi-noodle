@@ -29,6 +29,7 @@ import { Route as DocsIndexRouteImport } from './routes/docs/index'
 import { Route as PublicDomainSlugRouteImport } from './routes/public-domain/$slug'
 import { Route as OriginalsSlugRouteImport } from './routes/originals/$slug'
 import { Route as LabSlugRouteImport } from './routes/lab/$slug'
+import { Route as ApiKataraTalkRouteImport } from './routes/api/katara/talk'
 
 const WatchRoute = WatchRouteImport.update({
   id: '/watch',
@@ -130,6 +131,11 @@ const LabSlugRoute = LabSlugRouteImport.update({
   path: '/lab/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiKataraTalkRoute = ApiKataraTalkRouteImport.update({
+  id: '/api/katara/talk',
+  path: '/api/katara/talk',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/lab/': typeof LabIndexRoute
   '/originals/': typeof OriginalsIndexRoute
   '/public-domain/': typeof PublicDomainIndexRoute
+  '/api/katara/talk': typeof ApiKataraTalkRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -174,6 +181,7 @@ export interface FileRoutesByTo {
   '/lab': typeof LabIndexRoute
   '/originals': typeof OriginalsIndexRoute
   '/public-domain': typeof PublicDomainIndexRoute
+  '/api/katara/talk': typeof ApiKataraTalkRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/lab/': typeof LabIndexRoute
   '/originals/': typeof OriginalsIndexRoute
   '/public-domain/': typeof PublicDomainIndexRoute
+  '/api/katara/talk': typeof ApiKataraTalkRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/lab/'
     | '/originals/'
     | '/public-domain/'
+    | '/api/katara/talk'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -243,6 +253,7 @@ export interface FileRouteTypes {
     | '/lab'
     | '/originals'
     | '/public-domain'
+    | '/api/katara/talk'
   id:
     | '__root__'
     | '/'
@@ -265,6 +276,7 @@ export interface FileRouteTypes {
     | '/lab/'
     | '/originals/'
     | '/public-domain/'
+    | '/api/katara/talk'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -288,6 +300,7 @@ export interface RootRouteChildren {
   LabIndexRoute: typeof LabIndexRoute
   OriginalsIndexRoute: typeof OriginalsIndexRoute
   PublicDomainIndexRoute: typeof PublicDomainIndexRoute
+  ApiKataraTalkRoute: typeof ApiKataraTalkRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -432,6 +445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LabSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/katara/talk': {
+      id: '/api/katara/talk'
+      path: '/api/katara/talk'
+      fullPath: '/api/katara/talk'
+      preLoaderRoute: typeof ApiKataraTalkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -456,6 +476,7 @@ const rootRouteChildren: RootRouteChildren = {
   LabIndexRoute: LabIndexRoute,
   OriginalsIndexRoute: OriginalsIndexRoute,
   PublicDomainIndexRoute: PublicDomainIndexRoute,
+  ApiKataraTalkRoute: ApiKataraTalkRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

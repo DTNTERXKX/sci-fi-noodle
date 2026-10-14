@@ -18,7 +18,7 @@ declare const __HF_DESIGN_INSPECTOR__: boolean;
 
 // Built-in defaults for any field that isn't set in app-meta.json.
 const DEFAULT_TITLE = "SCI-FI NOODLES";
-const DEFAULT_DESCRIPTION = "AI-cooked sci-fi for curious minds.";
+const DEFAULT_DESCRIPTION = "Different Flavors. Infinite Universes.";
 
 type AppMeta = {
   og_title?: string | null;
@@ -96,7 +96,7 @@ function buildHead(meta: AppMeta) {
       { rel: "stylesheet", href: appCss },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@200;300;400;500;600;700&display=swap",
       },
       ...(favicon ? [{ rel: "icon", href: favicon }] : []),
     ],

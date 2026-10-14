@@ -16,7 +16,7 @@ Journey shape: single-shot
 
 Journey: One ~15s push-in on the cosmic bowl. Chapters read as the hero plus the shelves that follow the same move.
 1. Studio. Wide bowl in dark space. Headline: SCI-FI NOODLES. Watch.
-2. Originals. The lifted strand becomes a world. TIRA // RIFT and The Stranger.
+2. Originals. The lifted strand becomes a world. T.I.R.A. // RIFT and The Stranger.
 3. Classics. The strand passes a reimagined public-domain slate.
 4. Atmospheres. Macro along the glow: docs, ambience, shorts.
 5. Kitchen. The strand settles. The Noodle Drop.
@@ -46,7 +46,7 @@ Section plan:
 
 Eyebrow budget: 3. Used only on the journey kicker, the premiere series label, and the join band.
 
-Asset plan: storyboard, one scrub film plus posters, logo from the supplied mark, stills for TIRA, The Stranger, a classic, an atmosphere, a doc, and the lab. No stock.
+Asset plan: storyboard, one scrub film plus posters, logo from the supplied mark, stills for T.I.R.A., The Stranger, a classic, an atmosphere, a doc, and the lab. No stock.
 
 CTA inventory:
 - WatchMark: cyan keyline that fills on hover. Label: Watch.

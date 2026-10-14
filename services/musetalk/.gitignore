@@ -1,0 +1,7 @@
+# Runtime output stays on this machine. The clone and weights live in
+# %LOCALAPPDATA%\sci-fi-noodle\musetalk, outside this repo.
+models/
+results/
+.venv/
+__pycache__/
+*.pyc

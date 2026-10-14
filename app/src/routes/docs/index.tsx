@@ -1,41 +1,32 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
-import { SiteFrame } from "@/components/site/site-frame";
-import { docs } from "@/content/catalog";
+import { FlavorLanding } from "@/components/site/flavor-landing";
+import { bowlTitle, flavorBowl, isPillarId, type PillarId } from "@/content/catalog";
+
+const bowl = flavorBowl("nebula-miso");
 
 export const Route = createFileRoute("/docs/")({
+  validateSearch: (search: Record<string, unknown>): { pillar?: PillarId } => ({
+    pillar: isPillarId(search.pillar) ? search.pillar : undefined,
+  }),
   head: () => ({
     meta: [
-      { title: "Sci-Fi Docs | SCI-FI NOODLES" },
-      {
-        name: "description",
-        content: "Future technology, space, and speculative science, told as cinematic SCI-FI NOODLES documentaries.",
-      },
+      { title: bowlTitle(bowl) },
+      { name: "description", content: `${bowl.tagline} ${bowl.description}` },
     ],
   }),
   component: DocsPage,
 });
 
 function DocsPage() {
+  const { pillar } = Route.useSearch();
+  const navigate = useNavigate({ from: Route.fullPath });
   return (
-    <SiteFrame
-      lede="Longer films about future technology, space, and the science hiding inside the fiction. Guesses are labeled as guesses."
-      title="Sci-fi docs"
-    >
-      <ul className="doc-stack">
-        {docs.map((item) => (
-          <li key={item.slug}>
-            <img alt="" src={item.image} />
-            <div>
-              <p className="meta-line">
-                {item.runtime} · {item.date}
-              </p>
-              <h2>{item.title}</h2>
-              <p>{item.hook}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </SiteFrame>
+    <FlavorLanding
+      flavor="nebula-miso"
+      lede="Documentaries and lore about future technology, space, and the science hiding inside the fiction. Guesses are labeled as guesses."
+      onPillar={(value) => navigate({ search: { pillar: value }, replace: true, resetScroll: false })}
+      pillar={pillar}
+    />
   );
 }

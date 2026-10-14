@@ -4,3 +4,6 @@ node_modules
 /services/sadtalker/vendor/
 /services/sadtalker/.venv/
 /services/sadtalker/work/
+
+# Local start/stop PIDs and logs. The scripts themselves stay tracked.
+/services/site/.run/
