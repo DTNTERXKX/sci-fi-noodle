@@ -197,11 +197,11 @@ export const universes: Universe[] = [
     imageAlt: posterAlt.tira,
     flavors: [],
     episodes: [
-      { slug: "the-key-awakens", title: "The Key Awakens", hook: "The first signal locks onto a name.", runtime: "4 min", date: "Oct 2, 2026" },
-      { slug: "the-ball-crashers", title: "The Ball Crashers", hook: "A night out turns into a breach drill.", runtime: "4 min", date: "Oct 16, 2026" },
-      { slug: "echoes-of-ngairo", title: "Echoes of Ngairo", hook: "The seed answers in someone else's voice.", runtime: "4 min", date: "Oct 30, 2026" },
-      { slug: "the-undercity-breach", title: "The Undercity Breach", hook: "The street below the canopy opens.", runtime: "4 min", date: "Nov 13, 2026" },
-      { slug: "titan-warning", title: "Titan Warning", hook: "A far alarm arrives on a local frequency.", runtime: "4 min", date: "Nov 27, 2026" },
+      { slug: "the-key-awakens", title: "The Key Awakens", hook: "The first signal locks onto a name.", runtime: "4 min", date: "Oct 16, 2026" },
+      { slug: "the-ball-crashers", title: "The Ball Crashers", hook: "A night out turns into a breach drill.", runtime: "4 min", date: "Nov 6, 2026" },
+      { slug: "echoes-of-ngairo", title: "Echoes of Ngairo", hook: "The seed answers in someone else's voice.", runtime: "4 min", date: "Nov 20, 2026" },
+      { slug: "the-undercity-breach", title: "The Undercity Breach", hook: "The street below the canopy opens.", runtime: "4 min", date: "Dec 4, 2026" },
+      { slug: "titan-warning", title: "Titan Warning", hook: "A far alarm arrives on a local frequency.", runtime: "4 min", date: "Dec 18, 2026" },
     ],
   },
   {
@@ -215,8 +215,8 @@ export const universes: Universe[] = [
     flavors: ["quantum-fire"],
     episodes: [
       { slug: "part-1", title: "Part 1", hook: "The pod opens. The coffee maker is already warm.", runtime: "1 min", date: "Oct 5, 2026" },
-      { slug: "part-2", title: "Part 2", hook: "Two mugs. One question.", runtime: "1 min", date: "Oct 12, 2026" },
-      { slug: "compilation", title: "Parts 1 to 5", hook: "The full wake-up, cut as one film.", runtime: "6 min", date: "Dec 26, 2026" },
+      { slug: "part-2", title: "Part 2", hook: "Two mugs. One question.", runtime: "1 min", date: "Nov 2, 2026" },
+      { slug: "compilation", title: "Parts 1 to 5", hook: "The full wake-up, cut as one film.", runtime: "4 min", date: "Jan 23, 2027" },
     ],
   },
 ];
@@ -248,7 +248,7 @@ export const classics: Classic[] = [
     image: "/assets/stills/commit-poster.jpg",
     imageAlt: posterAlt.commit,
     runtime: "5 min",
-    date: "Oct 10, 2026",
+    date: "Nov 7, 2026",
     flavors: ["quantum-fire"],
   },
   {
@@ -261,7 +261,7 @@ export const classics: Classic[] = [
     rights: "Built from the 1896 novel. Later screen versions are not the source.",
     image: "/assets/stills/atmosphere.png",
     runtime: "5 min",
-    date: "Oct 17, 2026",
+    date: "Nov 14, 2026",
     flavors: ["quantum-fire"],
   },
   {
@@ -274,7 +274,7 @@ export const classics: Classic[] = [
     rights: "Built from the 1898 novel. The 1938 broadcast and later films are not the source.",
     image: "/assets/stills/docs.png",
     runtime: "6 min",
-    date: "Oct 30, 2026",
+    date: "Nov 27, 2026",
     flavors: ["quantum-fire"],
   },
   {
@@ -287,7 +287,7 @@ export const classics: Classic[] = [
     rights: "Public-domain status can change by translation. This project uses the 1920 play, not later adaptations.",
     image: "/assets/stills/lab.png",
     runtime: "5 min",
-    date: "Nov 7, 2026",
+    date: "Dec 5, 2026",
     flavors: [],
   },
   {
@@ -300,7 +300,7 @@ export const classics: Classic[] = [
     rights: "Only the 1924 Zilboorg translation is treated as the source. Other translations stay out.",
     image: "/assets/stills/docs.png",
     runtime: "8 min",
-    date: "Nov 18, 2026",
+    date: "Dec 9, 2026",
     flavors: [],
   },
   {
@@ -313,7 +313,7 @@ export const classics: Classic[] = [
     rights: "Built from the 1925 novel. The 1927 film is still protected in many countries and is not used.",
     image: "/assets/stills/tira.png",
     runtime: "5 min",
-    date: "Nov 21, 2026",
+    date: "Dec 19, 2026",
     flavors: [],
   },
   {
@@ -326,7 +326,7 @@ export const classics: Classic[] = [
     rights: "Built from the 1912 novel, not later film dinosaurs or character designs.",
     image: "/assets/stills/atmosphere.png",
     runtime: "5 min",
-    date: "Dec 5, 2026",
+    date: "Jan 2, 2027",
     flavors: [],
   },
   {
@@ -339,7 +339,7 @@ export const classics: Classic[] = [
     rights: "Built from the 1912 novel. Names and marks that are still trademarked are avoided.",
     image: "/assets/stills/docs.png",
     runtime: "5 min",
-    date: "Dec 12, 2026",
+    date: "Jan 9, 2027",
     flavors: [],
   },
   {
@@ -352,7 +352,7 @@ export const classics: Classic[] = [
     rights: "Built from the 1895 novel. Later films are not the source.",
     image: "/assets/stills/commit.png",
     runtime: "6 min",
-    date: "Dec 29, 2026",
+    date: "Jan 26, 2027",
     flavors: [],
   },
 ];
@@ -377,7 +377,7 @@ export const atmospheres: Atmosphere[] = [
     title: "Neo-Osaka Rain",
     hook: "An immersive rain and steam soundscape. Rain on the glass, steam off the noodles, a cat asleep by the window.",
     runtime: "2 hr",
-    date: "Dec 27, 2026",
+    date: "Jan 24, 2027",
     image: "/assets/stills/neo-osaka-rain.jpg",
     imageAlt: posterAlt.neoOsaka,
     place: "NEO OSAKA 2187",
@@ -385,21 +385,21 @@ export const atmospheres: Atmosphere[] = [
     featured: true,
     flavors: ["zero-g"],
   },
-  { slug: "pod-bay-117", title: "Pod Bay 117", hook: "Coolant hum, frost ticking, one amber light.", runtime: "2 hr", date: "Oct 11, 2026", image: "/assets/stills/stranger.png", flavors: ["zero-g"] },
-  { slug: "observation-rain", title: "Observation Rain", hook: "A ringed planet and weather on the glass.", runtime: "2 hr", date: "Oct 25, 2026", image: "/assets/stills/atmosphere.png", flavors: ["zero-g"] },
-  { slug: "freighter-night", title: "Freighter Night Shift", hook: "A coffee bulb, and a radio check every twenty minutes.", runtime: "2 hr", date: "Nov 8, 2026", image: "/assets/stills/atmosphere.png", flavors: ["zero-g"] },
+  { slug: "pod-bay-117", title: "Pod Bay 117", hook: "Coolant hum, frost ticking, one amber light.", runtime: "2 hr", date: "Nov 8, 2026", image: "/assets/stills/stranger.png", flavors: ["zero-g"] },
+  { slug: "observation-rain", title: "Observation Rain", hook: "A ringed planet and weather on the glass.", runtime: "2 hr", date: "Nov 22, 2026", image: "/assets/stills/atmosphere.png", flavors: ["zero-g"] },
+  { slug: "freighter-night", title: "Freighter Night Shift", hook: "A coffee bulb, and a radio check every twenty minutes.", runtime: "2 hr", date: "Dec 6, 2026", image: "/assets/stills/atmosphere.png", flavors: ["zero-g"] },
 ];
 
 export const docs = [
-  { slug: "the-archon-files", title: "The Archon Files", hook: "A superintelligence, told in coffee rings and redactions.", runtime: "10 min", date: "Nov 2026", image: "/assets/stills/docs.png", flavors: ["nebula-miso"] as FlavorId[] },
+  { slug: "the-archon-files", title: "The Archon Files", hook: "A superintelligence, told in coffee rings and redactions.", runtime: "10 min", date: "Jan 8, 2027", image: "/assets/stills/docs.png", flavors: ["nebula-miso"] as FlavorId[] },
   { slug: "cities-of-2150", title: "Cities of 2150", hook: "Five rooftops. Facts labeled. Guesses labeled.", runtime: "12 min", date: "Nov 2026", image: "/assets/stills/docs.png", flavors: ["nebula-miso"] as FlavorId[] },
   { slug: "the-last-5-billion-years", title: "The Last 5 Billion Years", hook: "Earth's future, deadpan, one era at a time.", runtime: "9 min", date: "Dec 2026", image: "/assets/stills/docs.png", flavors: ["nebula-miso"] as FlavorId[] },
 ];
 
 export const shorts = [
-  { slug: "the-sky-broke", title: "The Sky Broke", hook: "A crack in a blue afternoon. The crossing guard keeps waving.", runtime: "45 sec", date: "Oct 19, 2026", image: "/assets/stills/docs.png", flavors: ["quantum-fire"] as FlavorId[] },
-  { slug: "ten-seconds", title: "10 Seconds to Impact", hook: "One cracked watch. He finishes the sandwich.", runtime: "30 sec", date: "Nov 2, 2026", image: "/assets/stills/commit.png", flavors: ["quantum-fire"] as FlavorId[] },
-  { slug: "one-tree", title: "One Tree, One Million Years", hook: "A rope swing, an acorn, and the knot that stays.", runtime: "60 sec", date: "Nov 23, 2026", image: "/assets/stills/atmosphere.png", flavors: ["quantum-fire"] as FlavorId[] },
+  { slug: "the-sky-broke", title: "The Sky Broke", hook: "A crack in a blue afternoon. The crossing guard keeps waving.", runtime: "45 sec", date: "Nov 16, 2026", image: "/assets/stills/docs.png", flavors: ["quantum-fire"] as FlavorId[] },
+  { slug: "ten-seconds", title: "10 Seconds to Impact", hook: "One cracked watch. He finishes the sandwich.", runtime: "30 sec", date: "Nov 30, 2026", image: "/assets/stills/commit.png", flavors: ["quantum-fire"] as FlavorId[] },
+  { slug: "one-tree", title: "One Tree, One Million Years", hook: "A rope swing, an acorn, and the knot that stays.", runtime: "60 sec", date: "Dec 21, 2026", image: "/assets/stills/atmosphere.png", flavors: ["quantum-fire"] as FlavorId[] },
 ];
 
 export const labEntries = [
