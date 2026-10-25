@@ -24,11 +24,14 @@ describe("scroll-scrub website landing contract", () => {
     const landingRoute = readFileSync(new URL("../src/routes/index.tsx", import.meta.url), "utf8");
     const appRoute = readFileSync(new URL("../src/routes/app.tsx", import.meta.url), "utf8");
 
-    // scroll-scrub's home IS the site: "/" renders the journey instead of the
-    // stock LandingPage. Everything else about the split is unchanged.
-    expect(landingRoute).toContain("ScrollScrub");
+    // The public home is the Cosmic Ramen menu. /app must not render the
+    // generator scaffold; it redirects away and robots.txt disallows it.
+    expect(landingRoute).toContain("CosmicHero");
+    expect(landingRoute).not.toContain("ScrollScrub");
+    expect(landingRoute).not.toContain("CustomTemplate");
     expect(appRoute).toContain('createFileRoute("/app")');
-    expect(appRoute).toContain("previewMode");
+    expect(appRoute).toContain("redirect");
+    expect(appRoute).not.toContain("CustomTemplate");
   });
 
   test("ships the canonical generations workspace recipe", () => {

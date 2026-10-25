@@ -67,9 +67,9 @@ export function KataraDock() {
     return () => window.removeEventListener(OPEN_EVENT, show);
   }, [show]);
 
-  useEffect(() => {
-    if (onHostPage) hide(false);
-  }, [onHostPage, hide]);
+  if (onHostPage && open) {
+    setOpen(false);
+  }
 
   useEffect(() => {
     if (open) {

@@ -323,9 +323,11 @@ try {
     Write-Host "SadTalker: $($state.sadtalker.url)"
   }
 
-  if (-not $siteReady -or -not $warm) {
-    Write-Host "Start is incomplete. Run services\site\stop.ps1 to stop anything this script launched."
+  if (-not $siteReady) {
+    Write-Host "Site did not start. Run services\site\stop.ps1 to stop anything this script launched."
     $exitCode = 1
+  } elseif (-not $warm) {
+    Write-Host "Site is up. Lip-sync is not ready, so Katara stays on the still face."
   }
 } catch {
   Write-Host $_.Exception.Message

@@ -37,13 +37,15 @@ function BrandLockup() {
 
 function FlavorsMenu({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
+  const [openPath, setOpenPath] = useState(pathname);
   const rootRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const active = flavorBowls.some((bowl) => currentFor(pathname, bowl.href));
 
-  useEffect(() => {
+  if (openPath !== pathname) {
+    setOpenPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -131,6 +133,7 @@ export function SiteHeader() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [open, setOpen] = useState(false);
+  const [openPath, setOpenPath] = useState(pathname);
   const [scrolled, setScrolled] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -146,9 +149,10 @@ export function SiteHeader() {
     };
   }, [isHome]);
 
-  useEffect(() => {
+  if (openPath !== pathname) {
+    setOpenPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     const desktop = window.matchMedia("(min-width: 1024px)");
