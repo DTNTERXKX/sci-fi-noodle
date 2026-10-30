@@ -75,11 +75,9 @@ function UniversePage() {
               <li key={episode.slug}>
                 <span className="episode-number">{String(number + 1).padStart(2, "0")}</span>
                 <div>
-                  <p className="meta-line">
-                    {episode.date} · {episode.runtime}
-                  </p>
+                  <p className="meta-line">{[episode.date, episode.runtime].filter(Boolean).join(" · ")}</p>
                   <h3>{episode.title}</h3>
-                  <p>{episode.hook}</p>
+                  {episode.hook ? <p>{episode.hook}</p> : null}
                 </div>
                 <WatchMark href={youtubeFor(`${universe.title} ${episode.title}`)} title={episode.title} />
               </li>

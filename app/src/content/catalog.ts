@@ -4,7 +4,7 @@ export const studio = {
   menu: "COSMIC RAMEN // MENU 001",
   signoff: "Choose your flavor. Explore the multiverse.",
   owner: "NVESTED REALITY LLC",
-  youtube: "https://www.youtube.com/results?search_query=SCI-FI+NOODLES",
+  youtube: "https://www.youtube.com/@SCIFINOODLES",
 } as const;
 
 /** Where a production comes from. Every catalog entry has exactly one. */
@@ -167,8 +167,8 @@ export type ShelfItem = {
 };
 
 const posterAlt = {
-  tira: "T.I.R.A. // RIFT key art. A heroine in black armor stands on a wrecked bridge with a white robot behind her, a river skyline burning at sunset and warships in the sky.",
-  commit: "A white robot sits alone at a lab bench at night, rain on tall windows glowing orange over the city, a laptop full of code in the foreground.",
+  tira: "T.I.R.A. // RIFT title over a dark luxury apartment great room: marble kitchen island, pendant lights, red roses, a river skyline at dusk through the windows.",
+  commit: "FRANKENSTEIN: THE COMMIT title over a 2D anime lab at night, rain on tall arched windows glowing orange and server racks lit blue.",
   neoOsaka:
     "A cozy apartment at night: a cat asleep, a steaming bowl of noodles and a mug at a rain-streaked window over a neon city and an elevated train.",
 } as const;
@@ -189,34 +189,58 @@ export const universes: Universe[] = [
   {
     slug: "tira-rift",
     title: "T.I.R.A. // RIFT",
-    logline: "Memphis, 2099. A signal that should not exist.",
+    logline: "Something under the bluff is waking up, and Dimension N wants it first.",
     premise:
-      "Major Amara Kade follows a rift signal through a future Memphis. T.I.R.A. // RIFT keeps its own story, characters, and rules. The channel only shelves it.",
+      "Memphis, 2099. Major Amara Kade is off duty at 06:43. By 07:40 she has lost the good couch, caught a nine-metre girder over a full bus, and climbed into MAAT-77.",
     status: "Season one in production",
-    image: "/assets/stills/tira-poster.jpg",
-    imageAlt: posterAlt.tira,
+    image: "/assets/heroes/tira-rift.png",
+    imageAlt: "T.I.R.A. // RIFT title over a dark luxury apartment great room: marble kitchen island, pendant lights, red roses, a river skyline at dusk through the windows.",
     flavors: [],
     episodes: [
-      { slug: "the-key-awakens", title: "The Key Awakens", hook: "The first signal locks onto a name.", runtime: "4 min", date: "Oct 16, 2026" },
-      { slug: "the-ball-crashers", title: "The Ball Crashers", hook: "A night out turns into a breach drill.", runtime: "4 min", date: "Nov 6, 2026" },
-      { slug: "echoes-of-ngairo", title: "Echoes of Ngairo", hook: "The seed answers in someone else's voice.", runtime: "4 min", date: "Nov 20, 2026" },
-      { slug: "the-undercity-breach", title: "The Undercity Breach", hook: "The street below the canopy opens.", runtime: "4 min", date: "Dec 4, 2026" },
-      { slug: "titan-warning", title: "Titan Warning", hook: "A far alarm arrives on a local frequency.", runtime: "4 min", date: "Dec 18, 2026" },
+      { slug: "the-key-awakens", title: "The Key Awakens", hook: "One morning, one city, one couch. Three soldiers come through her window; by 07:40 she's caught a girder over a full bus.", runtime: "10 min", date: "Oct 16, 2026" },
+      { slug: "the-ball-crashers", title: "The Ball Crashers", hook: "A gala on Hyde Lake at Shelby Farms. The trouble comes through the service doors.", runtime: "4 min", date: "Nov 6, 2026" },
+      { slug: "echoes-of-ngairo", title: "Echoes of Ngairo", hook: "On Cobblestone Landing, a seven-notched keystone turns to face her.", runtime: "4 min", date: "Nov 20, 2026" },
+      { slug: "the-undercity-breach", title: "The Undercity Breach", hook: "Under Front Street the dig reaches the city's machinery, and the same girder falls again, this time over a friend.", runtime: "4 min", date: "Dec 4, 2026" },
+      { slug: "titan-warning", title: "Titan Warning", hook: "The quiet one. No fight, one number, a Titan beside the M bridge.", runtime: "4 min", date: "Dec 18, 2026" },
+      { slug: "maat-protocol", title: "MAAT Protocol", hook: "One mech, one steel frame, one word said five times on the Chickasaw Bluffs.", runtime: "", date: "Jan 1, 2027" },
+      { slug: "rift-night", title: "Rift Night", hook: "Seven breaches, four people, and one of them walks the wrong way on purpose.", runtime: "", date: "Jan 15, 2027" },
+      { slug: "2027-transmission", title: "2027 Transmission", hook: "", runtime: "", date: "Jan 29, 2027" },
     ],
   },
   {
     slug: "the-stranger",
     title: "The Stranger",
-    logline: "He woke 212 years early. Someone had asked the ship for company.",
+    logline: "You're a cryo tech on a colony ship, and you're two hundred years early.",
     premise:
-      "A colonist comes out of sleep long before the colony does, and finds a request log with his name already in it. The Stranger is its own original universe.",
+      "The first thing you hear is the seal. Somebody filled out the wake-up request 1,352 times. THE STRANGER: a five-part first-person sci-fi Short series.",
     status: "Shorts, then a compilation",
     image: "/assets/stills/stranger.png",
+    imageAlt: "A dark, curved cryo hall on a ship: a long row of frosted sleep pods with green status lights under a strip of white light.",
     flavors: ["quantum-fire"],
     episodes: [
-      { slug: "part-1", title: "Part 1", hook: "The pod opens. The coffee maker is already warm.", runtime: "1 min", date: "Oct 5, 2026" },
-      { slug: "part-2", title: "Part 2", hook: "Two mugs. One question.", runtime: "1 min", date: "Nov 2, 2026" },
+      { slug: "part-1", title: "Part 1", hook: "The pod opens. The coffee maker is already warm.", runtime: "1 min", date: "Oct 1, 2026" },
+      { slug: "part-2", title: "Part 2", hook: "Two mugs. One question.", runtime: "1 min", date: "Oct 7, 2026" },
+      { slug: "part-3", title: "Part 3 · The Criteria", hook: "", runtime: "1 min", date: "Nov 13, 2026" },
+      { slug: "part-4", title: "Part 4 · Two Keys", hook: "", runtime: "1 min", date: "Dec 4, 2026" },
+      { slug: "part-5", title: "Part 5 · On Time", hook: "", runtime: "1 min", date: "Jan 1, 2027" },
       { slug: "compilation", title: "Parts 1 to 5", hook: "The full wake-up, cut as one film.", runtime: "4 min", date: "Jan 23, 2027" },
+    ],
+  },
+  {
+    slug: "bluff-city-immune",
+    title: "Bluff City Immune",
+    logline: "A micro-drama about one immune family in Whitehaven, a minute at a time.",
+    premise:
+      "2:00 PM. Dad hands Kort the fob to Grace for the first time and doesn't let go right away. One job: Miss Pearl's insulin from the hospital on Elvis Presley Boulevard. In and out.",
+    status: "Teaser Nov 29 · episodes from Dec 11",
+    image: "/assets/heroes/bluff-city-immune.png",
+    imageAlt: "BLUFF CITY IMMUNE title over a graphic-novel painting of a gated subdivision at golden hour, power lines against an orange sky.",
+    flavors: [],
+    episodes: [
+      { slug: "teaser", title: "Teaser", hook: "", runtime: "", date: "Nov 29, 2026" },
+      { slug: "in-and-out", title: "EP01 · In and Out", hook: "", runtime: "60–90 sec", date: "Dec 11, 2026" },
+      { slug: "deliverance", title: "EP02 · Deliverance", hook: "", runtime: "60–90 sec", date: "Dec 12, 2026" },
+      { slug: "back-by-five", title: "EP03 · Back by Five", hook: "", runtime: "60–90 sec", date: "Dec 13, 2026" },
     ],
   },
 ];
@@ -240,13 +264,13 @@ export const classics: Classic[] = [
   {
     slug: "the-commit",
     title: "Frankenstein: The Commit",
-    hook: "A lab ships an A.I. model release, then goes home.",
+    hook: "1:00 a.m. The lab pushes to production and the whole team goes home. Nobody stays to see what it does next.",
     source: "Frankenstein",
     creator: "Mary Shelley",
     published: "1818",
     rights: "Built from the 1818 text. Later films, illustrations, and translations are not the source.",
-    image: "/assets/stills/commit-poster.jpg",
-    imageAlt: posterAlt.commit,
+    image: "/assets/heroes/the-commit.png",
+    imageAlt: "FRANKENSTEIN: THE COMMIT title over a 2D anime lab at night, rain on tall arched windows glowing orange and server racks lit blue.",
     runtime: "5 min",
     date: "Nov 7, 2026",
     flavors: ["quantum-fire"],
@@ -254,12 +278,13 @@ export const classics: Classic[] = [
   {
     slug: "terms-of-service",
     title: "Terms of Service",
-    hook: "The island has a user agreement now.",
+    hook: "The staff used to be animals. Every morning they recite the terms. \"Are we not men?\"",
     source: "The Island of Doctor Moreau",
     creator: "H. G. Wells",
     published: "1896",
     rights: "Built from the 1896 novel. Later screen versions are not the source.",
-    image: "/assets/stills/atmosphere.png",
+    image: "/assets/heroes/terms-of-service.png",
+    imageAlt: "TERMS OF SERVICE title over a storm-dark tropical research compound, a wet concrete walkway between jungle and waterfalls.",
     runtime: "5 min",
     date: "Nov 14, 2026",
     flavors: ["quantum-fire"],
@@ -267,25 +292,27 @@ export const classics: Classic[] = [
   {
     slug: "the-alert",
     title: "The Alert",
-    hook: "8:47 p.m. Every phone in town buzzes at once.",
+    hook: "8:47 p.m. An emergency alert buzzes every phone in Woking at once. Nobody runs.",
     source: "The War of the Worlds",
     creator: "H. G. Wells",
     published: "1898",
-    rights: "Built from the 1898 novel. The 1938 broadcast and later films are not the source.",
-    image: "/assets/stills/docs.png",
-    runtime: "6 min",
+    rights: "A work of fiction. Nothing in this video happened. Built from the 1898 novel. The 1938 broadcast and later films are not the source.",
+    image: "/assets/heroes/the-alert.png",
+    imageAlt: "THE ALERT title over a night-vision doorbell-camera view of a quiet terraced street, a parked car and drifting mist.",
+    runtime: "5 min",
     date: "Nov 27, 2026",
     flavors: ["quantum-fire"],
   },
   {
     slug: "universal-robots",
     title: "Universal Robots",
-    hook: "The factory ships people-shaped tools. The tools read the manual.",
+    hook: "Monday, 6:00 a.m. The factory hires its ten-thousandth robot and lays off its last human, with a fruit basket and a lanyard.",
     source: "R.U.R.",
     creator: "Karel Capek",
     published: "1920",
     rights: "Public-domain status can change by translation. This project uses the 1920 play, not later adaptations.",
-    image: "/assets/stills/lab.png",
+    image: "/assets/heroes/universal-robots.png",
+    imageAlt: "UNIVERSAL ROBOTS title over a gleaming white factory hall lined with amber-lit glass tanks.",
     runtime: "5 min",
     date: "Dec 5, 2026",
     flavors: [],
@@ -293,12 +320,13 @@ export const classics: Classic[] = [
   {
     slug: "glass-city",
     title: "Glass City",
-    hook: "A city where the walls are the paperwork.",
+    hook: "Privacy curtains come down only with a pink ticket, at set times.",
     source: "We",
     creator: "Yevgeny Zamyatin",
     published: "1924",
     rights: "Only the 1924 Zilboorg translation is treated as the source. Other translations stay out.",
     image: "/assets/stills/docs.png",
+    imageAlt: "A dark observatory: a large telescope, an empty chair, and star charts on a console under a domed window onto a spiral galaxy.",
     runtime: "8 min",
     date: "Dec 9, 2026",
     flavors: [],
@@ -306,12 +334,13 @@ export const classics: Classic[] = [
   {
     slug: "the-other-maria",
     title: "The Other Maria",
-    hook: "A city builds a saint, then asks her to clock in.",
+    hook: "Then Maria shows up on every screen, saying exactly what the workers want to hear. Except Maria's at home.",
     source: "Metropolis",
     creator: "Thea von Harbou",
     published: "1925",
     rights: "Built from the 1925 novel. The 1927 film is still protected in many countries and is not used.",
-    image: "/assets/stills/tira.png",
+    image: "/assets/heroes/the-other-maria.png",
+    imageAlt: "THE OTHER MARIA title over a vast candlelit hall of tiered stone balconies and warm gold light.",
     runtime: "5 min",
     date: "Dec 19, 2026",
     flavors: [],
@@ -319,12 +348,13 @@ export const classics: Classic[] = [
   {
     slug: "the-plateau",
     title: "The Plateau",
-    hook: "The map ends. The animals did not.",
+    hook: "Day 3, the stream catches a pterosaur. Day 5, the plateau's sold. \"Don't tag the location.\"",
     source: "The Lost World",
     creator: "Arthur Conan Doyle",
     published: "1912",
     rights: "Built from the 1912 novel, not later film dinosaurs or character designs.",
-    image: "/assets/stills/atmosphere.png",
+    image: "/assets/heroes/the-plateau.png",
+    imageAlt: "THE PLATEAU title over a misty jungle plateau of red cliffs and waterfalls above a winding river.",
     runtime: "5 min",
     date: "Jan 2, 2027",
     flavors: [],
@@ -332,12 +362,13 @@ export const classics: Classic[] = [
   {
     slug: "air-factory",
     title: "Air Factory",
-    hook: "Mars runs out of breath on a schedule.",
+    hook: "2:14 a.m. A combat veteran who can't sleep walks out into the Arizona desert and wakes up on Mars.",
     source: "A Princess of Mars",
     creator: "Edgar Rice Burroughs",
     published: "1912",
     rights: "Built from the 1912 novel. Names and marks that are still trademarked are avoided.",
-    image: "/assets/stills/docs.png",
+    image: "/assets/heroes/air-factory.png",
+    imageAlt: "AIR FACTORY title over a painted red Martian desert at sunset, a distant city and two moons in the sky.",
     runtime: "5 min",
     date: "Jan 9, 2027",
     flavors: [],
@@ -345,12 +376,13 @@ export const classics: Classic[] = [
   {
     slug: "802701",
     title: "802,701",
-    hook: "The night shift that keeps the future running.",
+    hook: "By 802,701 humanity has split in two: pretty people in white linen who never learned to fix a thing, and the night shift that keeps the servers humming.",
     source: "The Time Machine",
     creator: "H. G. Wells",
     published: "1895",
     rights: "Built from the 1895 novel. Later films are not the source.",
-    image: "/assets/stills/commit.png",
+    image: "/assets/heroes/802701.png",
+    imageAlt: "802,701 title over an oil-painted overgrown garden of ruined stone statues and flowers at sunset.",
     runtime: "6 min",
     date: "Jan 26, 2027",
     flavors: [],
@@ -377,7 +409,7 @@ export const atmospheres: Atmosphere[] = [
     title: "Neo-Osaka Rain",
     hook: "An immersive rain and steam soundscape. Rain on the glass, steam off the noodles, a cat asleep by the window.",
     runtime: "2 hr",
-    date: "Jan 24, 2027",
+    date: "Oct 17, 2026",
     image: "/assets/stills/neo-osaka-rain.jpg",
     imageAlt: posterAlt.neoOsaka,
     place: "NEO OSAKA 2187",
@@ -385,21 +417,22 @@ export const atmospheres: Atmosphere[] = [
     featured: true,
     flavors: ["zero-g"],
   },
-  { slug: "pod-bay-117", title: "Pod Bay 117", hook: "Coolant hum, frost ticking, one amber light.", runtime: "2 hr", date: "Nov 8, 2026", image: "/assets/stills/stranger.png", flavors: ["zero-g"] },
-  { slug: "observation-rain", title: "Observation Rain", hook: "A ringed planet and weather on the glass.", runtime: "2 hr", date: "Nov 22, 2026", image: "/assets/stills/atmosphere.png", flavors: ["zero-g"] },
-  { slug: "freighter-night", title: "Freighter Night Shift", hook: "A coffee bulb, and a radio check every twenty minutes.", runtime: "2 hr", date: "Dec 6, 2026", image: "/assets/stills/atmosphere.png", flavors: ["zero-g"] },
+  { slug: "pod-bay-117", title: "Pod Bay 117", hook: "Sealed frosted pod, empty pod 116 with one fresh tally mark, two enamel mugs, coolant hum.", runtime: "2 hr", date: "Dec 13, 2026", image: "/assets/stills/stranger.png", imageAlt: "A dark, curved cryo hall on a ship: a long row of frosted sleep pods with green status lights under a strip of white light.", flavors: ["zero-g"] },
+  { slug: "observation-rain", title: "Moreau Island, Night Rain", hook: "Guest room on Noble Isle, rain on a tin roof, distant surf.", runtime: "2 hr", date: "Nov 22, 2026", image: "/assets/stills/atmosphere.png", imageAlt: "An empty observation lounge with dark leather seats facing a wide window onto a ringed planet, a moon, and stars.", flavors: ["zero-g"] },
+  { slug: "freighter-night", title: "Rossum Factory, Night Shift", hook: "A coffee bulb, and a radio check every twenty minutes.", runtime: "2 hr", date: "Dec 6, 2026", image: "/assets/stills/atmosphere.png", flavors: ["zero-g"] },
 ];
 
 export const docs = [
-  { slug: "the-archon-files", title: "The Archon Files", hook: "A superintelligence, told in coffee rings and redactions.", runtime: "10 min", date: "Jan 8, 2027", image: "/assets/stills/docs.png", flavors: ["nebula-miso"] as FlavorId[] },
-  { slug: "cities-of-2150", title: "Cities of 2150", hook: "Five rooftops. Facts labeled. Guesses labeled.", runtime: "12 min", date: "Nov 2026", image: "/assets/stills/docs.png", flavors: ["nebula-miso"] as FlavorId[] },
-  { slug: "the-last-5-billion-years", title: "The Last 5 Billion Years", hook: "Earth's future, deadpan, one era at a time.", runtime: "9 min", date: "Dec 2026", image: "/assets/stills/docs.png", flavors: ["nebula-miso"] as FlavorId[] },
+  { slug: "iron-beats-wood", title: "Iron Beats Wood: Rise of the Ironclad", hook: "March 1862, off Virginia. Cannon fire that wrecks wooden ships bounces off armor, and naval warfare changes in one afternoon.", runtime: "3 min", date: "Oct 4, 2026", image: "/assets/stills/iron-beats-wood.jpg", imageAlt: "IRON BEATS WOOD title over a paper diorama of two ironclads, the round-turret Monitor firing at the slope-sided Virginia across torn-newspaper waves.", flavors: ["nebula-miso"] as FlavorId[] },
+  { slug: "the-archon-files", title: "The Archon Files", hook: "2031 to 2140, in declassified paper. Five documents, five eras, one question at the end of every chapter: who approved this?", runtime: "8 min", date: "Jan 8, 2027", image: "/assets/stills/docs.png", flavors: ["nebula-miso"] as FlavorId[] },
+  { slug: "cities-of-2150", title: "Cities of 2150", hook: "Five rooftops. Facts labeled. Guesses labeled.", runtime: "12 min", date: "Coming soon", image: "/assets/heroes/cities-of-2150.png", imageAlt: "CITIES OF 2150 title over a daylight photo of a future river skyline with green towers, seen from a rooftop.", flavors: ["nebula-miso"] as FlavorId[] },
+  { slug: "the-last-5-billion-years", title: "The Last 5 Billion Years", hook: "Earth's future, deadpan, one era at a time.", runtime: "9 min", date: "Dec 2026", image: "/assets/heroes/the-last-5-billion-years.png", imageAlt: "THE LAST 5 BILLION YEARS title over a black-and-cream linocut of a cracked dry shore under a huge red sun.", flavors: ["nebula-miso"] as FlavorId[] },
 ];
 
 export const shorts = [
-  { slug: "the-sky-broke", title: "The Sky Broke", hook: "A crack in a blue afternoon. The crossing guard keeps waving.", runtime: "45 sec", date: "Nov 16, 2026", image: "/assets/stills/docs.png", flavors: ["quantum-fire"] as FlavorId[] },
-  { slug: "ten-seconds", title: "10 Seconds to Impact", hook: "One cracked watch. He finishes the sandwich.", runtime: "30 sec", date: "Nov 30, 2026", image: "/assets/stills/commit.png", flavors: ["quantum-fire"] as FlavorId[] },
-  { slug: "one-tree", title: "One Tree, One Million Years", hook: "A rope swing, an acorn, and the knot that stays.", runtime: "60 sec", date: "Dec 21, 2026", image: "/assets/stills/atmosphere.png", flavors: ["quantum-fire"] as FlavorId[] },
+  { slug: "the-sky-broke", title: "The Sky Broke", hook: "3:10 p.m. A crack runs across the sky like a rock hit a windshield. Everybody stops and stares except Ms. Ruby, who has a corner to run.", runtime: "45 sec", date: "Nov 16, 2026", image: "/assets/heroes/the-sky-broke.png", imageAlt: "THE SKY BROKE title over an anime-style sunny street corner with a crosswalk, shade trees and a school-crossing sign.", flavors: ["quantum-fire"] as FlavorId[] },
+  { slug: "ten-seconds", title: "10 Seconds to Impact", hook: "One cracked watch. He finishes the sandwich.", runtime: "30 sec", date: "Nov 30, 2026", image: "/assets/heroes/ten-seconds.png", imageAlt: "10 SECONDS TO IMPACT title over a city at dusk seen from a dark hillside, the sun low behind the hills.", flavors: ["quantum-fire"] as FlavorId[] },
+  { slug: "one-tree", title: "One Tree, One Million Years", hook: "One camera. One white oak. One rope swing. A million years on, the last oak still carries the knot.", runtime: "50 sec", date: "Dec 23, 2026", image: "/assets/stills/atmosphere.png", flavors: ["quantum-fire"] as FlavorId[] },
 ];
 
 export const labEntries = [
@@ -543,8 +576,17 @@ export function flavorCounts(items: { flavors: FlavorId[] }[]): Record<FlavorId,
   return counts;
 }
 
+// Direct links to videos that are live on the channel (checked Oct 29, 2026). Keys are the titles youtubeFor gets.
+const liveVideos: Record<string, string> = {
+  "T.I.R.A. // RIFT The Key Awakens": "https://www.youtube.com/watch?v=buCKa4pm0Rw",
+  "Neo-Osaka Rain": "https://www.youtube.com/watch?v=G-YEM6LOE8Y",
+  "The Stranger Part 1": "https://www.youtube.com/shorts/uu762gNCTXY",
+  "The Stranger Part 2": "https://www.youtube.com/shorts/15IGDVeL080",
+  "Iron Beats Wood: Rise of the Ironclad": "https://www.youtube.com/watch?v=sY7_WU6iOz0",
+};
+
 export function youtubeFor(title: string) {
-  return `https://www.youtube.com/results?search_query=${encodeURIComponent(`SCI-FI NOODLES ${title}`)}`;
+  return liveVideos[title] ?? `https://www.youtube.com/results?search_query=${encodeURIComponent(`SCI-FI NOODLES ${title}`)}`;
 }
 
 export type Section = {
@@ -617,11 +659,11 @@ export const features: Feature[] = [
   {
     slug: "the-commit",
     bowl: "timewarp",
-    kicker: "Next premiere · Oct 10, 2026",
+    kicker: "Next premiere · Nov 7, 2026",
     title: "Frankenstein: The Commit",
-    logline: "A lab ships an A.I. model release, then goes home. Mary Shelley's 1818 novel, retold as a problem we have now.",
+    logline: "1:00 a.m. The lab pushes to production and the whole team goes home. Mary Shelley's 1818 novel, retold as a problem we have now.",
     meta: ["Timewarp Shoyu", "5 min", "After Mary Shelley, 1818"],
-    image: "/assets/stills/commit-poster.jpg",
+    image: "/assets/heroes/the-commit.png",
     imageAlt: posterAlt.commit,
     href: "/public-domain/the-commit",
     detailsLabel: "Source and rights",
@@ -632,9 +674,9 @@ export const features: Feature[] = [
     bowl: "black-hole",
     kicker: "Black Hole Tonkotsu · Season one",
     title: "T.I.R.A. // RIFT",
-    logline: "Memphis, 2099. Major Amara Kade follows a signal that should not exist.",
-    meta: ["Original series", "5 episodes", "In production"],
-    image: "/assets/stills/tira-poster.jpg",
+    logline: "Memphis, 2099. Major Amara Kade is off duty at 06:43. Something under the bluff is waking up, and Dimension N wants it first.",
+    meta: ["Original series", "8 episodes", "In production"],
+    image: "/assets/heroes/tira-rift.png",
     imageAlt: posterAlt.tira,
     href: "/originals/tira-rift",
     detailsLabel: "All episodes",

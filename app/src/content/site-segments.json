@@ -1,0 +1,2106 @@
+{
+  "version": 1,
+  "exported": "2026-10-28",
+  "site": "SCI-FI NOODLES",
+  "note": "Snapshot of the live copy. The site does not read this file yet. Update one segment at a time, then apply the copy fields back to the source path.",
+  "instructions": [
+    "Edit strings inside copy only.",
+    "Leave id, page, source, and kind unchanged. In locked, change only image and thumb, and only as the images rules say.",
+    "Keep releaseDate in the same display style already used on that segment, such as Nov 7, 2026.",
+    "Do not invent slugs, routes, or YouTube URLs.",
+    "Each episode (kind \"episode\") gets its own thumbnail, different from the series poster and from the other episodes.",
+    "To drop one: save the file at app/public/assets/stills/{series}/{slug}.jpg where {series} is locked.series and {slug} is locked.slug. Example: app/public/assets/stills/tira-rift/the-key-awakens.jpg and app/public/assets/stills/the-commit/episode-2.jpg. Use .png if the file is a PNG.",
+    "Set that episode's copy.image to the public path (for example /assets/stills/tira-rift/the-key-awakens.jpg) and write copy.imageAlt for that picture only. Leave copy.image empty to keep using the locked series poster. Do not point copy.image at a file you did not save.",
+    "The same rule applies to other individual content assets whose image lives in copy (shorts, docs, atmospheres, lab, and episode segments): one file per segment, saved at app/public/assets/stills/{series-or-kind}/{slug}.jpg.",
+    "When writing the change back into the site, add image and imageAlt on that episode in app/src/content/catalog.ts. This JSON is not read by the site.",
+    "Return the full segment, or the full file, with the same ids.",
+    "Place images by the images rules below: a series or standalone card gets one master hero in three sizes (16:9 in locked.image; 9:16 and 4:5 in locked.heroSocial); an episode gets one 16:9 thumb in locked.thumb. Every image gets a plain, literal alt line in copy (imageAlt for heroes, thumbAlt for thumbs)."
+  ],
+  "images": {
+    "source": "Figma file https://www.figma.com/design/o8kdXgMm7O97qpgmtFZlq3 (ONE CREW · Brand Assets, Oct 28, 2026; see _OPS/FIGMA_BRAND_ASSETS.md). Replaces the old site file 8e9ELK0NJFEOCO0J7Und2O. Images are exported from Figma, never edited on the site.",
+    "hero": {
+      "appliesTo": [
+        "series",
+        "classic",
+        "short",
+        "documentary",
+        "ambience",
+        "lab"
+      ],
+      "field": "locked.image",
+      "size": "Three versions of every hero: 16:9 1920x1080 (web, YouTube) in locked.image at /assets/heroes/<slug>.png; 9:16 1080x1920 (Shorts, Reels, TikTok, Stories) and 4:5 1080x1350 (Instagram/Facebook feed) in locked.heroSocial at /assets/heroes/social/<slug>-9x16.png and /assets/heroes/social/<slug>-4x5.png.",
+      "content": "One master image per series or standalone card. It captures the project's art style (from its style lock or series doc Look line), its voice, and its branding: the art is generated with no text, then the series title, a one-line tagline, the public-domain source line where it applies (After <creator>, <year>) are added as Figma text layers.",
+      "reuse": "home.now-showing cards and the series page use the same hero. Since Oct 28, 2026 the heroes come from the ONE CREW · Brand Assets file and replace the old key-art posters.",
+      "art": "Art is generated twice per hero: once at 16:9 and once at 9:16 with the subject re-framed for vertical. The 4:5 is a crop of the 9:16 art. Each version re-lays out the same title, tagline, source line and SCI-FI NOODLES tag for its frame, inside the safe area (keep text out of the top 12% and bottom 20% of 9:16 for platform UI).",
+      "web": "Oct 29, 2026 (Brien): two website versions of every 16:9 hero, both without the SCI-FI NOODLES logo. /assets/heroes/<slug>.png is clean art (the site lays its own kicker, title, logline and buttons over it; this is what the site uses). /assets/heroes/<slug>-title.png has the title only, centered inside a safe area (20% in from each side, 13% up from the bottom) with a soft glow behind it, so object-fit: cover crops never clip it. Built by _OPS/figma/web_heroes.js from each project's 16:9 frame."
+    },
+    "thumb": {
+      "appliesTo": [
+        "episode"
+      ],
+      "field": "locked.thumb",
+      "path": "/assets/thumbs/<series>/<slug>.png",
+      "size": "1280x720 (16:9) PNG",
+      "content": "One thumb per episode in the same art style and branding as its series hero: one dominant visual from that episode, plus an episode label of 2 to 4 words (e.g. EP06 · MAAT PROTOCOL) and the SCI-FI NOODLES tag as Figma text layers.",
+      "order": "Thumbs are made only after the series hero is approved, so they match it."
+    },
+    "rules": [
+      "No text, letters, logos or watermarks inside generated art; all words are Figma layers.",
+      "Brand palette for tags and accents: Space Black #090E1A, Ion Cyan #00E8FF, Rift Violet #9B5CFF, Plasma Magenta #FF4FD8, Ice Light #C7D5FF.",
+      "An empty string means the image is not made yet. Never point a field at a file that does not exist in app/public."
+    ]
+  },
+  "segmentCount": 95,
+  "segments": [
+    {
+      "id": "studio",
+      "page": "/",
+      "source": "app/src/content/catalog.ts",
+      "kind": "identity",
+      "locked": {
+        "youtube": "https://www.youtube.com/@SCIFINOODLES"
+      },
+      "copy": {
+        "name": "SCI-FI NOODLES",
+        "tagline": "Different Flavors. Infinite Universes.",
+        "menu": "COSMIC RAMEN // MENU 001",
+        "signoff": "Choose your flavor. Explore the multiverse.",
+        "owner": "NVESTED REALITY LLC"
+      }
+    },
+    {
+      "id": "meta.social",
+      "page": "/",
+      "source": "app/src/app-meta.json",
+      "kind": "meta",
+      "locked": {
+        "ogImage": "/brand/og.png",
+        "favicon": "/brand/logo.jpg"
+      },
+      "copy": {
+        "title": "SCI-FI NOODLES",
+        "description": "Different Flavors. Infinite Universes. Original universes, public-domain classics reimagined, and the lab behind them, served as the Cosmic Ramen menu."
+      }
+    },
+    {
+      "id": "menu.black-hole",
+      "page": "/originals",
+      "source": "app/src/content/catalog.ts",
+      "kind": "pillar",
+      "locked": {
+        "number": "01",
+        "slug": "black-hole",
+        "href": "/originals",
+        "pillar": "originals"
+      },
+      "copy": {
+        "name": "Black Hole Tonkotsu",
+        "shortName": "Black Hole",
+        "header": "Original Universes",
+        "navLabel": "Original Universes",
+        "subtitle": "Rich. Deep. Limitless.",
+        "description": "The flagship bowl. Original sci-fi films, original characters, expansive universes, serialized adventures, and exclusive SCI-FI NOODLES productions."
+      }
+    },
+    {
+      "id": "menu.timewarp",
+      "page": "/public-domain",
+      "source": "app/src/content/catalog.ts",
+      "kind": "pillar",
+      "locked": {
+        "number": "02",
+        "slug": "timewarp",
+        "href": "/public-domain",
+        "pillar": "public-domain"
+      },
+      "copy": {
+        "name": "Timewarp Shoyu",
+        "shortName": "Timewarp",
+        "header": "Public Domain",
+        "navLabel": "Public Domain",
+        "subtitle": "Classic Stories. New Dimensions.",
+        "description": "Classic science fiction reinvented through cinematic adaptations, modern reinterpretations, remixes, and documentaries inspired by public-domain works."
+      }
+    },
+    {
+      "id": "menu.quantum-fire",
+      "page": "/shorts",
+      "source": "app/src/content/catalog.ts",
+      "kind": "flavor",
+      "locked": {
+        "number": "03",
+        "slug": "quantum-fire",
+        "href": "/shorts",
+        "flavor": "quantum-fire"
+      },
+      "copy": {
+        "name": "Quantum Fire Tantanmen",
+        "shortName": "Quantum Fire",
+        "header": "Sci-Fi Shorts",
+        "navLabel": "Sci-Fi Shorts",
+        "subtitle": "Small Bites. Maximum Impact.",
+        "description": "Bite-sized science fiction, experimental concepts, plot twists, micro-films, and standalone cinematic encounters."
+      }
+    },
+    {
+      "id": "menu.nebula-miso",
+      "page": "/docs",
+      "source": "app/src/content/catalog.ts",
+      "kind": "flavor",
+      "locked": {
+        "number": "04",
+        "slug": "nebula-miso",
+        "href": "/docs",
+        "flavor": "nebula-miso"
+      },
+      "copy": {
+        "name": "Nebula Miso",
+        "shortName": "Nebula",
+        "header": "Documentaries & Lore",
+        "navLabel": "Documentaries",
+        "subtitle": "A Universe Worth Exploring.",
+        "description": "Science fiction history, futuristic technology, artificial intelligence, space exploration, worldbuilding, and deep dives into fictional universes."
+      }
+    },
+    {
+      "id": "menu.zero-g",
+      "page": "/atmospheres",
+      "source": "app/src/content/catalog.ts",
+      "kind": "flavor",
+      "locked": {
+        "number": "05",
+        "slug": "zero-g",
+        "href": "/atmospheres",
+        "flavor": "zero-g"
+      },
+      "copy": {
+        "name": "Zero-G Shio",
+        "shortName": "Zero-G",
+        "header": "ASMR & Ambience",
+        "navLabel": "ASMR & Ambience",
+        "subtitle": "Float Beyond Reality.",
+        "description": "Immersive starship interiors, spacecraft engine hums, alien rainstorms, distant colonies, orbital observation lounges, and atmospheric relaxation videos."
+      }
+    },
+    {
+      "id": "menu.cyberpunk",
+      "page": "/lab",
+      "source": "app/src/content/catalog.ts",
+      "kind": "pillar",
+      "locked": {
+        "number": "06",
+        "slug": "cyberpunk",
+        "href": "/lab",
+        "pillar": "lab"
+      },
+      "copy": {
+        "name": "Cyberpunk Fusion",
+        "shortName": "Cyberpunk",
+        "header": "The Lab",
+        "navLabel": "The Lab",
+        "subtitle": "Where Imagination Meets Innovation.",
+        "description": "Behind-the-scenes production, AI filmmaking experiments, filmmaking technology, creative tools, visual effects breakdowns, and experimental media."
+      }
+    },
+    {
+      "id": "home.hero",
+      "page": "/",
+      "source": "app/src/components/site/cosmic-hero.tsx",
+      "kind": "header",
+      "locked": {
+        "image": "/assets/hero/cosmic-horizon.jpg"
+      },
+      "copy": {
+        "kicker": "COSMIC RAMEN // MENU 001",
+        "title": "SCI-FI NOODLES",
+        "subtitle": "Different Flavors. Infinite Universes.",
+        "cta": "Choose your flavor",
+        "microLeft": [
+          "Bigger",
+          "Worlds",
+          "Better",
+          "Noodles"
+        ],
+        "microRight": [
+          "Space",
+          "Science",
+          "Stories",
+          "You"
+        ],
+        "imageAlt": "A man in a rose-colored jacket sits in a chair on a reflective observation deck, facing a giant ringed planet through a tall arched window."
+      }
+    },
+    {
+      "id": "home.menu",
+      "page": "/",
+      "source": "app/src/components/site/ramen-menu.tsx",
+      "kind": "section",
+      "locked": {},
+      "copy": {
+        "board": [
+          "COSMIC RAMEN // MENU 001",
+          "The Cosmic Ramen Menu"
+        ],
+        "header": "Choose your flavor // Explore the multiverse",
+        "subtitle": "Three pillars tell you where a film comes from. Three flavors tell you how it feels, and they run across every pillar. Order by either.",
+        "legend": [
+          "Pillar // where it comes from",
+          "Flavor // how it feels"
+        ]
+      }
+    },
+    {
+      "id": "page.home",
+      "page": "/",
+      "source": "app/src/routes/index.tsx",
+      "kind": "meta",
+      "locked": {},
+      "copy": {
+        "title": "SCI-FI NOODLES // Cosmic Ramen Menu 001",
+        "description": "Different Flavors. Infinite Universes. Original universes, public-domain classics reimagined, and the lab behind them, served as a menu of sci-fi flavors."
+      }
+    },
+    {
+      "id": "home.originals",
+      "page": "/",
+      "source": "app/src/routes/index.tsx",
+      "kind": "section",
+      "locked": {},
+      "copy": {
+        "header": "Original Universes",
+        "subtitle": "Rich. Deep. Limitless. Each world keeps its own story. The channel only shows you the door."
+      }
+    },
+    {
+      "id": "home.public-domain",
+      "page": "/",
+      "source": "app/src/routes/index.tsx",
+      "kind": "section",
+      "locked": {},
+      "copy": {
+        "header": "Timewarp Shoyu // Public Domain",
+        "subtitle": "Classic Stories. New Dimensions. The book supplies the bones. The film asks what the story is about now.",
+        "seeAll": "All Public Domain"
+      }
+    },
+    {
+      "id": "home.flavor-flight",
+      "page": "/",
+      "source": "app/src/routes/index.tsx",
+      "kind": "section",
+      "locked": {},
+      "copy": {
+        "header": "Flavor flight",
+        "subtitle": "A tasting flight of the three flavors: Quantum Fire shorts, Nebula Miso lore, and Zero-G Shio ambience.",
+        "seeAll": "Filter every flavor"
+      }
+    },
+    {
+      "id": "home.lab",
+      "page": "/",
+      "source": "app/src/routes/index.tsx",
+      "kind": "section",
+      "locked": {
+        "image": "/assets/stills/lab.png"
+      },
+      "copy": {
+        "header": "The Lab",
+        "subtitle": "Where Imagination Meets Innovation. See how a shot gets cooked, and which experiments never leave the kitchen.",
+        "cta": "the Lab",
+        "imageAlt": "A dark edit bay with a bowl of glowing noodles"
+      }
+    },
+    {
+      "id": "home.host",
+      "page": "/",
+      "source": "app/src/routes/index.tsx",
+      "kind": "section",
+      "locked": {
+        "image": "/brand/katara-chill.png"
+      },
+      "copy": {
+        "kicker": "Your host // At the counter",
+        "header": "Katara",
+        "subtitle": "Tell her your mood and she pours the bowl. Chill, crunk, or glam, she knows every flavor on the menu and sends you straight to the film.",
+        "primaryCta": "Ask Katara",
+        "secondaryCta": "Meet Katara",
+        "imageAlt": "Katara in chill mode, the SCI-FI NOODLES host"
+      }
+    },
+    {
+      "id": "home.newsletter",
+      "page": "/",
+      "source": "app/src/routes/index.tsx",
+      "kind": "section",
+      "locked": {},
+      "copy": {
+        "kicker": "The Noodle Drop",
+        "header": "Join the kitchen",
+        "subtitle": "New premieres, strange experiments, and universe drops. You will not have to wait on the algorithm."
+      }
+    },
+    {
+      "id": "home.now-showing.the-commit",
+      "page": "/",
+      "source": "app/src/content/catalog.ts",
+      "kind": "feature",
+      "locked": {
+        "slug": "the-commit",
+        "href": "/public-domain/the-commit",
+        "bowl": "timewarp",
+        "watchHref": "https://www.youtube.com/results?search_query=SCI-FI%20NOODLES%20Frankenstein%3A%20The%20Commit"
+      },
+      "copy": {
+        "image": "/assets/heroes/the-commit.png",
+        "imageAlt": "FRANKENSTEIN: THE COMMIT title over a 2D anime lab at night, rain on tall arched windows glowing orange and server racks lit blue.",
+        "kicker": "Next premiere · Nov 7, 2026",
+        "title": "Frankenstein: The Commit",
+        "description": "1:00 a.m. The lab pushes to production and the whole team goes home. Mary Shelley's 1818 novel, retold as a problem we have now.",
+        "meta": [
+          "Timewarp Shoyu",
+          "5 min",
+          "After Mary Shelley, 1818"
+        ],
+        "detailsLabel": "Source and rights"
+      }
+    },
+    {
+      "id": "home.now-showing.tira-rift",
+      "page": "/",
+      "source": "app/src/content/catalog.ts",
+      "kind": "feature",
+      "locked": {
+        "slug": "tira-rift",
+        "href": "/originals/tira-rift",
+        "bowl": "black-hole",
+        "watchHref": "https://www.youtube.com/watch?v=buCKa4pm0Rw"
+      },
+      "copy": {
+        "image": "/assets/heroes/tira-rift.png",
+        "imageAlt": "T.I.R.A. // RIFT title over a dark luxury apartment great room: marble kitchen island, pendant lights, red roses, a river skyline at dusk through the windows.",
+        "kicker": "Black Hole Tonkotsu · Season one",
+        "title": "T.I.R.A. // RIFT",
+        "description": "Memphis, 2099. Major Amara Kade is off duty at 06:43. Something under the bluff is waking up, and Dimension N wants it first.",
+        "meta": [
+          "Original series",
+          "7 episodes",
+          "In production"
+        ],
+        "detailsLabel": "All episodes"
+      }
+    },
+    {
+      "id": "home.now-showing.neo-osaka-rain",
+      "page": "/",
+      "source": "app/src/content/catalog.ts",
+      "kind": "feature",
+      "locked": {
+        "slug": "neo-osaka-rain",
+        "href": "/atmospheres",
+        "bowl": "zero-g",
+        "watchHref": "https://www.youtube.com/watch?v=G-YEM6LOE8Y"
+      },
+      "copy": {
+        "image": "/assets/stills/neo-osaka-rain.jpg",
+        "imageAlt": "A cozy apartment at night: a cat asleep, a steaming bowl of noodles and a mug at a rain-streaked window over a neon city and an elevated train.",
+        "kicker": "Zero-G Shio · NEO OSAKA 2187",
+        "title": "Neo-Osaka Rain",
+        "description": "An immersive rain and steam soundscape. Rain on the glass, steam off the noodles, a cat asleep by the window.",
+        "meta": [
+          "EP01 // Rain on Glass",
+          "2 hr",
+          "Binaural"
+        ],
+        "detailsLabel": "More Zero-G Shio"
+      }
+    },
+    {
+      "id": "originals.tira-rift",
+      "page": "/originals/tira-rift",
+      "source": "app/src/content/catalog.ts",
+      "kind": "series",
+      "locked": {
+        "slug": "tira-rift",
+        "flavors": [],
+        "image": "/assets/heroes/tira-rift.png",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/tira-rift-9x16.png",
+          "4x5": "/assets/heroes/social/tira-rift-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "T.I.R.A. // RIFT",
+        "subtitle": "Something under the bluff is waking up, and Dimension N wants it first.",
+        "description": "Memphis, 2099. Major Amara Kade is off duty at 06:43. By 07:40 she has lost the good couch, caught a nine-metre girder over a full bus, and climbed into MAAT-77.",
+        "status": "Season one in production",
+        "imageAlt": "T.I.R.A. // RIFT title over a dark luxury apartment great room: marble kitchen island, pendant lights, red roses, a river skyline at dusk through the windows."
+      }
+    },
+    {
+      "id": "originals.tira-rift.the-key-awakens",
+      "page": "/originals/tira-rift",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "the-key-awakens",
+        "series": "tira-rift",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "The Key Awakens",
+        "description": "One morning, one city, one couch. Three soldiers come through her window; by 07:40 she's caught a girder over a full bus.",
+        "runtime": "10 min",
+        "releaseDate": "Oct 16, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.tira-rift.the-ball-crashers",
+      "page": "/originals/tira-rift",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "the-ball-crashers",
+        "series": "tira-rift",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "The Ball Crashers",
+        "description": "A gala on Hyde Lake at Shelby Farms. The trouble comes through the service doors.",
+        "runtime": "4 min",
+        "releaseDate": "Nov 6, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.tira-rift.echoes-of-ngairo",
+      "page": "/originals/tira-rift",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "echoes-of-ngairo",
+        "series": "tira-rift",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Echoes of Ngairo",
+        "description": "On Cobblestone Landing, a seven-notched keystone turns to face her.",
+        "runtime": "4 min",
+        "releaseDate": "Nov 20, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.tira-rift.the-undercity-breach",
+      "page": "/originals/tira-rift",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "the-undercity-breach",
+        "series": "tira-rift",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "The Undercity Breach",
+        "description": "Under Front Street the dig reaches the city's machinery, and the same girder falls again, this time over a friend.",
+        "runtime": "4 min",
+        "releaseDate": "Dec 4, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.tira-rift.titan-warning",
+      "page": "/originals/tira-rift",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "titan-warning",
+        "series": "tira-rift",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Titan Warning",
+        "description": "The quiet one. No fight, one number, a Titan beside the M bridge.",
+        "runtime": "4 min",
+        "releaseDate": "Dec 18, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.tira-rift.maat-protocol",
+      "page": "/originals/tira-rift",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "maat-protocol",
+        "series": "tira-rift",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "MAAT Protocol",
+        "description": "One mech, one steel frame, one word said five times on the Chickasaw Bluffs.",
+        "runtime": "",
+        "releaseDate": "Jan 1, 2027",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.tira-rift.rift-night",
+      "page": "/originals/tira-rift",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "rift-night",
+        "series": "tira-rift",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Rift Night",
+        "description": "Seven breaches, four people, and one of them walks the wrong way on purpose.",
+        "runtime": "",
+        "releaseDate": "Jan 15, 2027",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.tira-rift.2027-transmission",
+      "page": "/originals/tira-rift",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "2027-transmission",
+        "series": "tira-rift",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "2027 Transmission",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Jan 29, 2027",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.the-stranger",
+      "page": "/originals/the-stranger",
+      "source": "app/src/content/catalog.ts",
+      "kind": "series",
+      "locked": {
+        "slug": "the-stranger",
+        "flavors": [
+          "quantum-fire"
+        ],
+        "image": "/assets/stills/stranger.png",
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "title": "The Stranger",
+        "subtitle": "You're a cryo tech on a colony ship, and you're two hundred years early.",
+        "description": "The first thing you hear is the seal. Somebody filled out the wake-up request 1,352 times. THE STRANGER: a five-part first-person sci-fi Short series.",
+        "status": "Shorts, then a compilation",
+        "imageAlt": "A dark, curved cryo hall on a ship: a long row of frosted sleep pods with green status lights under a strip of white light."
+      }
+    },
+    {
+      "id": "originals.the-stranger.part-1",
+      "page": "/originals/the-stranger",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "part-1",
+        "series": "the-stranger",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Part 1",
+        "description": "The pod opens. The coffee maker is already warm.",
+        "runtime": "1 min",
+        "releaseDate": "Oct 1, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.the-stranger.part-2",
+      "page": "/originals/the-stranger",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "part-2",
+        "series": "the-stranger",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Part 2",
+        "description": "Two mugs. One question.",
+        "runtime": "1 min",
+        "releaseDate": "Oct 7, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.the-stranger.part-3",
+      "page": "/originals/the-stranger",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "part-3",
+        "series": "the-stranger",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Part 3 · The Criteria",
+        "description": "",
+        "runtime": "1 min",
+        "releaseDate": "Nov 13, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.the-stranger.part-4",
+      "page": "/originals/the-stranger",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "part-4",
+        "series": "the-stranger",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Part 4 · Two Keys",
+        "description": "",
+        "runtime": "1 min",
+        "releaseDate": "Dec 4, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.the-stranger.part-5",
+      "page": "/originals/the-stranger",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "part-5",
+        "series": "the-stranger",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Part 5 · On Time",
+        "description": "",
+        "runtime": "1 min",
+        "releaseDate": "Jan 1, 2027",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.the-stranger.compilation",
+      "page": "/originals/the-stranger",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "compilation",
+        "series": "the-stranger",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Parts 1 to 5",
+        "description": "The full wake-up, cut as one film.",
+        "runtime": "4 min",
+        "releaseDate": "Jan 23, 2027",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.bluff-city-immune",
+      "page": "/originals/bluff-city-immune",
+      "source": "app/src/content/catalog.ts",
+      "kind": "series",
+      "locked": {
+        "slug": "bluff-city-immune",
+        "flavors": [],
+        "image": "/assets/heroes/bluff-city-immune.png",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/bluff-city-immune-9x16.png",
+          "4x5": "/assets/heroes/social/bluff-city-immune-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "Bluff City Immune",
+        "subtitle": "A micro-drama about one immune family in Whitehaven, a minute at a time.",
+        "description": "2:00 PM. Dad hands Kort the fob to Grace for the first time and doesn't let go right away. One job: Miss Pearl's insulin from the hospital on Elvis Presley Boulevard. In and out.",
+        "status": "Teaser Nov 29 · episodes from Dec 11",
+        "imageAlt": "BLUFF CITY IMMUNE title over a graphic-novel painting of a gated subdivision at golden hour, power lines against an orange sky."
+      }
+    },
+    {
+      "id": "originals.bluff-city-immune.teaser",
+      "page": "/originals/bluff-city-immune",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "teaser",
+        "series": "bluff-city-immune",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Teaser",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Nov 29, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.bluff-city-immune.in-and-out",
+      "page": "/originals/bluff-city-immune",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "in-and-out",
+        "series": "bluff-city-immune",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "EP01 · In and Out",
+        "description": "",
+        "runtime": "60–90 sec",
+        "releaseDate": "Dec 11, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.bluff-city-immune.deliverance",
+      "page": "/originals/bluff-city-immune",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "deliverance",
+        "series": "bluff-city-immune",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "EP02 · Deliverance",
+        "description": "",
+        "runtime": "60–90 sec",
+        "releaseDate": "Dec 12, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "originals.bluff-city-immune.back-by-five",
+      "page": "/originals/bluff-city-immune",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "back-by-five",
+        "series": "bluff-city-immune",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "EP03 · Back by Five",
+        "description": "",
+        "runtime": "60–90 sec",
+        "releaseDate": "Dec 13, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "public-domain.the-commit",
+      "page": "/public-domain/the-commit",
+      "source": "app/src/content/catalog.ts",
+      "kind": "classic",
+      "locked": {
+        "slug": "the-commit",
+        "image": "/assets/heroes/the-commit.png",
+        "flavors": [
+          "quantum-fire"
+        ],
+        "sourceWork": "Frankenstein",
+        "published": "1818",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/the-commit-9x16.png",
+          "4x5": "/assets/heroes/social/the-commit-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "Frankenstein: The Commit",
+        "description": "1:00 a.m. The lab pushes to production and the whole team goes home. Nobody stays to see what it does next.",
+        "creator": "Mary Shelley",
+        "rights": "Built from the 1818 text. Later films, illustrations, and translations are not the source.",
+        "runtime": "5 min",
+        "releaseDate": "Nov 7, 2026",
+        "imageAlt": "FRANKENSTEIN: THE COMMIT title over a 2D anime lab at night, rain on tall arched windows glowing orange and server racks lit blue."
+      }
+    },
+    {
+      "id": "public-domain.the-commit.episode-2",
+      "page": "/public-domain/the-commit",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "episode-2",
+        "series": "the-commit",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Episode 2",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Nov 18, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "public-domain.the-commit.episode-3",
+      "page": "/public-domain/the-commit",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "episode-3",
+        "series": "the-commit",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Episode 3",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Nov 28, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "public-domain.terms-of-service",
+      "page": "/public-domain/terms-of-service",
+      "source": "app/src/content/catalog.ts",
+      "kind": "classic",
+      "locked": {
+        "slug": "terms-of-service",
+        "image": "/assets/heroes/terms-of-service.png",
+        "flavors": [
+          "quantum-fire"
+        ],
+        "sourceWork": "The Island of Doctor Moreau",
+        "published": "1896",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/terms-of-service-9x16.png",
+          "4x5": "/assets/heroes/social/terms-of-service-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "Terms of Service",
+        "description": "The staff used to be animals. Every morning they recite the terms. \"Are we not men?\"",
+        "creator": "H. G. Wells",
+        "rights": "Built from the 1896 novel. Later screen versions are not the source.",
+        "runtime": "5 min",
+        "releaseDate": "Nov 14, 2026",
+        "imageAlt": "TERMS OF SERVICE title over a storm-dark tropical research compound, a wet concrete walkway between jungle and waterfalls."
+      }
+    },
+    {
+      "id": "public-domain.terms-of-service.episode-2",
+      "page": "/public-domain/terms-of-service",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "episode-2",
+        "series": "terms-of-service",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Episode 2",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Nov 21, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "public-domain.the-alert",
+      "page": "/public-domain/the-alert",
+      "source": "app/src/content/catalog.ts",
+      "kind": "classic",
+      "locked": {
+        "slug": "the-alert",
+        "flavors": [
+          "quantum-fire"
+        ],
+        "sourceWork": "The War of the Worlds",
+        "published": "1898",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/the-alert-9x16.png",
+          "4x5": "/assets/heroes/social/the-alert-4x5.png"
+        }
+      },
+      "copy": {
+        "image": "/assets/heroes/the-alert.png",
+        "imageAlt": "THE ALERT title over a night-vision doorbell-camera view of a quiet terraced street, a parked car and drifting mist.",
+        "title": "The Alert",
+        "description": "8:47 p.m. An emergency alert buzzes every phone in Woking at once. Nobody runs.",
+        "creator": "H. G. Wells",
+        "rights": "A work of fiction. Nothing in this video happened. Built from the 1898 novel. The 1938 broadcast and later films are not the source.",
+        "runtime": "5 min",
+        "releaseDate": "Nov 27, 2026"
+      }
+    },
+    {
+      "id": "public-domain.universal-robots",
+      "page": "/public-domain/universal-robots",
+      "source": "app/src/content/catalog.ts",
+      "kind": "classic",
+      "locked": {
+        "slug": "universal-robots",
+        "image": "/assets/heroes/universal-robots.png",
+        "flavors": [],
+        "sourceWork": "R.U.R.",
+        "published": "1920",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/universal-robots-9x16.png",
+          "4x5": "/assets/heroes/social/universal-robots-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "Universal Robots",
+        "description": "Monday, 6:00 a.m. The factory hires its ten-thousandth robot and lays off its last human, with a fruit basket and a lanyard.",
+        "creator": "Karel Capek",
+        "rights": "Public-domain status can change by translation. This project uses the 1920 play, not later adaptations.",
+        "runtime": "5 min",
+        "releaseDate": "Dec 5, 2026",
+        "imageAlt": "UNIVERSAL ROBOTS title over a gleaming white factory hall lined with amber-lit glass tanks."
+      }
+    },
+    {
+      "id": "public-domain.universal-robots.episode-2",
+      "page": "/public-domain/universal-robots",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "episode-2",
+        "series": "universal-robots",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Episode 2",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Dec 12, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "public-domain.universal-robots.episode-3",
+      "page": "/public-domain/universal-robots",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "episode-3",
+        "series": "universal-robots",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Episode 3",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Dec 26, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "public-domain.glass-city",
+      "page": "/public-domain/glass-city",
+      "source": "app/src/content/catalog.ts",
+      "kind": "classic",
+      "locked": {
+        "slug": "glass-city",
+        "flavors": [],
+        "sourceWork": "We",
+        "published": "1924",
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/docs.png",
+        "imageAlt": "A dark observatory: a large telescope, an empty chair, and star charts on a console under a domed window onto a spiral galaxy.",
+        "title": "Glass City",
+        "description": "Privacy curtains come down only with a pink ticket, at set times.",
+        "creator": "Yevgeny Zamyatin",
+        "rights": "Only the 1924 Zilboorg translation is treated as the source. Other translations stay out.",
+        "runtime": "8 min",
+        "releaseDate": "Dec 9, 2026"
+      }
+    },
+    {
+      "id": "public-domain.the-other-maria",
+      "page": "/public-domain/the-other-maria",
+      "source": "app/src/content/catalog.ts",
+      "kind": "classic",
+      "locked": {
+        "slug": "the-other-maria",
+        "image": "/assets/heroes/the-other-maria.png",
+        "flavors": [],
+        "sourceWork": "Metropolis",
+        "published": "1925",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/the-other-maria-9x16.png",
+          "4x5": "/assets/heroes/social/the-other-maria-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "The Other Maria",
+        "description": "Then Maria shows up on every screen, saying exactly what the workers want to hear. Except Maria's at home.",
+        "creator": "Thea von Harbou",
+        "rights": "Built from the 1925 novel. The 1927 film is still protected in many countries and is not used.",
+        "runtime": "5 min",
+        "releaseDate": "Dec 19, 2026",
+        "imageAlt": "THE OTHER MARIA title over a vast candlelit hall of tiered stone balconies and warm gold light."
+      }
+    },
+    {
+      "id": "public-domain.the-other-maria.episode-2",
+      "page": "/public-domain/the-other-maria",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "episode-2",
+        "series": "the-other-maria",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Episode 2",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Dec 30, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "public-domain.the-plateau",
+      "page": "/public-domain/the-plateau",
+      "source": "app/src/content/catalog.ts",
+      "kind": "classic",
+      "locked": {
+        "slug": "the-plateau",
+        "image": "/assets/heroes/the-plateau.png",
+        "flavors": [],
+        "sourceWork": "The Lost World",
+        "published": "1912",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/the-plateau-9x16.png",
+          "4x5": "/assets/heroes/social/the-plateau-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "The Plateau",
+        "description": "Day 3, the stream catches a pterosaur. Day 5, the plateau's sold. \"Don't tag the location.\"",
+        "creator": "Arthur Conan Doyle",
+        "rights": "Built from the 1912 novel, not later film dinosaurs or character designs.",
+        "runtime": "5 min",
+        "releaseDate": "Jan 2, 2027",
+        "imageAlt": "THE PLATEAU title over a misty jungle plateau of red cliffs and waterfalls above a winding river."
+      }
+    },
+    {
+      "id": "public-domain.the-plateau.episode-2",
+      "page": "/public-domain/the-plateau",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "episode-2",
+        "series": "the-plateau",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Episode 2",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Jan 13, 2027",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "public-domain.air-factory",
+      "page": "/public-domain/air-factory",
+      "source": "app/src/content/catalog.ts",
+      "kind": "classic",
+      "locked": {
+        "slug": "air-factory",
+        "image": "/assets/heroes/air-factory.png",
+        "flavors": [],
+        "sourceWork": "A Princess of Mars",
+        "published": "1912",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/air-factory-9x16.png",
+          "4x5": "/assets/heroes/social/air-factory-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "Air Factory",
+        "description": "2:14 a.m. A combat veteran who can't sleep walks out into the Arizona desert and wakes up on Mars.",
+        "creator": "Edgar Rice Burroughs",
+        "rights": "Built from the 1912 novel. Names and marks that are still trademarked are avoided.",
+        "runtime": "5 min",
+        "releaseDate": "Jan 9, 2027",
+        "imageAlt": "AIR FACTORY title over a painted red Martian desert at sunset, a distant city and two moons in the sky."
+      }
+    },
+    {
+      "id": "public-domain.air-factory.episode-2",
+      "page": "/public-domain/air-factory",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "episode-2",
+        "series": "air-factory",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Episode 2",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Jan 16, 2027",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "public-domain.802701",
+      "page": "/public-domain/802701",
+      "source": "app/src/content/catalog.ts",
+      "kind": "classic",
+      "locked": {
+        "slug": "802701",
+        "image": "/assets/heroes/802701.png",
+        "flavors": [],
+        "sourceWork": "The Time Machine",
+        "published": "1895",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/802701-9x16.png",
+          "4x5": "/assets/heroes/social/802701-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "802,701",
+        "description": "By 802,701 humanity has split in two: pretty people in white linen who never learned to fix a thing, and the night shift that keeps the servers humming.",
+        "creator": "H. G. Wells",
+        "rights": "Built from the 1895 novel. Later films are not the source.",
+        "runtime": "6 min",
+        "releaseDate": "Jan 26, 2027",
+        "imageAlt": "802,701 title over an oil-painted overgrown garden of ruined stone statues and flowers at sunset."
+      }
+    },
+    {
+      "id": "public-domain.802701.part-2",
+      "page": "/public-domain/802701",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "part-2",
+        "series": "802701",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Part 2 · The Last Beach",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Jan 28, 2027",
+        "thumbAlt": ""
+      }
+    },
+    {
+      "id": "shorts.the-sky-broke",
+      "page": "/shorts",
+      "source": "app/src/content/catalog.ts",
+      "kind": "short",
+      "locked": {
+        "slug": "the-sky-broke",
+        "flavors": [
+          "quantum-fire"
+        ],
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/the-sky-broke-9x16.png",
+          "4x5": "/assets/heroes/social/the-sky-broke-4x5.png"
+        }
+      },
+      "copy": {
+        "image": "/assets/heroes/the-sky-broke.png",
+        "imageAlt": "THE SKY BROKE title over an anime-style sunny street corner with a crosswalk, shade trees and a school-crossing sign.",
+        "title": "The Sky Broke",
+        "description": "3:10 p.m. A crack runs across the sky like a rock hit a windshield. Everybody stops and stares except Ms. Ruby, who has a corner to run.",
+        "runtime": "45 sec",
+        "releaseDate": "Nov 16, 2026"
+      }
+    },
+    {
+      "id": "shorts.ten-seconds",
+      "page": "/shorts",
+      "source": "app/src/content/catalog.ts",
+      "kind": "short",
+      "locked": {
+        "slug": "ten-seconds",
+        "flavors": [
+          "quantum-fire"
+        ],
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/ten-seconds-9x16.png",
+          "4x5": "/assets/heroes/social/ten-seconds-4x5.png"
+        }
+      },
+      "copy": {
+        "image": "/assets/heroes/ten-seconds.png",
+        "imageAlt": "10 SECONDS TO IMPACT title over a city at dusk seen from a dark hillside, the sun low behind the hills.",
+        "title": "10 Seconds to Impact",
+        "description": "One cracked watch. He finishes the sandwich.",
+        "runtime": "30 sec",
+        "releaseDate": "Nov 30, 2026"
+      }
+    },
+    {
+      "id": "shorts.one-tree",
+      "page": "/shorts",
+      "source": "app/src/content/catalog.ts",
+      "kind": "short",
+      "locked": {
+        "slug": "one-tree",
+        "flavors": [
+          "quantum-fire"
+        ],
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/atmosphere.png",
+        "imageAlt": "",
+        "title": "One Tree, One Million Years",
+        "description": "One camera. One white oak. One rope swing. A million years on, the last oak still carries the knot.",
+        "runtime": "50 sec",
+        "releaseDate": "Dec 23, 2026"
+      }
+    },
+    {
+      "id": "shorts.sure-lol",
+      "page": "/shorts",
+      "source": "app/src/content/catalog.ts",
+      "kind": "short",
+      "locked": {
+        "slug": "sure-lol",
+        "flavors": [],
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "The Archon Files: SURE. LOL.",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Jan 10, 2027"
+      }
+    },
+    {
+      "id": "docs.iron-beats-wood",
+      "page": "/docs",
+      "source": "app/src/content/catalog.ts",
+      "kind": "documentary",
+      "locked": {
+        "slug": "iron-beats-wood",
+        "flavors": [
+          "nebula-miso"
+        ],
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/iron-beats-wood.jpg",
+        "imageAlt": "IRON BEATS WOOD title over a paper diorama of two ironclads, the round-turret Monitor firing at the slope-sided Virginia across torn-newspaper waves.",
+        "title": "Iron Beats Wood: Rise of the Ironclad",
+        "description": "March 1862, off Virginia. Cannon fire that wrecks wooden ships bounces off armor, and naval warfare changes in one afternoon.",
+        "runtime": "3 min",
+        "releaseDate": "Oct 4, 2026",
+        "watchHref": "https://www.youtube.com/watch?v=sY7_WU6iOz0"
+      }
+    },
+    {
+      "id": "docs.the-archon-files",
+      "page": "/docs",
+      "source": "app/src/content/catalog.ts",
+      "kind": "documentary",
+      "locked": {
+        "slug": "the-archon-files",
+        "flavors": [
+          "nebula-miso"
+        ],
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/docs.png",
+        "imageAlt": "",
+        "title": "The Archon Files",
+        "description": "2031 to 2140, in declassified paper. Five documents, five eras, one question at the end of every chapter: who approved this?",
+        "runtime": "8 min",
+        "releaseDate": "Jan 8, 2027"
+      }
+    },
+    {
+      "id": "docs.glass-city",
+      "page": "/docs",
+      "source": "app/src/content/catalog.ts",
+      "kind": "documentary",
+      "locked": {
+        "slug": "glass-city-noodle-doc",
+        "flavors": [
+          "nebula-miso"
+        ],
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Glass City: Noodle Doc",
+        "description": "",
+        "runtime": "",
+        "releaseDate": "Dec 16, 2026"
+      }
+    },
+    {
+      "id": "docs.cities-of-2150",
+      "page": "/docs",
+      "source": "app/src/content/catalog.ts",
+      "kind": "documentary",
+      "locked": {
+        "slug": "cities-of-2150",
+        "flavors": [
+          "nebula-miso"
+        ],
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/cities-of-2150-9x16.png",
+          "4x5": "/assets/heroes/social/cities-of-2150-4x5.png"
+        }
+      },
+      "copy": {
+        "image": "/assets/heroes/cities-of-2150.png",
+        "imageAlt": "CITIES OF 2150 title over a daylight photo of a future river skyline with green towers, seen from a rooftop.",
+        "title": "Cities of 2150",
+        "description": "Five rooftops. Facts labeled. Guesses labeled.",
+        "runtime": "12 min",
+        "releaseDate": "Coming soon"
+      }
+    },
+    {
+      "id": "docs.the-last-5-billion-years",
+      "page": "/docs",
+      "source": "app/src/content/catalog.ts",
+      "kind": "documentary",
+      "locked": {
+        "slug": "the-last-5-billion-years",
+        "flavors": [
+          "nebula-miso"
+        ],
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/the-last-5-billion-years-9x16.png",
+          "4x5": "/assets/heroes/social/the-last-5-billion-years-4x5.png"
+        }
+      },
+      "copy": {
+        "image": "/assets/heroes/the-last-5-billion-years.png",
+        "imageAlt": "THE LAST 5 BILLION YEARS title over a black-and-cream linocut of a cracked dry shore under a huge red sun.",
+        "title": "The Last 5 Billion Years",
+        "description": "Earth's future, deadpan, one era at a time.",
+        "runtime": "9 min",
+        "releaseDate": "Coming soon"
+      }
+    },
+    {
+      "id": "atmospheres.neo-osaka-rain",
+      "page": "/atmospheres",
+      "source": "app/src/content/catalog.ts",
+      "kind": "ambience",
+      "locked": {
+        "slug": "neo-osaka-rain",
+        "flavors": [
+          "zero-g"
+        ],
+        "featured": true,
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/neo-osaka-rain.jpg",
+        "imageAlt": "A cozy apartment at night: a cat asleep, a steaming bowl of noodles and a mug at a rain-streaked window over a neon city and an elevated train.",
+        "title": "Neo-Osaka Rain",
+        "description": "An immersive rain and steam soundscape. Rain on the glass, steam off the noodles, a cat asleep by the window.",
+        "place": "NEO OSAKA 2187",
+        "episode": "EP01 // Rain on Glass",
+        "runtime": "2 hr",
+        "releaseDate": "Oct 17, 2026"
+      }
+    },
+    {
+      "id": "atmospheres.pod-bay-117",
+      "page": "/atmospheres",
+      "source": "app/src/content/catalog.ts",
+      "kind": "ambience",
+      "locked": {
+        "slug": "pod-bay-117",
+        "flavors": [
+          "zero-g"
+        ],
+        "featured": false,
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/stranger.png",
+        "imageAlt": "A dark, curved cryo hall on a ship: a long row of frosted sleep pods with green status lights under a strip of white light.",
+        "title": "Pod Bay 117",
+        "description": "Sealed frosted pod, empty pod 116 with one fresh tally mark, two enamel mugs, coolant hum.",
+        "place": "",
+        "episode": "",
+        "runtime": "2 hr",
+        "releaseDate": "Dec 13, 2026"
+      }
+    },
+    {
+      "id": "atmospheres.observation-rain",
+      "page": "/atmospheres",
+      "source": "app/src/content/catalog.ts",
+      "kind": "ambience",
+      "locked": {
+        "slug": "observation-rain",
+        "flavors": [
+          "zero-g"
+        ],
+        "featured": false,
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/atmosphere.png",
+        "imageAlt": "An empty observation lounge with dark leather seats facing a wide window onto a ringed planet, a moon, and stars.",
+        "title": "Moreau Island, Night Rain",
+        "description": "Guest room on Noble Isle, rain on a tin roof, distant surf.",
+        "place": "",
+        "episode": "",
+        "runtime": "2 hr",
+        "releaseDate": "Nov 22, 2026"
+      }
+    },
+    {
+      "id": "atmospheres.freighter-night",
+      "page": "/atmospheres",
+      "source": "app/src/content/catalog.ts",
+      "kind": "ambience",
+      "locked": {
+        "slug": "freighter-night",
+        "flavors": [
+          "zero-g"
+        ],
+        "featured": false,
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/atmosphere.png",
+        "imageAlt": "An empty observation lounge with dark leather seats facing a wide window onto a ringed planet, a moon, and stars.",
+        "title": "Rossum Factory, Night Shift",
+        "description": "",
+        "place": "",
+        "episode": "",
+        "runtime": "2 hr",
+        "releaseDate": "Dec 6, 2026"
+      }
+    },
+    {
+      "id": "atmospheres.glass-city-curfew",
+      "page": "/atmospheres",
+      "source": "app/src/content/catalog.ts",
+      "kind": "ambience",
+      "locked": {
+        "slug": "glass-city-curfew",
+        "flavors": [
+          "zero-g"
+        ],
+        "featured": false,
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Glass City Curfew",
+        "description": "",
+        "place": "",
+        "episode": "",
+        "runtime": "2 hr",
+        "releaseDate": "Dec 20, 2026"
+      }
+    },
+    {
+      "id": "atmospheres.plateau-rainforest",
+      "page": "/atmospheres",
+      "source": "app/src/content/catalog.ts",
+      "kind": "ambience",
+      "locked": {
+        "slug": "plateau-rainforest",
+        "flavors": [
+          "zero-g"
+        ],
+        "featured": false,
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Plateau Rainforest",
+        "description": "",
+        "place": "",
+        "episode": "",
+        "runtime": "2 hr",
+        "releaseDate": "Jan 3, 2027"
+      }
+    },
+    {
+      "id": "atmospheres.atmosphere-plant-mars",
+      "page": "/atmospheres",
+      "source": "app/src/content/catalog.ts",
+      "kind": "ambience",
+      "locked": {
+        "slug": "atmosphere-plant-mars",
+        "flavors": [
+          "zero-g"
+        ],
+        "featured": false,
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "Atmosphere Plant, Mars",
+        "description": "",
+        "place": "",
+        "episode": "",
+        "runtime": "2 hr",
+        "releaseDate": "Jan 17, 2027"
+      }
+    },
+    {
+      "id": "lab.how-a-shot-is-cooked",
+      "page": "/lab/how-a-shot-is-cooked",
+      "source": "app/src/content/catalog.ts",
+      "kind": "lab",
+      "locked": {
+        "slug": "how-a-shot-is-cooked",
+        "flavors": [
+          "nebula-miso"
+        ],
+        "category": "Process",
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/lab.png",
+        "imageAlt": "",
+        "title": "How a shot is cooked",
+        "releaseDate": "Oct 5, 2026",
+        "paragraphs": [
+          "A SCI-FI NOODLES shot starts as a sentence with a clock in it. Then a place. Then one object the camera can actually find.",
+          "The picture is built before the motion. A street, a pod, a lab table. Characters and props are drawn against that same place so the world does not change its mind between cuts.",
+          "Motion comes next, in short takes. Every voice and sound is generated inside the clip. Only the music is added in the edit. If a take looks expensive and says nothing, it gets cut.",
+          "The public page stops there. Series bibles, prompts, and continuity locks stay inside the series folder."
+        ]
+      }
+    },
+    {
+      "id": "lab.failed-noodles",
+      "page": "/lab/failed-noodles",
+      "source": "app/src/content/catalog.ts",
+      "kind": "lab",
+      "locked": {
+        "slug": "failed-noodles",
+        "flavors": [
+          "quantum-fire"
+        ],
+        "category": "Experiments",
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/lab.png",
+        "imageAlt": "",
+        "title": "Failed noodles",
+        "releaseDate": "Oct 5, 2026",
+        "paragraphs": [
+          "Most experiments fail in a useful way. A hand melts. A street sign invents a language. A face drifts between two people who were never cast.",
+          "Failed noodles stay on the shelf when they teach the next take: what the camera should not see, which sentence was doing too much, which light made the room look like a toy.",
+          "They are not blooper reels. They are the reason the finished shot looks inevitable."
+        ]
+      }
+    },
+    {
+      "id": "lab.what-stays-in-the-series",
+      "page": "/lab/what-stays-in-the-series",
+      "source": "app/src/content/catalog.ts",
+      "kind": "lab",
+      "locked": {
+        "slug": "what-stays-in-the-series",
+        "flavors": [
+          "nebula-miso"
+        ],
+        "category": "Studio rule",
+        "heroSocial": {
+          "9x16": "",
+          "4x5": ""
+        }
+      },
+      "copy": {
+        "image": "/assets/stills/tira.png",
+        "imageAlt": "",
+        "title": "What stays in the series",
+        "releaseDate": "Oct 5, 2026",
+        "paragraphs": [
+          "SCI-FI NOODLES owns the channel: the mark, the shelves, the newsletter, the way a visitor finds a second film.",
+          "Each universe owns its canon. T.I.R.A. // RIFT does not lend its history to The Stranger. A public-domain retelling does not become channel lore.",
+          "If a page here feels like a poster and not an encyclopedia, that is the point. The deep map lives with the series."
+        ]
+      }
+    },
+    {
+      "id": "page.originals",
+      "page": "/originals",
+      "source": "app/src/routes/originals/index.tsx",
+      "kind": "page",
+      "locked": {},
+      "copy": {
+        "title": "Black Hole Tonkotsu // Original Universes | SCI-FI NOODLES",
+        "header": "Original Universes",
+        "subtitle": "The flagship bowl. Independent science-fiction worlds, each with its own story, rules, characters, and look, plus the original docs, shorts, and ambience made in the same kitchen."
+      }
+    },
+    {
+      "id": "page.public-domain",
+      "page": "/public-domain",
+      "source": "app/src/routes/public-domain/index.tsx",
+      "kind": "page",
+      "locked": {},
+      "copy": {
+        "title": "Timewarp Shoyu // Public Domain | SCI-FI NOODLES",
+        "header": "Public Domain",
+        "subtitle": "Public-domain books, retold as problems we have now. Every adaptation names its source. Public-domain status still depends on country, edition, and translation."
+      }
+    },
+    {
+      "id": "page.lab",
+      "page": "/lab",
+      "source": "app/src/routes/lab/index.tsx",
+      "kind": "page",
+      "locked": {},
+      "copy": {
+        "title": "Cyberpunk Fusion // The Lab | SCI-FI NOODLES",
+        "header": "The Lab",
+        "subtitle": "The bridge between the films and the making of them. Process, experiments, tools, and the rules that keep each series its own. Curious, not a manual."
+      }
+    },
+    {
+      "id": "page.shorts",
+      "page": "/shorts",
+      "source": "app/src/routes/shorts.tsx",
+      "kind": "page",
+      "locked": {},
+      "copy": {
+        "title": "Quantum Fire Tantanmen // Sci-Fi Shorts | SCI-FI NOODLES",
+        "header": "Sci-Fi Shorts",
+        "subtitle": "Micro-stories, twists, and standalone encounters. Something new before the kettle boils, from every pillar on the menu."
+      }
+    },
+    {
+      "id": "page.docs",
+      "page": "/docs",
+      "source": "app/src/routes/docs/index.tsx",
+      "kind": "page",
+      "locked": {},
+      "copy": {
+        "title": "Nebula Miso // Documentaries & Lore | SCI-FI NOODLES",
+        "header": "Documentaries & Lore",
+        "subtitle": "Documentaries and lore about future technology, space, and the science hiding inside the fiction. Guesses are labeled as guesses."
+      }
+    },
+    {
+      "id": "page.atmospheres",
+      "page": "/atmospheres",
+      "source": "app/src/routes/atmospheres.tsx",
+      "kind": "page",
+      "locked": {},
+      "copy": {
+        "title": "Zero-G Shio // ASMR & Ambience | SCI-FI NOODLES",
+        "header": "ASMR & Ambience",
+        "subtitle": "Immersive rooms with almost no plot. Put the film on, leave the sound low, and stay. NEO OSAKA 2187 starts with EP01 // Rain on Glass."
+      }
+    },
+    {
+      "id": "page.watch",
+      "page": "/watch",
+      "source": "app/src/routes/watch.tsx",
+      "kind": "page",
+      "locked": {},
+      "copy": {
+        "title": "Watch // The Whole Menu | SCI-FI NOODLES",
+        "header": "Watch",
+        "subtitle": "The whole Cosmic Ramen menu on one board. Pick a pillar for where a film comes from, a flavor for how it feels, or both. Then watch on YouTube.",
+        "description": "Every SCI-FI NOODLES film on one board. Filter by pillar, where it comes from, or by flavor, how it feels. Different Flavors. Infinite Universes."
+      }
+    },
+    {
+      "id": "page.about",
+      "page": "/about",
+      "source": "app/src/routes/about.tsx",
+      "kind": "page",
+      "locked": {
+        "image": "/brand/logo.jpg"
+      },
+      "copy": {
+        "title": "About | SCI-FI NOODLES",
+        "header": "About the studio",
+        "subtitle": "An independent science-fiction studio that noodles with ideas until one of them becomes a world.",
+        "description": "SCI-FI NOODLES is the YouTube studio of NVESTED REALITY LLC. Science fiction is the product. AI is the stove.",
+        "paragraphs": [
+          "SCI-FI NOODLES is the YouTube channel of NVESTED REALITY LLC. Science fiction is the product. AI is the stove. The films are original worlds, public-domain classics retold as modern problems, future-tech documentaries, long atmospheres, and short experiments.",
+          "YouTube is where the films play. This site is the studio door: a map of the shelves, a premiere board, and a way to hear about the next drop without living inside an algorithm."
+        ],
+        "cta": "Press and partnerships"
+      }
+    },
+    {
+      "id": "page.contact",
+      "page": "/contact",
+      "source": "app/src/routes/contact.tsx",
+      "kind": "page",
+      "locked": {},
+      "copy": {
+        "title": "Contact | SCI-FI NOODLES",
+        "header": "Contact",
+        "subtitle": "Press, sponsors, and collaborators. Say what you want to make, and which shelf it belongs on.",
+        "description": "Press, partnerships, and collaboration notes for SCI-FI NOODLES."
+      }
+    },
+    {
+      "id": "page.host",
+      "page": "/host",
+      "source": "app/src/routes/host.tsx",
+      "kind": "page",
+      "locked": {},
+      "copy": {
+        "title": "Katara | SCI-FI NOODLES",
+        "header": "Katara",
+        "subtitle": "The channel host. Switch her look, then talk or type. Speech uses the studio voice when it is connected, and this browser when it is not.",
+        "description": "Talk with Katara, the SCI-FI NOODLES host, in chill, crunk, or glam mode."
+      }
+    },
+    {
+      "id": "host.modes",
+      "page": "/host",
+      "source": "app/src/components/site/katara-host.tsx",
+      "kind": "host",
+      "locked": {},
+      "copy": {
+        "greeting": "Hey, welcome to SCI-FI NOODLES, the Cosmic Ramen shop. I'm Katara, your host. Tell me your mood and I'll pour you a bowl.",
+        "modes": [
+          {
+            "id": "chill",
+            "label": "Chill",
+            "status": "Online · Chill",
+            "caption": "Soft pastel streetwear, sporty attitude, and warm everyday community vibes."
+          },
+          {
+            "id": "crunk",
+            "label": "Crunk",
+            "status": "Hyped · Crunk",
+            "caption": "Maximum hype, cosmic energy, fast reactions, and galaxy-print varsity heat."
+          },
+          {
+            "id": "glam",
+            "label": "Glam",
+            "status": "Live · Glam",
+            "caption": "Front-row superstar, sleek celestial halter, platform poise, and premiere energy."
+          }
+        ]
+      }
+    },
+    {
+      "id": "forms.newsletter",
+      "page": "/",
+      "source": "app/src/components/site/join-form.tsx",
+      "kind": "form",
+      "locked": {},
+      "copy": {
+        "label": "Email",
+        "placeholder": "you@domain.com",
+        "submit": "Join",
+        "help": "Release notes, not a weekly quota. Leave whenever you want.",
+        "success": "Saved in this browser. The studio inbox connects when the list goes live.",
+        "invalidEmail": "Use a full email address.",
+        "blocked": "This browser blocked saving the address."
+      }
+    },
+    {
+      "id": "forms.contact",
+      "page": "/contact",
+      "source": "app/src/components/site/join-form.tsx",
+      "kind": "form",
+      "locked": {},
+      "copy": {
+        "labels": {
+          "name": "Name",
+          "email": "Email",
+          "note": "Note"
+        },
+        "submit": "Send note",
+        "success": "Kept on this computer. A person reads partnership notes once the inbox is connected.",
+        "errors": {
+          "name": "Add your name.",
+          "email": "Use a full email address.",
+          "note": "Tell us what you want in a sentence or two.",
+          "blocked": "This browser blocked saving the note."
+        }
+      }
+    },
+    {
+      "id": "page.privacy",
+      "page": "/privacy",
+      "source": "app/src/routes/privacy.tsx",
+      "kind": "legal",
+      "locked": {},
+      "copy": {
+        "title": "Privacy | SCI-FI NOODLES",
+        "header": "Privacy",
+        "subtitle": "Short version: this preview keeps what you type in your own browser.",
+        "description": "How the SCI-FI NOODLES site handles the email you type and the pages you visit.",
+        "paragraphs": [
+          "The Noodle Drop form and the contact form save your note in local storage on this device. They are not sent to a studio server yet. Clearing site data removes them.",
+          "Watching a film sends you to YouTube. YouTube has its own privacy policy. This site does not run a second comment system.",
+          "When a real mailing list is connected, this page will name the provider, what it stores, and how to leave."
+        ]
+      }
+    },
+    {
+      "id": "page.terms",
+      "page": "/terms",
+      "source": "app/src/routes/terms.tsx",
+      "kind": "legal",
+      "locked": {},
+      "copy": {
+        "title": "Terms | SCI-FI NOODLES",
+        "header": "Terms",
+        "subtitle": "The door is open. The films are not a free asset library.",
+        "description": "Terms for using the SCI-FI NOODLES website and its original films.",
+        "paragraphs": [
+          "Original SCI-FI NOODLES films, marks, and site design are owned by NVESTED REALITY LLC. You may watch them, share links, and talk about them. You may not republish the films, pretend they are yours, or train a model on them.",
+          "Public-domain projects adapt old texts. The adaptation, picture, sound, and edit are new and reserved. The rights note on each project says which source was used.",
+          "Realistic footage and voices on the channel are AI-assisted and disclosed on YouTube. Nothing here is news, a product claim, or professional advice."
+        ]
+      }
+    },
+    {
+      "id": "page.rights",
+      "page": "/rights",
+      "source": "app/src/routes/rights.tsx",
+      "kind": "legal",
+      "locked": {},
+      "copy": {
+        "title": "Rights | SCI-FI NOODLES",
+        "header": "Copyright and rights",
+        "subtitle": "A project is called public domain only after the source is checked. The website shows the short note. The research stays in the project file.",
+        "description": "How SCI-FI NOODLES labels public-domain projects and what the website does not copy from later adaptations.",
+        "checks": [
+          "The original work's status.",
+          "The jurisdiction the channel is publishing into.",
+          "The edition or translation, which can still be protected.",
+          "Music, artwork, photographs, fonts, and restorations, separately.",
+          "Later films, comics, and games, which are left alone."
+        ],
+        "paragraphs": [
+          "Status can differ by country. A note on the project page is the public summary, not a promise that every territory treats the source the same way.",
+          "If you hold a right you believe a film uses, write through the contact page with the project name and the claim."
+        ]
+      }
+    },
+    {
+      "id": "site.footer",
+      "page": "/",
+      "source": "app/src/components/site/site-frame.tsx",
+      "kind": "footer",
+      "locked": {},
+      "copy": {
+        "legal": "© 2026 NVESTED REALITY LLC. All rights reserved. SCI-FI NOODLES is the channel. Each series keeps its own story.",
+        "copyrightOwner": "NVESTED REALITY LLC",
+        "labels": [
+          "Pillars",
+          "Flavors",
+          "Studio",
+          "Now showing",
+          "Rights"
+        ]
+      }
+    },
+    {
+      "id": "site.nav",
+      "page": "/",
+      "source": "app/src/content/catalog.ts",
+      "kind": "nav",
+      "locked": {},
+      "copy": {
+        "items": [
+          {
+            "id": "watch",
+            "label": "Watch",
+            "flavor": "The whole menu",
+            "promise": "Every bowl on one board. Filter by pillar or by flavor.",
+            "href": "/watch"
+          },
+          {
+            "id": "originals",
+            "label": "Original Universes",
+            "flavor": "Black Hole Tonkotsu",
+            "promise": "Rich. Deep. Limitless.",
+            "href": "/originals"
+          },
+          {
+            "id": "public-domain",
+            "label": "Public Domain",
+            "flavor": "Timewarp Shoyu",
+            "promise": "Classic Stories. New Dimensions.",
+            "href": "/public-domain"
+          },
+          {
+            "id": "lab",
+            "label": "The Lab",
+            "flavor": "Cyberpunk Fusion",
+            "promise": "Where Imagination Meets Innovation.",
+            "href": "/lab"
+          },
+          {
+            "id": "quantum-fire",
+            "label": "Sci-Fi Shorts",
+            "flavor": "Quantum Fire Tantanmen",
+            "promise": "Small Bites. Maximum Impact.",
+            "href": "/shorts"
+          },
+          {
+            "id": "nebula-miso",
+            "label": "Documentaries & Lore",
+            "flavor": "Nebula Miso",
+            "promise": "A Universe Worth Exploring.",
+            "href": "/docs"
+          },
+          {
+            "id": "zero-g",
+            "label": "ASMR & Ambience",
+            "flavor": "Zero-G Shio",
+            "promise": "Float Beyond Reality.",
+            "href": "/atmospheres"
+          },
+          {
+            "id": "host",
+            "label": "Katara",
+            "flavor": "",
+            "promise": "Talk to the studio host. Chill, crunk, or glam.",
+            "href": "/host"
+          },
+          {
+            "id": "about",
+            "label": "About",
+            "flavor": "",
+            "promise": "Who runs the kitchen, and why AI is only the stove.",
+            "href": "/about"
+          }
+        ]
+      }
+    }
+  ]
+}

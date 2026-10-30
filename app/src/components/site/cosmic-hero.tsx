@@ -38,7 +38,18 @@ export function CosmicHero({ menuId }: { menuId: string }) {
       </p>
 
       <div className="cosmic-head">
-        <p className="cosmic-kicker">{studio.menu}</p>
+        <div className="cosmic-kicker-lockup">
+          <img
+            alt=""
+            aria-hidden="true"
+            className="cosmic-mark"
+            decoding="async"
+            height={819}
+            src="/brand/cosmic-bowl.png"
+            width={819}
+          />
+          <p className="cosmic-kicker">{studio.menu}</p>
+        </div>
         <h1 className="cosmic-wordmark" id="cosmic-title">
           <svg aria-hidden="true" className="cosmic-orbit" preserveAspectRatio="none" viewBox="0 0 1000 200">
             <ellipse cx="500" cy="100" rx="497" ry="96" vectorEffect="non-scaling-stroke" />
