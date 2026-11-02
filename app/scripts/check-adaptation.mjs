@@ -1,137 +1,97 @@
-import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
-const activeUiFiles = [
-  "src/layouts/custom.tsx",
-  "src/components/custom-ui/custom-ui.tsx",
-  "src/routes/index.tsx",
-  "src/routes/app.tsx",
-  "src/landing-content.ts",
-];
-
-const mockMarkers = [
-  "Custom App",
-  "Workspace overview",
-  "Keep your workspace moving",
-  "First workflow completed",
-  "A concise view of current performance",
-];
-
 const failures = [];
-const landingPath = join(root, "src/landing-content.ts");
-if (!existsSync(landingPath)) {
-  failures.push("src/landing-content.ts is required");
-} else {
-  const landingSource = readFileSync(landingPath, "utf8");
-  for (const section of ["hero", "preview", "steps", "features", "showcase", "finalCta"]) {
-    if (!new RegExp(`\\b${section}\\s*:`).test(landingSource)) {
-      failures.push(`src/landing-content.ts is missing required ${section} content`);
-    }
-  }
-  if (/TEMPLATE DEMO|template-preview/i.test(landingSource)) {
-    failures.push("src/landing-content.ts still contains template landing content");
-  }
 
-  let landingContent;
-  try {
-    ({ landingContent } = await import(pathToFileURL(landingPath).href));
-  } catch (error) {
-    failures.push(
-      `src/landing-content.ts could not be loaded: ${error instanceof Error ? error.message : String(error)}`,
-    );
-  }
-
-  if (landingContent != null) {
-    const media = [
-      landingContent.preview.kind === "media" ? landingContent.preview.media : undefined,
-      landingContent.steps.items[2]?.preview.media,
-      ...landingContent.showcase.items.map((item) => item.media),
-      landingContent.finalCta.backgroundMedia,
-    ].filter(Boolean);
-    const landingAssets = [];
-
-    for (const item of media) {
-      const asset = item.src;
-      if (!asset.startsWith("/assets/landing/")) {
-        failures.push(
-          `src/landing-content.ts must use dedicated /assets/landing/ media: ${asset}`,
-        );
-        continue;
-      }
-      const assetPath = join(root, "public", asset.slice(1));
-      if (!existsSync(assetPath)) {
-        failures.push(`src/landing-content.ts references a missing asset: ${asset}`);
-        continue;
-      }
-      landingAssets.push({ asset, path: assetPath });
-    }
-
-    if (landingAssets.length < 2) {
-      failures.push(
-        "src/landing-content.ts must include separate owned result and showcase media",
-      );
-    }
-
-    const sourcePaths = new Set();
-    const contentHashes = new Map();
-    for (const { asset, path } of landingAssets) {
-      if (sourcePaths.has(asset)) {
-        failures.push(`src/landing-content.ts reuses landing media: ${asset}`);
-      }
-      sourcePaths.add(asset);
-
-      const hash = createHash("sha256").update(readFileSync(path)).digest("hex");
-      const existing = contentHashes.get(hash);
-      if (existing != null && existing !== asset) {
-        failures.push(
-          `src/landing-content.ts uses duplicate files for ${existing} and ${asset}`,
-        );
-      } else {
-        contentHashes.set(hash, asset);
-      }
-    }
-  }
-}
-
-const landingRoutePath = join(root, "src/routes/index.tsx");
-if (
-  !existsSync(landingRoutePath) ||
-  !readFileSync(landingRoutePath, "utf8").includes("LandingPage")
-) {
-  failures.push("src/routes/index.tsx must render the public LandingPage");
-}
-
-const appRoutePath = join(root, "src/routes/app.tsx");
-if (!existsSync(appRoutePath) || !readFileSync(appRoutePath, "utf8").includes("previewMode")) {
-  failures.push("src/routes/app.tsx must expose the full app and previewMode");
-}
-
-for (const relativePath of activeUiFiles) {
+function read(relativePath) {
   const path = join(root, relativePath);
-  if (!existsSync(path)) continue;
-  const source = readFileSync(path, "utf8");
-  for (const marker of mockMarkers) {
-    if (source.includes(marker)) failures.push(`${relativePath} still contains mock copy: ${marker}`);
+  if (!existsSync(path)) {
+    failures.push(`Missing required file: ${relativePath}`);
+    return null;
   }
-  if (/\/presets\/|unsplash\.com|picsum\.photos|placehold\.co/.test(source)) {
-    failures.push(`${relativePath} still references placeholder media`);
+  return readFileSync(path, "utf8");
+}
+
+const indexRoute = read("src/routes/index.tsx");
+if (indexRoute != null) {
+  for (const marker of ["CosmicHero", "RamenMenu", "SiteShell"]) {
+    if (!indexRoute.includes(marker)) {
+      failures.push(`src/routes/index.tsx must render the Cosmic Ramen homepage (${marker})`);
+    }
+  }
+  if (indexRoute.includes("LandingPage")) {
+    failures.push("src/routes/index.tsx must not render the Higgsfield template LandingPage");
+  }
+  if (indexRoute.includes("ScrollScrub")) {
+    failures.push("src/routes/index.tsx must not mount ScrollScrub on the public homepage");
   }
 }
 
-const meta = JSON.parse(readFileSync(join(root, "src/app-meta.json"), "utf8"));
-for (const field of ["og_title", "og_description", "favicon_url", "marketplace_cover_url"]) {
-  if (typeof meta[field] !== "string" || meta[field].trim() === "") {
-    failures.push(`src/app-meta.json must define ${field}`);
+const appRoute = read("src/routes/app.tsx");
+if (appRoute != null) {
+  if (!appRoute.includes('createFileRoute("/app")')) {
+    failures.push('src/routes/app.tsx must define the legacy /app route');
   }
+  if (!appRoute.includes("redirect")) {
+    failures.push("src/routes/app.tsx must redirect away from the generator scaffold");
+  }
+  if (appRoute.includes("CustomTemplate") || appRoute.includes("previewMode")) {
+    failures.push("src/routes/app.tsx must not render CustomTemplate or previewMode");
+  }
+}
+
+const customLayout = read("src/layouts/custom.tsx");
+if (customLayout != null) {
+  for (const marker of ['id: "generations"', 'mode="generations"', "<UserGenerations demo", "<PromptBox.Root"]) {
+    if (!customLayout.includes(marker)) {
+      failures.push(`src/layouts/custom.tsx must keep the generations workspace recipe (${marker})`);
+    }
+  }
+}
+
+const catalog = read("src/content/catalog.ts");
+if (catalog != null && !catalog.includes("T.I.R.A. // RIFT")) {
+  failures.push("src/content/catalog.ts must keep the T.I.R.A. // RIFT series lockup");
+}
+
+for (const asset of [
+  "public/assets/hero/cosmic-horizon.jpg",
+  "public/assets/hero/cosmic-horizon-1024.jpg",
+  "public/brand/og.png",
+]) {
+  if (!existsSync(join(root, asset))) {
+    failures.push(`Missing required public asset: ${asset.replace(/^public\//, "")}`);
+  }
+}
+
+const metaPath = join(root, "src/app-meta.json");
+if (!existsSync(metaPath)) {
+  failures.push("src/app-meta.json is required");
+} else {
+  const meta = JSON.parse(readFileSync(metaPath, "utf8"));
+  for (const field of ["og_title", "og_description", "favicon_url", "og_image_url"]) {
+    if (typeof meta[field] !== "string" || meta[field].trim() === "") {
+      failures.push(`src/app-meta.json must define ${field}`);
+    }
+  }
+  if (
+    meta.marketplace_cover_url != null &&
+    typeof meta.marketplace_cover_url !== "string"
+  ) {
+    failures.push("src/app-meta.json marketplace_cover_url must be a string or null");
+  }
+}
+
+const kataraRoute = read("src/routes/host.tsx");
+if (kataraRoute != null && !kataraRoute.includes("KataraHost")) {
+  failures.push("src/routes/host.tsx must render KataraHost");
 }
 
 if (failures.length > 0) {
-  console.error("Custom template is not fully adapted:\n");
+  console.error("Cosmic Ramen site contract is not satisfied:\n");
   for (const failure of failures) console.error(`- ${failure}`);
   process.exit(1);
 }
 
-console.log("Custom template adaptation check passed.");
+console.log("Cosmic Ramen site contract check passed.");
