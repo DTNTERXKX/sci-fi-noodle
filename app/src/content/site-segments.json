@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "exported": "2026-10-28",
+  "exported": "2026-11-01",
   "site": "SCI-FI NOODLES",
-  "note": "Snapshot of the live copy. The site does not read this file yet. Update one segment at a time, then apply the copy fields back to the source path.",
+  "note": "The site reads this file. Local dev loads it from disk on each request, and a production build embeds the same JSON, so a save here is what visitors see after a refresh.",
   "instructions": [
     "Edit strings inside copy only.",
     "Leave id, page, source, and kind unchanged. In locked, change only image and thumb, and only as the images rules say.",
@@ -50,7 +50,7 @@
       "An empty string means the image is not made yet. Never point a field at a file that does not exist in app/public."
     ]
   },
-  "segmentCount": 95,
+  "segmentCount": 96,
   "segments": [
     {
       "id": "studio",
@@ -58,7 +58,16 @@
       "source": "app/src/content/catalog.ts",
       "kind": "identity",
       "locked": {
-        "youtube": "https://www.youtube.com/@SCIFINOODLES"
+        "youtube": "https://www.youtube.com/@SCIFINOODLES",
+        "socials": [
+          { "label": "Higgsfield", "href": "https://higgsfield.ai/@dtnterxkx" },
+          { "label": "Higgsfield affiliate", "href": "https://higgsfield.ai?fpr=brien-86121a" },
+          { "label": "TikTok", "href": "https://www.tiktok.com/@scifinoodles5289" },
+          { "label": "X", "href": "https://x.com/scifinoodles" },
+          { "label": "Instagram", "href": "https://www.instagram.com/scifinoodles2026/" },
+          { "label": "YouTube", "href": "https://www.youtube.com/@SCIFINOODLES" },
+          { "label": "Facebook", "href": "https://www.facebook.com/61595575268577" }
+        ]
       },
       "copy": {
         "name": "SCI-FI NOODLES",
@@ -470,7 +479,7 @@
         "image": "",
         "imageAlt": "",
         "title": "The Ball Crashers",
-        "description": "A gala on Hyde Lake at Shelby Farms. The trouble comes through the service doors.",
+        "description": "The city sets a table for the squad that saved it, and Major Amara Kade can't taste a thing.",
         "runtime": "4 min",
         "releaseDate": "Nov 6, 2026",
         "thumbAlt": ""
@@ -977,9 +986,9 @@
       },
       "copy": {
         "image": "/assets/heroes/the-alert.png",
-        "imageAlt": "THE ALERT title over a night-vision doorbell-camera view of a quiet terraced street, a parked car and drifting mist.",
+        "imageAlt": "Black liquid metal heaved into mirror-slick spikes and arches across a ruined city street, crimson cable snaking over wrecked cars and broken buildings under drifting smoke.",
         "title": "The Alert",
-        "description": "8:47 p.m. An emergency alert buzzes every phone in Woking at once. Nobody runs.",
+        "description": "8:47 p.m. An emergency alert buzzes every phone in Woking at once. Nobody runs. Then the black metal starts to flow.",
         "creator": "H. G. Wells",
         "rights": "A work of fiction. Nothing in this video happened. Built from the 1898 novel. The 1938 broadcast and later films are not the source.",
         "runtime": "5 min",
@@ -1307,7 +1316,7 @@
         "title": "10 Seconds to Impact",
         "description": "One cracked watch. He finishes the sandwich.",
         "runtime": "30 sec",
-        "releaseDate": "Nov 30, 2026"
+        "releaseDate": "Dec 2, 2026"
       }
     },
     {
@@ -1425,7 +1434,7 @@
         "imageAlt": "",
         "title": "Glass City: Noodle Doc",
         "description": "",
-        "runtime": "",
+        "runtime": "6 min",
         "releaseDate": "Dec 16, 2026"
       }
     },
@@ -1717,7 +1726,7 @@
         "title": "Failed noodles",
         "releaseDate": "Oct 5, 2026",
         "paragraphs": [
-          "Most experiments fail in a useful way. A hand melts. A street sign invents a language. A face drifts between two people who were never cast.",
+          "Most experiments fail in a useful way. These are ours. A battleship nobody designed. A grunt squad hovering in sync. A narrator borrowing the only mouth in the room.",
           "Failed noodles stay on the shelf when they teach the next take: what the camera should not see, which sentence was doing too much, which light made the room look like a toy.",
           "They are not blooper reels. They are the reason the finished shot looks inevitable."
         ]
@@ -2025,6 +2034,15 @@
           "Studio",
           "Now showing",
           "Rights"
+        ],
+        "socials": [
+          { "label": "Higgsfield", "href": "https://higgsfield.ai/@dtnterxkx" },
+          { "label": "Higgsfield affiliate", "href": "https://higgsfield.ai?fpr=brien-86121a" },
+          { "label": "TikTok", "href": "https://www.tiktok.com/@scifinoodles5289" },
+          { "label": "X", "href": "https://x.com/scifinoodles" },
+          { "label": "Instagram", "href": "https://www.instagram.com/scifinoodles2026/" },
+          { "label": "YouTube", "href": "https://www.youtube.com/@SCIFINOODLES" },
+          { "label": "Facebook", "href": "https://www.facebook.com/61595575268577" }
         ]
       }
     },

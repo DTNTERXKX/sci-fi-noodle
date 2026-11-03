@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { SITE_URL } from "../lib/seo";
+
 export const Route = createFileRoute("/robots.txt")({
   server: {
     handlers: {
-      GET: async ({ request }) => {
-        const origin = new URL(request.url).origin;
+      GET: async () => {
+        const origin = SITE_URL;
         const body = [
           "User-agent: *",
           "Disallow: /app",

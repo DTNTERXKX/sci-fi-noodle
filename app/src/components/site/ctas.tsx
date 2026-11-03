@@ -1,4 +1,11 @@
-export function WatchMark({ href, title }: { href: string; title?: string }) {
+export function WatchMark({ href, title, released = true }: { href: string; title?: string; released?: boolean }) {
+  if (!released) {
+    return (
+      <button className="cta-watch" disabled type="button">
+        <span>Coming Soon!</span>
+      </button>
+    );
+  }
   const external = href.startsWith("http");
   return (
     <a

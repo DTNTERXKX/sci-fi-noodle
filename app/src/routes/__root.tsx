@@ -9,11 +9,20 @@ import {
 import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { KataraDock } from "../components/site/katara-dock";
+import { copyString, loadSiteSegments, segmentCopy, segmentLocked } from "../content/site-file";
+import { studio } from "../content/catalog";
 import { reportHiggsfieldError } from "../lib/higgsfield-error-reporting";
 // Page metadata (browser <title>/favicon + social og: tags) committed into the
 // repo by the marketplace meta API and read at BUILD time — no runtime fetch.
 // Editing it via the app settings UI rewrites this file and redeploys the app.
 import appMetaJson from "../app-meta.json";
+import {
+  BROWSER_THEME_COLOR,
+  SITE_NAME,
+  SITE_URL,
+  SOCIAL_PROFILES,
+  absoluteUrl,
+} from "../lib/seo";
 
 declare const __HF_DESIGN_INSPECTOR__: boolean;
 
@@ -65,10 +74,14 @@ function toOwnAssetUrl(value: string | null | undefined): string | null {
 }
 
 function buildHead(meta: AppMeta) {
-  const title = meta.og_title ?? DEFAULT_TITLE;
-  const description = meta.og_description ?? DEFAULT_DESCRIPTION;
-  const ogImage = toOwnAssetUrl(meta.og_image_url);
-  const favicon = toOwnAssetUrl(meta.favicon_url);
+  const social = segmentCopy("meta.social");
+  const locked = segmentLocked("meta.social");
+  const title = copyString(social, "title") || meta.og_title || DEFAULT_TITLE;
+  const description = copyString(social, "description") || meta.og_description || DEFAULT_DESCRIPTION;
+  const ownOgImage = toOwnAssetUrl(copyString(locked, "ogImage") || meta.og_image_url);
+  // Crawlers need an absolute og:image; root-relative assets resolve on the production domain.
+  const ogImage = ownOgImage ? absoluteUrl(ownOgImage) : null;
+  const favicon = toOwnAssetUrl(copyString(locked, "favicon") || meta.favicon_url);
   const ogVideo = toOwnAssetUrl(meta.og_video_url);
 
   return {
@@ -77,10 +90,15 @@ function buildHead(meta: AppMeta) {
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title },
       { name: "description", content: description },
-      { name: "author", content: "NVESTED REALITY LLC" },
+      { name: "author", content: studio.owner || "NVESTED REALITY LLC" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: SITE_NAME },
+      { property: "og:locale", content: "en_US" },
+      { name: "twitter:site", content: "@scifinoodles" },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "theme-color", content: BROWSER_THEME_COLOR },
       { name: "twitter:card", content: ogImage ? "summary_large_image" : "summary" },
       { name: "twitter:title", content: title },
       ...(ogImage
@@ -99,7 +117,35 @@ function buildHead(meta: AppMeta) {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@200;300;400;500;600;700&display=swap",
       },
-      ...(favicon ? [{ rel: "icon", href: favicon }] : []),
+      ...(favicon ? [{ rel: "icon", href: favicon }, { rel: "apple-touch-icon", href: favicon }] : []),
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": `${SITE_URL}/#org`,
+              name: SITE_NAME,
+              url: SITE_URL,
+              logo: absoluteUrl("/brand/logo.jpg"),
+              parentOrganization: { "@type": "Organization", name: "NVESTED REALITY LLC" },
+              sameAs: SOCIAL_PROFILES,
+            },
+            {
+              "@type": "WebSite",
+              "@id": `${SITE_URL}/#website`,
+              name: SITE_NAME,
+              url: SITE_URL,
+              description,
+              publisher: { "@id": `${SITE_URL}/#org` },
+              inLanguage: "en",
+            },
+          ],
+        }),
+      },
     ],
   };
 }
@@ -156,6 +202,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+function SegmentBootstrap() {
+  if (!import.meta.env.DEV) return null;
+  const json = JSON.stringify(loadSiteSegments()).replace(/</g, "\\u003c");
+  return <script dangerouslySetInnerHTML={{ __html: `window.__SITE_SEGMENTS__=${json}` }} />;
+}
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en" data-theme="default-dark" style={{ colorScheme: "dark" }}>
@@ -163,6 +215,7 @@ function RootShell({ children }: { children: ReactNode }) {
           above. Do not add quanta's bootstrapScript/ThemeController, a theme
           toggle, or a light mode. */}
       <head>
+        <SegmentBootstrap />
         <HeadContent />
       </head>
       <body>

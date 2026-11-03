@@ -3,24 +3,23 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { EnterBracket } from "@/components/site/ctas";
 import { FilterStatus, FlavorChips } from "@/components/site/flavor-filter";
 import { SiteFrame } from "@/components/site/site-frame";
-import { bowlTitle, cardBowl, flavorBowl, isFlavorId, labEntries, pillarBowl, type FlavorId } from "@/content/catalog";
-
-const bowl = pillarBowl("lab");
+import { cardBowl, flavorBowl, isFlavorId, labEntries, pageMeta, pillarBowl, type FlavorId } from "@/content/catalog";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/lab/")({
   validateSearch: (search: Record<string, unknown>): { flavor?: FlavorId } => ({
     flavor: isFlavorId(search.flavor) ? search.flavor : undefined,
   }),
-  head: () => ({
-    meta: [
-      { title: bowlTitle(bowl) },
-      { name: "description", content: `${bowl.tagline} ${bowl.description}` },
-    ],
-  }),
+  head: () => {
+    const page = pageMeta("page.lab");
+    return seoHead({ path: "/lab", title: page.title, description: page.description || page.subtitle });
+  },
   component: LabPage,
 });
 
 function LabPage() {
+  const page = pageMeta("page.lab");
+  const bowl = pillarBowl("lab");
   const { flavor } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const visible = flavor ? labEntries.filter((entry) => entry.flavors.includes(flavor)) : labEntries;
@@ -28,8 +27,8 @@ function LabPage() {
   return (
     <SiteFrame
       bowl={bowl}
-      lede="The bridge between the films and the making of them. Process, experiments, tools, and the rules that keep each series its own. Curious, not a manual."
-      title={bowl.category}
+      lede={page.subtitle}
+      title={page.header}
     >
       <div className="pillar-board page-block">
         <FlavorChips
@@ -45,7 +44,7 @@ function LabPage() {
         <ul className="lab-index">
           {visible.map((entry) => (
             <li data-bowl={cardBowl(entry.flavors, "lab")} key={entry.slug}>
-              <img alt="" src={entry.image} />
+              {entry.image ? <img alt={entry.imageAlt ?? ""} src={entry.image} /> : null}
               <div>
                 <p className="meta-line">
                   {entry.category} · {entry.date}
