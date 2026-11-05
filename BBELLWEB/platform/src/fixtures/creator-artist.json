@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "brand": {
+    "name": "Lena Cole Studio",
+    "tagline": "Portrait and mural commissions",
+    "palette": { "primary": "#be185d", "accent": "#db2777", "bg": "#fdf2f8", "text": "#500724" },
+    "fontPair": "nunito-bitter",
+    "tone": "friendly"
+  },
+  "seo": { "title": "Lena Cole Studio", "description": "Artist portfolio and commissions", "city": "Memphis, TN", "businessType": "Artist" },
+  "pages": [
+    {
+      "slug": "/",
+      "title": "Home",
+      "sections": [
+        { "id": "h1", "variant": "a", "type": "hero", "headline": "Color that tells your story", "subhead": "Portraits, murals, and live event painting.", "cta": "View portfolio" },
+        { "id": "g1", "variant": "c", "type": "gallery", "title": "Selected work", "images": [] },
+        { "id": "ab", "variant": "b", "type": "about", "title": "About Lena", "body": "Memphis-based painter working in acrylic and spray for public and private spaces." },
+        { "id": "lg", "variant": "a", "type": "logos", "title": "Featured at", "logos": [
+          { "name": "Memphis Arts Council" },
+          { "name": "Railgarden Market" }
+        ]},
+        { "id": "c1", "variant": "c", "type": "contact", "title": "Commission inquiry", "formEnabled": true, "email": "studio@lenacole.example" }
+      ]
+    }
+  ]
+}

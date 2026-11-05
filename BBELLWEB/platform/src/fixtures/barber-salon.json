@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "brand": {
+    "name": "Midtown Fade Lab",
+    "tagline": "Sharp cuts and beard care in Memphis",
+    "palette": { "primary": "#0f766e", "accent": "#134e4a", "bg": "#ffffff", "text": "#0f172a" },
+    "fontPair": "dm-fraunces",
+    "tone": "bold"
+  },
+  "seo": { "title": "Midtown Fade Lab", "description": "Barber shop in Memphis", "city": "Memphis, TN", "businessType": "Barber" },
+  "pages": [
+    {
+      "slug": "/",
+      "title": "Home",
+      "sections": [
+        { "id": "h1", "variant": "a", "type": "hero", "headline": "Walk out looking sharp", "subhead": "Walk-ins welcome. Online booking for busy weeks.", "cta": "Book a chair" },
+        { "id": "s1", "variant": "b", "type": "services", "title": "Services", "items": [
+          { "name": "Classic cut", "blurb": "Scissor and clipper finish", "price": "$35" },
+          { "name": "Beard trim", "blurb": "Line-up and conditioning", "price": "$18" }
+        ]},
+        { "id": "hrs", "variant": "a", "type": "hours", "title": "Hours", "address": "123 Union Ave, Memphis, TN", "days": [
+          { "label": "Tue–Fri", "hours": "10:00 AM – 7:00 PM" },
+          { "label": "Sat", "hours": "9:00 AM – 5:00 PM" }
+        ]},
+        { "id": "c1", "variant": "a", "type": "contact", "title": "Visit us", "formEnabled": true, "email": "hello@midtownfade.example", "phone": "(901) 555-0142" }
+      ]
+    }
+  ]
+}

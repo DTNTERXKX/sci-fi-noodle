@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "brand": {
+    "name": "Grace River Church",
+    "tagline": "A welcoming community in Cordova",
+    "palette": { "primary": "#1e3a5f", "accent": "#2563eb", "bg": "#fafafa", "text": "#111827" },
+    "fontPair": "lato-merriweather",
+    "tone": "faith"
+  },
+  "seo": { "title": "Grace River Church", "description": "Sunday worship and community groups", "city": "Cordova, TN", "businessType": "Church" },
+  "pages": [
+    {
+      "slug": "/",
+      "title": "Home",
+      "sections": [
+        { "id": "ann", "variant": "a", "type": "announcement", "message": "Easter sunrise service — April plans posted soon." },
+        { "id": "h1", "variant": "b", "type": "hero", "headline": "You belong here", "subhead": "Join us Sundays at 10:00 AM.", "cta": "Plan your visit" },
+        { "id": "ev", "variant": "a", "type": "events", "title": "Upcoming", "items": [
+          { "date": "Sun 10:00 AM", "title": "Morning worship", "description": "Nursery and kids programs available" },
+          { "date": "Wed 6:30 PM", "title": "Midweek groups", "description": "Various homes and on campus" }
+        ]},
+        { "id": "ab", "variant": "a", "type": "about", "title": "Our mission", "body": "We exist to help neighbors know Christ and serve our city with practical love." },
+        { "id": "t1", "variant": "a", "type": "testimonials", "title": "Stories", "items": [] }
+      ]
+    }
+  ]
+}

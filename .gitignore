@@ -1,4 +1,6 @@
 node_modules
+/BBELLWEB/platform/node_modules
+/BBELLWEB/platform/.next
 
 # SadTalker clone, virtualenv, and checkpoints stay off this repo.
 /services/sadtalker/vendor/

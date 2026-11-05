@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "brand": {
+    "name": "Summit Home Repair",
+    "tagline": "Licensed general contractor · Memphis metro",
+    "palette": { "primary": "#b45309", "accent": "#92400e", "bg": "#ffffff", "text": "#1c1917" },
+    "fontPair": "montserrat-lora",
+    "tone": "premium"
+  },
+  "seo": { "title": "Summit Home Repair", "description": "Kitchens, baths, and structural repairs", "city": "Memphis, TN", "businessType": "Contractor" },
+  "pages": [
+    {
+      "slug": "/",
+      "title": "Home",
+      "sections": [
+        { "id": "h1", "variant": "c", "type": "hero", "headline": "Built to last", "subhead": "Free estimates on remodels and storm damage.", "cta": "Request estimate" },
+        { "id": "f1", "variant": "a", "type": "features", "title": "Why homeowners call us", "items": [
+          { "title": "Clear bids", "description": "Line-item proposals before work starts" },
+          { "title": "Clean job sites", "description": "Daily cleanup and respectful crews" }
+        ]},
+        { "id": "ba", "variant": "a", "type": "beforeAfter", "title": "Recent projects", "pairs": [
+          { "beforeUrl": "/placeholder", "afterUrl": "/placeholder", "caption": "Guest bath refresh" }
+        ]},
+        { "id": "ct", "variant": "a", "type": "contact", "title": "Start a project", "formEnabled": true, "email": "estimates@summithome.example", "phone": "(901) 555-0199" }
+      ]
+    }
+  ]
+}
