@@ -15,9 +15,14 @@ npm run dev
 Phase 1 checklist: [docs/PHASE1.md](./docs/PHASE1.md).  
 Phase 2 (schema + sections): [docs/PHASE2.md](./docs/PHASE2.md) · preview at `/dev/fixtures`.
 
-## Deploy
+## Deploy (Vercel)
 
-Deploy this app to Vercel, Azure, or your existing host. Set `NEXT_PUBLIC_APP_URL=https://bbellweb.info` and the same env vars in the host dashboard.
+**Full checklist:** [docs/PRODUCTION.md](./docs/PRODUCTION.md)
+
+- Vercel **Root Directory:** `BBELLWEB/platform`
+- Set all production env vars (see `.env.example`)
+- Custom domain: **bbellweb.info**
+- Health check: `/api/health`
 
 ## Stripe
 
