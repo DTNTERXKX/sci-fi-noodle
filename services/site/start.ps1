@@ -5,6 +5,7 @@
 #
 #   powershell -NoProfile -ExecutionPolicy Bypass -File services\site\start.ps1
 #   powershell -NoProfile -ExecutionPolicy Bypass -File services\site\start.ps1 -SadTalker   (also start the old SadTalker sidecar)
+#   services\site\restart.cmd   (stop then start; pass -SadTalker to include SadTalker)
 
 #Requires -Version 5.1
 param([switch]$SadTalker)

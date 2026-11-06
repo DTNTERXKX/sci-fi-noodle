@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exported": "2026-11-01",
+  "exported": "2026-11-05",
   "site": "SCI-FI NOODLES",
   "note": "The site reads this file. Local dev loads it from disk on each request, and a production build embeds the same JSON, so a save here is what visitors see after a refresh.",
   "instructions": [
@@ -61,7 +61,6 @@
         "youtube": "https://www.youtube.com/@SCIFINOODLES",
         "socials": [
           { "label": "Higgsfield", "href": "https://higgsfield.ai/@dtnterxkx" },
-          { "label": "Higgsfield affiliate", "href": "https://higgsfield.ai?fpr=brien-86121a" },
           { "label": "TikTok", "href": "https://www.tiktok.com/@scifinoodles5289" },
           { "label": "X", "href": "https://x.com/scifinoodles" },
           { "label": "Instagram", "href": "https://www.instagram.com/scifinoodles2026/" },
@@ -806,7 +805,7 @@
         "imageAlt": "",
         "title": "EP01 · In and Out",
         "description": "",
-        "runtime": "60–90 sec",
+        "runtime": "2 min 6 sec",
         "releaseDate": "Dec 11, 2026",
         "thumbAlt": ""
       }
@@ -826,7 +825,7 @@
         "imageAlt": "",
         "title": "EP02 · Deliverance",
         "description": "",
-        "runtime": "60–90 sec",
+        "runtime": "1 min 54 sec",
         "releaseDate": "Dec 12, 2026",
         "thumbAlt": ""
       }
@@ -2037,7 +2036,6 @@
         ],
         "socials": [
           { "label": "Higgsfield", "href": "https://higgsfield.ai/@dtnterxkx" },
-          { "label": "Higgsfield affiliate", "href": "https://higgsfield.ai?fpr=brien-86121a" },
           { "label": "TikTok", "href": "https://www.tiktok.com/@scifinoodles5289" },
           { "label": "X", "href": "https://x.com/scifinoodles" },
           { "label": "Instagram", "href": "https://www.instagram.com/scifinoodles2026/" },
