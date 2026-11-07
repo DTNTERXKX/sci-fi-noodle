@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 
+import { realWatchHref } from "@/content/from-segments";
 import {
   flavorBowls,
   isReleased,
@@ -11,22 +12,11 @@ import {
   studio,
   universes,
   watchLibrary,
+  youtubeFor,
   type ShelfItem,
 } from "@/content/catalog";
 
 export type KataraMode = "chill" | "crunk" | "glam";
-
-/**
- * Direct channel videos already listed in catalog.ts `liveVideos` (that map is not exported).
- * Titles that are not in this list stay on the site menu with no invented YouTube URL.
- */
-const LIVE_VIDEOS: Record<string, string> = {
-  "tira rift the key awakens": "https://www.youtube.com/watch?v=buCKa4pm0Rw",
-  "neo osaka rain": "https://www.youtube.com/watch?v=G-YEM6LOE8Y",
-  "the stranger part 1": "https://www.youtube.com/shorts/uu762gNCTXY",
-  "the stranger part 2": "https://www.youtube.com/shorts/15IGDVeL080",
-  "iron beats wood rise of the ironclad": "https://www.youtube.com/watch?v=sY7_WU6iOz0",
-};
 
 const VOICE_FILES: Record<KataraMode, string> = {
   chill: "katara_chill.mp3",
@@ -204,7 +194,7 @@ function calendarUtc(date: string) {
 
 function liveUrl(title: string, date: string) {
   if (!isReleased(date)) return null;
-  return LIVE_VIDEOS[normalizeQuestion(title)] ?? null;
+  return realWatchHref(youtubeFor(title)) ?? null;
 }
 
 function titleBody(item: ShelfItem) {

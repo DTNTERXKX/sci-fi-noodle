@@ -36,11 +36,27 @@ test("answers from sqlite and plays the locked chill voice", async () => {
   expect(createHash("sha256").update(copied).digest("hex")).toBe(createHash("sha256").update(source).digest("hex"));
 });
 
-test("a future title is not given a made-up youtube url", async () => {
+test("frankenstein uses the stored video url and never a youtube search", async () => {
   const payload = await ask("When is Frankenstein: The Commit?");
-  expect(payload.reply).toContain("Nov 7, 2026");
+  expect(payload.reply).toContain("https://youtu.be/8bp4f2vml6A");
+  expect(payload.reply).not.toContain("youtube.com/results");
+  expect(payload.reply).not.toContain("search_query");
+});
+
+test("a future title is not given a made-up youtube url", async () => {
+  const payload = await ask("When is The Ball Crashers?");
+  expect(payload.reply).toContain("Nov 13, 2026");
   expect(payload.reply.toLowerCase()).toContain("not live yet");
   expect(payload.reply).not.toContain("youtube.com");
+  expect(payload.reply).not.toContain("youtu.be");
+});
+
+test("a released title with no video is not handed a youtube search", async () => {
+  const payload = await ask("Where is Failed noodles?");
+  expect(payload.reply.toLowerCase()).toContain("failed noodles");
+  expect(payload.reply).not.toContain("youtube.com/results");
+  expect(payload.reply).not.toContain("search_query");
+  expect(payload.reply).not.toContain("youtu.be");
 });
 
 test("an unknown question points at the menu", async () => {

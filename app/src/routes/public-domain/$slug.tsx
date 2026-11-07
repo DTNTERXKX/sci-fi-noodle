@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
-import { WatchMark } from "@/components/site/ctas";
+import { WatchAnchor, WatchMark } from "@/components/site/ctas";
 import { DetailHero, TitleNav } from "@/components/site/detail-hero";
 import { Rail } from "@/components/site/rail";
 import { NextShelf, SiteShell } from "@/components/site/site-frame";
@@ -38,22 +38,25 @@ function ProjectPage() {
       <DetailHero
         actions={
           <>
-            {isReleased(project.date) ? (
-              <a className="cta-detail-watch" href={youtubeFor(project.title)} rel="noreferrer" target="_blank">
-                <svg aria-hidden="true" viewBox="0 0 16 16">
-                  <path d="M4 2.5v11l9-5.5z" />
-                </svg>
-                Watch
-                <span className="sr-only">, {project.title}, on YouTube</span>
-              </a>
-            ) : (
-              <button className="cta-detail-watch" disabled type="button">
-                <svg aria-hidden="true" viewBox="0 0 16 16">
-                  <path d="M4 2.5v11l9-5.5z" />
-                </svg>
-                Coming Soon!
-              </button>
-            )}
+            <WatchAnchor
+              className="cta-detail-watch"
+              href={youtubeFor(project.title)}
+              released={isReleased(project.date)}
+              soon={
+                <>
+                  <svg aria-hidden="true" viewBox="0 0 16 16">
+                    <path d="M4 2.5v11l9-5.5z" />
+                  </svg>
+                  Coming Soon!
+                </>
+              }
+            >
+              <svg aria-hidden="true" viewBox="0 0 16 16">
+                <path d="M4 2.5v11l9-5.5z" />
+              </svg>
+              Watch
+              <span className="sr-only">, {project.title}, on YouTube</span>
+            </WatchAnchor>
             <a className="cta-detail-jump" href="#source">
               Source and rights
             </a>

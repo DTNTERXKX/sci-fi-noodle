@@ -86,6 +86,11 @@ export function realWatchHref(value: unknown): string | undefined {
   return undefined;
 }
 
+/** Title key for watch lookup. A colon in "Series: Episode" is the same title as "Series Episode". */
+export function watchTitleKey(title: string) {
+  return title.replace(/:\s+/g, " ").replace(/\s+/g, " ").trim();
+}
+
 function segmentWatch(segment: SiteSegment) {
   return realWatchHref(segment.locked.watchHref) ?? realWatchHref(segment.copy.watchHref);
 }
@@ -93,11 +98,13 @@ function segmentWatch(segment: SiteSegment) {
 /** Real watch URL stored on a segment, keyed the way youtubeFor is called. */
 export function explicitWatchTitle(title: string): string | undefined {
   const file = loadSiteSegments();
+  const wanted = watchTitleKey(title);
+  if (!wanted) return undefined;
   for (const segment of file.segments) {
     const href = segmentWatch(segment);
     if (!href) continue;
     const own = str(segment.copy.title);
-    if (own === title) return href;
+    if (watchTitleKey(own) === wanted) return href;
     if (segment.kind !== "episode") continue;
     const seriesSlug = str(segment.locked.series);
     const parent = file.segments.find(
@@ -106,7 +113,21 @@ export function explicitWatchTitle(title: string): string | undefined {
     );
     const parentTitle = parent ? str(parent.copy.title) : "";
     if (!parentTitle) continue;
-    if (`${parentTitle} ${own}` === title || `${parentTitle}: ${own}` === title) return href;
+    if (watchTitleKey(`${parentTitle} ${own}`) === wanted) return href;
+  }
+  // A series feature card stores the first episode's video. The watch board asks for
+  // "Series: Episode", which does not equal the feature title.
+  for (const feature of file.segments) {
+    if (feature.kind !== "feature") continue;
+    const href = segmentWatch(feature);
+    if (!href) continue;
+    const slug = str(feature.locked.slug);
+    const series = file.segments.find((item) => item.kind === "series" && str(item.locked.slug) === slug);
+    if (!series) continue;
+    const episode = file.segments.find((item) => item.kind === "episode" && str(item.locked.series) === slug);
+    if (!episode) continue;
+    const composed = `${str(series.copy.title)} ${str(episode.copy.title)}`;
+    if (watchTitleKey(composed) === wanted) return href;
   }
   return undefined;
 }
@@ -137,17 +158,17 @@ function releaseFor(file: SiteFile, slug: string) {
   return "Coming soon";
 }
 
-function featureWatch(segment: SiteSegment, file: SiteFile, youtubeFor: (title: string) => string) {
-  const explicit = realWatchHref(segment.locked.watchHref);
+function featureWatch(segment: SiteSegment, file: SiteFile, youtubeFor: (title: string) => string | undefined) {
+  const explicit = realWatchHref(segment.locked.watchHref) ?? realWatchHref(segment.copy.watchHref);
   if (explicit) return explicit;
   const slug = str(segment.locked.slug);
   const title = str(segment.copy.title);
   const series = file.segments.find((item) => item.kind === "series" && str(item.locked.slug) === slug);
   if (series) {
     const episode = file.segments.find((item) => item.kind === "episode" && str(item.locked.series) === slug);
-    if (episode) return youtubeFor(`${str(series.copy.title)} ${str(episode.copy.title)}`);
+    if (episode) return youtubeFor(`${str(series.copy.title)} ${str(episode.copy.title)}`) ?? "";
   }
-  return youtubeFor(title);
+  return youtubeFor(title) ?? "";
 }
 
 export type DerivedCatalog = {
@@ -164,7 +185,7 @@ export type DerivedCatalog = {
   sections: Section[];
 };
 
-export function buildCatalog(youtubeFor: (title: string) => string): DerivedCatalog {
+export function buildCatalog(youtubeFor: (title: string) => string | undefined): DerivedCatalog {
   const file = loadSiteSegments();
   const identity = file.segments.find((segment) => segment.id === "studio");
   const studio: Studio = {

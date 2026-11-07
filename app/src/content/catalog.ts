@@ -1,4 +1,4 @@
-import { buildCatalog, explicitWatchTitle, type DerivedCatalog } from "./from-segments";
+import { buildCatalog, explicitWatchTitle, realWatchHref, watchTitleKey, type DerivedCatalog } from "./from-segments";
 import {
   copyString,
   copyStrings,
@@ -355,21 +355,26 @@ export function flavorCounts(items: { flavors: FlavorId[] }[]): Record<FlavorId,
   return counts;
 }
 
-// Direct links to videos that are live on the channel (checked Oct 29, 2026). Keys are the titles youtubeFor gets.
+// Direct links already checked on the channel. A title with no real video here, and none in
+// site-segments.json, has no visitor YouTube href. Search URLs are not a fallback.
 const liveVideos: Record<string, string> = {
   "T.I.R.A. // RIFT The Key Awakens": "https://www.youtube.com/watch?v=buCKa4pm0Rw",
   "Neo-Osaka Rain": "https://www.youtube.com/watch?v=G-YEM6LOE8Y",
-  "The Stranger Part 1": "https://www.youtube.com/shorts/uu762gNCTXY",
-  "The Stranger Part 2": "https://www.youtube.com/shorts/15IGDVeL080",
+  "The Stranger Part 1": "https://www.youtube.com/shorts/15IGDVeL080",
+  "The Stranger Part 2": "https://www.youtube.com/shorts/uu762gNCTXY",
   "Iron Beats Wood: Rise of the Ironclad": "https://www.youtube.com/watch?v=sY7_WU6iOz0",
+  "Bluff City Immune EP01 · In and Out": "https://youtube.com/shorts/bi-EmlOjDhA",
 };
 
-export function youtubeFor(title: string) {
-  return (
-    explicitWatchTitle(title) ??
-    liveVideos[title] ??
-    `https://www.youtube.com/results?search_query=${encodeURIComponent(`SCI-FI NOODLES ${title}`)}`
-  );
+const liveVideoByTitle = new Map<string, string>();
+for (const [title, href] of Object.entries(liveVideos)) {
+  const real = realWatchHref(href);
+  if (real) liveVideoByTitle.set(watchTitleKey(title), real);
+}
+
+/** Real watch or Shorts URL for a title, from site-segments.json first, then the checked live map. */
+export function youtubeFor(title: string): string | undefined {
+  return explicitWatchTitle(title) ?? liveVideoByTitle.get(watchTitleKey(title));
 }
 
 const releaseMonths: Record<string, number> = {
