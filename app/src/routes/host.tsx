@@ -2,26 +2,21 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { KataraHost } from "@/components/site/katara-host";
 import { SiteFrame } from "@/components/site/site-frame";
+import { pageMeta } from "@/content/catalog";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/host")({
-  head: () => ({
-    meta: [
-      { title: "Katara | SCI-FI NOODLES" },
-      {
-        name: "description",
-        content: "Talk with Katara, the SCI-FI NOODLES host, in chill, crunk, or glam mode.",
-      },
-    ],
-  }),
+  head: () => {
+    const page = pageMeta("page.host");
+    return seoHead({ path: "/host", title: page.title, description: page.description });
+  },
   component: HostPage,
 });
 
 function HostPage() {
+  const page = pageMeta("page.host");
   return (
-    <SiteFrame
-      lede="The channel host. Switch her look, then talk or type. Speech uses the studio voice when it is connected, and this browser when it is not."
-      title="Katara"
-    >
+    <SiteFrame lede={page.subtitle} title={page.header}>
       <KataraHost />
     </SiteFrame>
   );

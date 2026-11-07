@@ -1,18 +1,23 @@
 import type { ReactNode } from "react";
 
 import {
+  atmospheres,
   classics,
+  copyString,
+  copyStrings,
   flavorBowls,
   nextSectionAfter,
   pillarBowls,
+  segmentCopy,
   studio,
+  studioSocials,
   universes,
   type Bowl,
   type Section,
 } from "@/content/catalog";
 import { RamenVessel, VesselGlyph } from "@/components/site/ramen-vessels";
 import { RevealWatcher } from "@/components/site/reveal";
-import { SiteHeader, usePathname } from "@/components/site/site-header";
+import { SiteHeader, SocialLink, usePathname } from "@/components/site/site-header";
 
 export function SiteNav() {
   return <SiteHeader />;
@@ -40,10 +45,13 @@ function FooterBowls({ label, items }: { label: string; items: Bowl[] }) {
 }
 
 export function SiteFooter() {
+  const footer = segmentCopy("site.footer");
+  const labels = copyStrings(footer, "labels");
+  const featured = atmospheres.find((item) => item.featured);
   const nowShowing = [
     ...universes.map((item) => ({ href: `/originals/${item.slug}`, title: item.title })),
     ...classics.slice(0, 1).map((item) => ({ href: `/public-domain/${item.slug}`, title: item.title })),
-    { href: "/atmospheres", title: "Neo-Osaka Rain" },
+    ...(featured ? [{ href: "/atmospheres", title: featured.title }] : []),
   ];
   return (
     <footer className="site-footer">
@@ -57,10 +65,10 @@ export function SiteFooter() {
         </a>
       </div>
       <nav aria-label="Sitemap" className="footer-map">
-        <FooterBowls items={pillarBowls} label="Pillars" />
-        <FooterBowls items={flavorBowls} label="Flavors" />
+        <FooterBowls items={pillarBowls} label={labels[0] || "Pillars"} />
+        <FooterBowls items={flavorBowls} label={labels[1] || "Flavors"} />
         <div>
-          <p className="footer-label">Studio</p>
+          <p className="footer-label">{labels[2] || "Studio"}</p>
           <ul>
             <li>
               <a href="/watch">Watch everything</a>
@@ -77,15 +85,15 @@ export function SiteFooter() {
             <li>
               <a href="/#kitchen">The Noodle Drop</a>
             </li>
-            <li>
-              <a href={studio.youtube} rel="noreferrer" target="_blank">
-                YouTube
-              </a>
-            </li>
+            {studioSocials.map((social) => (
+              <li key={social.id}>
+                <SocialLink social={social} />
+              </li>
+            ))}
           </ul>
         </div>
         <div>
-          <p className="footer-label">Now showing</p>
+          <p className="footer-label">{labels[3] || "Now showing"}</p>
           <ul>
             {nowShowing.map((item) => (
               <li key={item.href + item.title}>
@@ -95,7 +103,7 @@ export function SiteFooter() {
           </ul>
         </div>
         <div>
-          <p className="footer-label">Rights</p>
+          <p className="footer-label">{labels[4] || "Rights"}</p>
           <ul>
             <li>
               <a href="/privacy">Privacy</a>
@@ -109,12 +117,7 @@ export function SiteFooter() {
           </ul>
         </div>
       </nav>
-      <p className="footer-legal">
-        SCI-FI NOODLES is the channel. Each series keeps its own story. All rights reserved.
-      </p>
-      <p className="footer-copyright">
-        © <span suppressHydrationWarning>{new Date().getFullYear()}</span> {studio.owner}
-      </p>
+      <p className="footer-legal">{copyString(footer, "legal")}</p>
     </footer>
   );
 }

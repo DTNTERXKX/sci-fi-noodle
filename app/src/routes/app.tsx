@@ -1,18 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { CustomTemplate } from "@/layouts/custom";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-interface AppSearch {
-  preview: boolean;
-}
-
+// The public site is the ramen menu. This path used to render the
+// Higgsfield generator scaffold, so old links and previews leave it.
 export const Route = createFileRoute("/app")({
-  validateSearch: (search: Record<string, unknown>): AppSearch => ({
-    preview: search.preview === "1" || search.preview === true,
-  }),
-  component: AppRoute,
+  beforeLoad: () => {
+    throw redirect({ to: "/", statusCode: 301 });
+  },
 });
-
-function AppRoute() {
-  const { preview } = Route.useSearch();
-  return <CustomTemplate previewMode={preview} />;
-}

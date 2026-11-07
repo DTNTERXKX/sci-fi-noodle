@@ -2,7 +2,8 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { TitleNav } from "@/components/site/detail-hero";
 import { SiteFrame } from "@/components/site/site-frame";
-import { labEntries, neighbours, pillarBowl } from "@/content/catalog";
+import { failedTakes, labEntries, neighbours, pillarBowl } from "@/content/catalog";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/lab/$slug")({
   loader: ({ params }) => {
@@ -10,12 +11,13 @@ export const Route = createFileRoute("/lab/$slug")({
     if (!entry) throw notFound();
     return { entry };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.entry.title ?? "Lab"} | SCI-FI NOODLES` },
-      { name: "description", content: loaderData?.entry.paragraphs[0] ?? "" },
-    ],
-  }),
+  head: ({ loaderData, params }) =>
+    seoHead({
+      path: `/lab/${params.slug}`,
+      title: `${loaderData?.entry.title ?? "Lab"} | SCI-FI NOODLES`,
+      description: loaderData?.entry.paragraphs[0] ?? "",
+      type: "article",
+    }),
   component: LabEntryPage,
 });
 
@@ -43,6 +45,29 @@ function LabEntryPage() {
           <p key={paragraph}>{paragraph}</p>
         ))}
       </article>
+      {entry.slug === "failed-noodles" ? (
+        <ul className="failed-takes">
+          {failedTakes.map((take) => (
+            <li key={take.slug}>
+              <video
+                aria-label={`${take.title}, failed take from ${take.project}`}
+                controls
+                height={take.height}
+                playsInline
+                poster={`/assets/failed-noodles/${take.slug}.jpg`}
+                preload="none"
+                src={`/assets/failed-noodles/${take.slug}.mp4`}
+                style={{ aspectRatio: `${take.width} / ${take.height}` }}
+                width={take.width}
+              />
+              <p className="meta-line">{take.project}</p>
+              <h2>{take.title}</h2>
+              <p>{take.wrong}</p>
+              <p className="failed-takes-legal">Made with AI · © 2026 NVESTED REALITY LLC. All rights reserved.</p>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </SiteFrame>
   );
 }

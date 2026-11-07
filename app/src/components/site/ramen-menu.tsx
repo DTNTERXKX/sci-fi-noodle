@@ -1,7 +1,7 @@
 import { useId, type CSSProperties } from "react";
 
 import { RamenVessel } from "@/components/site/ramen-vessels";
-import { bowls, studio, type Bowl } from "@/content/catalog";
+import { bowls, copyString, copyStrings, segmentCopy, type Bowl } from "@/content/catalog";
 
 function BowlCard({ bowl, index }: { bowl: Bowl; index: number }) {
   const headingId = useId();
@@ -36,21 +36,25 @@ function BowlCard({ bowl, index }: { bowl: Bowl; index: number }) {
 
 /** The Cosmic Ramen menu board: three pillars and three flavors, each served in its own vessel. */
 export function RamenMenu({ id }: { id: string }) {
+  const menu = segmentCopy("home.menu");
+  const board = copyStrings(menu, "board");
+  const legend = copyStrings(menu, "legend");
   return (
     <section aria-labelledby={`${id}-title`} className="ramen-menu" id={id} tabIndex={-1}>
       <header className="ramen-menu-head" data-reveal>
         <p className="ramen-menu-board">
-          <span>{studio.menu}</span>
-          <span>The Cosmic Ramen Menu</span>
+          {board.map((line) => (
+            <span key={line}>{line}</span>
+          ))}
         </p>
-        <h2 id={`${id}-title`}>Choose your flavor // Explore the multiverse</h2>
-        <p className="ramen-menu-lede">
-          Three pillars tell you where a film comes from. Three flavors tell you how it feels, and they run across every
-          pillar. Order by either.
-        </p>
+        <h2 id={`${id}-title`}>{copyString(menu, "header")}</h2>
+        <p className="ramen-menu-lede">{copyString(menu, "subtitle")}</p>
         <ul className="ramen-legend">
-          <li data-role="pillar">Pillar // where it comes from</li>
-          <li data-role="flavor">Flavor // how it feels</li>
+          {legend.map((line, index) => (
+            <li data-role={index === 0 ? "pillar" : "flavor"} key={line}>
+              {line}
+            </li>
+          ))}
         </ul>
       </header>
       <ol className="ramen-bowls">

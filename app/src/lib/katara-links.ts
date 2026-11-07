@@ -14,15 +14,17 @@ import {
 /** Katara's only link syntax: markdown `[Title](/path)` with a site-relative path. */
 export const KATARA_LINK = /\[([^[\]\n]{1,80})\]\(([^()\s]{1,120})\)/g;
 
-const knownPaths = new Set<string>([
-  "/",
-  ...bowls.map((bowl) => bowl.href),
-  ...sections.map((section) => section.href),
-  ...universes.map((item) => `/originals/${item.slug}`),
-  ...classics.map((item) => `/public-domain/${item.slug}`),
-  ...labEntries.map((item) => `/lab/${item.slug}`),
-  ...watchLibrary().map((item) => item.href.split(/[?#]/)[0]),
-]);
+function knownPaths() {
+  return new Set<string>([
+    "/",
+    ...bowls.map((bowl) => bowl.href),
+    ...sections.map((section) => section.href),
+    ...universes.map((item) => `/originals/${item.slug}`),
+    ...classics.map((item) => `/public-domain/${item.slug}`),
+    ...labEntries.map((item) => `/lab/${item.slug}`),
+    ...watchLibrary().map((item) => item.href.split(/[?#]/)[0]),
+  ]);
+}
 
 export type KataraTarget = {
   pathname: string;
@@ -35,7 +37,7 @@ export function kataraTarget(href: string): KataraTarget | null {
   const [rawPath, query = "", ...extra] = href.split("?");
   if (extra.length > 0) return null;
   const pathname = rawPath.length > 1 ? rawPath.replace(/\/+$/, "") : rawPath;
-  if (!knownPaths.has(pathname)) return null;
+  if (!knownPaths().has(pathname)) return null;
   const search: KataraTarget["search"] = {};
   for (const [key, value] of new URLSearchParams(query)) {
     if (key === "flavor" && isFlavorId(value)) search.flavor = value;

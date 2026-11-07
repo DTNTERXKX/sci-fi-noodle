@@ -5,6 +5,7 @@ import {
   flavorCounts,
   pillarBowl,
   pillarBowls,
+  isReleased,
   youtubeFor,
   type BowlId,
   type FlavorId,
@@ -147,7 +148,7 @@ export function ShelfList({
         return (
           <li data-bowl={tint === "pillar" ? pillar.id : cardBowl(item.flavors, item.pillar)} key={item.slug}>
             <a className="watch-still" href={item.href}>
-              <img alt={item.imageAlt ?? ""} src={item.image} />
+              {item.image ? <img alt={item.imageAlt ?? ""} src={item.image} /> : null}
             </a>
             <div>
               <p className="meta-line">
@@ -171,7 +172,7 @@ export function ShelfList({
                 })}
               </ul>
             </div>
-            <WatchMark href={youtubeFor(item.title)} title={item.title} />
+            <WatchMark href={youtubeFor(item.title)} released={isReleased(item.date)} title={item.title} />
           </li>
         );
       })}

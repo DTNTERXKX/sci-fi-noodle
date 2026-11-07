@@ -1,7 +1,7 @@
 import { useLocation, useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 
-import { KataraHost, MODES, type KataraMode } from "./katara-host";
+import { KataraHost, kataraModes, type KataraMode } from "./katara-host";
 
 const OPEN_EVENT = "katara:open";
 const PHONE = "(max-width: 760px)";
@@ -67,9 +67,9 @@ export function KataraDock() {
     return () => window.removeEventListener(OPEN_EVENT, show);
   }, [show]);
 
-  useEffect(() => {
-    if (onHostPage) hide(false);
-  }, [onHostPage, hide]);
+  if (onHostPage && open) {
+    setOpen(false);
+  }
 
   useEffect(() => {
     if (open) {
@@ -92,7 +92,7 @@ export function KataraDock() {
     if (window.matchMedia(PHONE).matches) hide(false);
   }, [hide]);
 
-  const look = MODES[mode];
+  const look = kataraModes()[mode];
 
   return (
     <div className="katara-dock" data-mode={mode} data-open={open ? "true" : "false"}>
