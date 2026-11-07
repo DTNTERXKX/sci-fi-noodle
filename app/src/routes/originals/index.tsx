@@ -4,32 +4,31 @@ import { EnterBracket } from "@/components/site/ctas";
 import { FilterStatus, FlavorChips, ShelfList } from "@/components/site/flavor-filter";
 import { SiteFrame } from "@/components/site/site-frame";
 import {
-  bowlTitle,
   cardBowl,
   filterShelf,
   isFlavorId,
+  pageMeta,
   pillarBowl,
   universes,
   watchLibrary,
   type FlavorId,
 } from "@/content/catalog";
-
-const bowl = pillarBowl("originals");
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/originals/")({
   validateSearch: (search: Record<string, unknown>): { flavor?: FlavorId } => ({
     flavor: isFlavorId(search.flavor) ? search.flavor : undefined,
   }),
-  head: () => ({
-    meta: [
-      { title: bowlTitle(bowl) },
-      { name: "description", content: `${bowl.tagline} ${bowl.description}` },
-    ],
-  }),
+  head: () => {
+    const page = pageMeta("page.originals");
+    return seoHead({ path: "/originals", title: page.title, description: page.description || page.subtitle });
+  },
   component: OriginalsPage,
 });
 
 function OriginalsPage() {
+  const page = pageMeta("page.originals");
+  const bowl = pillarBowl("originals");
   const { flavor } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const items = filterShelf(watchLibrary(), { pillar: "originals" });
@@ -38,8 +37,8 @@ function OriginalsPage() {
   return (
     <SiteFrame
       bowl={bowl}
-      lede="The flagship bowl. Independent science-fiction worlds, each with its own story, rules, characters, and look, plus the original docs, shorts, and ambience made in the same kitchen."
-      title={bowl.category}
+      lede={page.subtitle}
+      title={page.header}
     >
       <div className="universe-split page-block">
         {universes.map((universe) => (

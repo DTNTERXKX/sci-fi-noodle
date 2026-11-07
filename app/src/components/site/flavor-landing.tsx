@@ -7,11 +7,13 @@ export function FlavorLanding({
   flavor,
   pillar,
   lede,
+  title,
   onPillar,
 }: {
   flavor: FlavorId;
   pillar?: PillarId;
   lede: string;
+  title?: string;
   onPillar: (pillar: PillarId | undefined) => void;
 }) {
   const bowl = flavorBowl(flavor);
@@ -19,7 +21,7 @@ export function FlavorLanding({
   const visible = filterShelf(items, { pillar });
 
   return (
-    <SiteFrame bowl={bowl} lede={lede} title={bowl.category}>
+    <SiteFrame bowl={bowl} lede={lede} title={title || bowl.category}>
       <section aria-labelledby="flavor-board-title" className="pillar-board">
         <div className="pillar-board-head">
           <h2 id="flavor-board-title">{bowl.short} across every pillar</h2>

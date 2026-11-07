@@ -1,9 +1,11 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
+import { WatchMark } from "@/components/site/ctas";
 import { DetailHero, TitleNav } from "@/components/site/detail-hero";
 import { Rail } from "@/components/site/rail";
 import { NextShelf, SiteShell } from "@/components/site/site-frame";
-import { cardBowl, classics, neighbours, sections, youtubeFor } from "@/content/catalog";
+import { cardBowl, classics, isReleased, neighbours, sections, youtubeFor } from "@/content/catalog";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/public-domain/$slug")({
   loader: ({ params }) => {
@@ -11,17 +13,15 @@ export const Route = createFileRoute("/public-domain/$slug")({
     if (!project) throw notFound();
     return { project };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.project.title ?? "Project"} | SCI-FI NOODLES` },
-      {
-        name: "description",
-        content: loaderData
-          ? `${loaderData.project.hook} From ${loaderData.project.source} by ${loaderData.project.creator}, ${loaderData.project.published}.`
-          : "",
-      },
-    ],
-  }),
+  head: ({ loaderData, params }) =>
+    seoHead({
+      path: `/public-domain/${params.slug}`,
+      title: `${loaderData?.project.title ?? "Project"} | SCI-FI NOODLES`,
+      description: loaderData
+        ? `${loaderData.project.hook} From ${loaderData.project.source} by ${loaderData.project.creator}, ${loaderData.project.published}.`
+        : "",
+      image: loaderData?.project.image,
+    }),
   component: ProjectPage,
 });
 
@@ -38,13 +38,22 @@ function ProjectPage() {
       <DetailHero
         actions={
           <>
-            <a className="cta-detail-watch" href={youtubeFor(project.title)} rel="noreferrer" target="_blank">
-              <svg aria-hidden="true" viewBox="0 0 16 16">
-                <path d="M4 2.5v11l9-5.5z" />
-              </svg>
-              Watch
-              <span className="sr-only">, {project.title}, on YouTube</span>
-            </a>
+            {isReleased(project.date) ? (
+              <a className="cta-detail-watch" href={youtubeFor(project.title)} rel="noreferrer" target="_blank">
+                <svg aria-hidden="true" viewBox="0 0 16 16">
+                  <path d="M4 2.5v11l9-5.5z" />
+                </svg>
+                Watch
+                <span className="sr-only">, {project.title}, on YouTube</span>
+              </a>
+            ) : (
+              <button className="cta-detail-watch" disabled type="button">
+                <svg aria-hidden="true" viewBox="0 0 16 16">
+                  <path d="M4 2.5v11l9-5.5z" />
+                </svg>
+                Coming Soon!
+              </button>
+            )}
             <a className="cta-detail-jump" href="#source">
               Source and rights
             </a>
@@ -87,6 +96,31 @@ function ProjectPage() {
           </dl>
           <p className="rights-note">{project.rights}</p>
         </section>
+
+        {project.episodes.length > 0 ? (
+          <section aria-labelledby="episodes" className="detail-section" data-reveal>
+            <h2 id="episodes" tabIndex={-1}>
+              Episodes
+            </h2>
+            <ol className="episode-list">
+              {project.episodes.map((episode, number) => (
+                <li key={episode.slug}>
+                  <span className="episode-number">{String(number + 1).padStart(2, "0")}</span>
+                  <div>
+                    <p className="meta-line">{[episode.date, episode.runtime].filter(Boolean).join(" · ")}</p>
+                    <h3>{episode.title}</h3>
+                    {episode.hook ? <p>{episode.hook}</p> : null}
+                  </div>
+                  <WatchMark
+                    href={youtubeFor(`${project.title} ${episode.title}`)}
+                    released={isReleased(episode.date)}
+                    title={episode.title}
+                  />
+                </li>
+              ))}
+            </ol>
+          </section>
+        ) : null}
 
         <TitleNav label="More from Timewarp Shoyu" next={sibling(next)} previous={sibling(previous)} />
       </div>

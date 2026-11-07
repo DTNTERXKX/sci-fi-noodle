@@ -1,4 +1,4 @@
-# Shared helpers for services/site/start.ps1 and services/site/stop.ps1.
+# Shared helpers for services/site/start.ps1, stop.ps1, and restart.ps1.
 # ASCII-only so Windows PowerShell 5.1 reads this without a BOM.
 
 $ErrorActionPreference = "Stop"

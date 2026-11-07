@@ -3,24 +3,23 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { EnterBracket } from "@/components/site/ctas";
 import { FilterStatus, FlavorChips } from "@/components/site/flavor-filter";
 import { SiteFrame } from "@/components/site/site-frame";
-import { bowlTitle, cardBowl, classics, flavorBowl, isFlavorId, pillarBowl, type FlavorId } from "@/content/catalog";
-
-const bowl = pillarBowl("public-domain");
+import { cardBowl, classics, flavorBowl, isFlavorId, pageMeta, pillarBowl, type FlavorId } from "@/content/catalog";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/public-domain/")({
   validateSearch: (search: Record<string, unknown>): { flavor?: FlavorId } => ({
     flavor: isFlavorId(search.flavor) ? search.flavor : undefined,
   }),
-  head: () => ({
-    meta: [
-      { title: bowlTitle(bowl) },
-      { name: "description", content: `${bowl.tagline} ${bowl.description}` },
-    ],
-  }),
+  head: () => {
+    const page = pageMeta("page.public-domain");
+    return seoHead({ path: "/public-domain", title: page.title, description: page.description || page.subtitle });
+  },
   component: PublicDomainPage,
 });
 
 function PublicDomainPage() {
+  const page = pageMeta("page.public-domain");
+  const bowl = pillarBowl("public-domain");
   const { flavor } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const visible = flavor ? classics.filter((item) => item.flavors.includes(flavor)) : classics;
@@ -28,8 +27,8 @@ function PublicDomainPage() {
   return (
     <SiteFrame
       bowl={bowl}
-      lede="Public-domain books, retold as problems we have now. Every adaptation names its source. Public-domain status still depends on country, edition, and translation."
-      title={bowl.category}
+      lede={page.subtitle}
+      title={page.header}
     >
       <div className="pillar-board page-block">
         <FlavorChips

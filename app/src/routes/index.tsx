@@ -12,57 +12,62 @@ import {
   atmospheres,
   cardBowl,
   classics,
+  copyString,
   docs,
   features,
   flavorBowl,
+  pageMeta,
   pillarBowl,
+  segmentCopy,
+  segmentLocked,
   shorts,
-  studio,
   universes,
 } from "@/content/catalog";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "SCI-FI NOODLES // Cosmic Ramen Menu 001" },
-      {
-        name: "description",
-        content: `${studio.line} Original universes, public-domain classics reimagined, and the lab behind them, served as a menu of sci-fi flavors.`,
-      },
-    ],
-  }),
+  head: () => {
+    const page = pageMeta("page.home");
+    return seoHead({ path: "/", title: page.title, description: page.description });
+  },
   component: Index,
 });
 
-const blackHole = pillarBowl("originals");
-const timewarp = pillarBowl("public-domain");
-const cyberpunk = pillarBowl("lab");
-
-const timewarpRail = classics.map((item) => ({
-  key: item.slug,
-  href: `/public-domain/${item.slug}`,
-  title: item.title,
-  kicker: `${item.date} · after ${item.creator}`,
-  hook: item.hook,
-  image: item.image,
-  bowl: cardBowl(item.flavors, "public-domain"),
-}));
-
-const flightRail = [
-  ...shorts.map((item) => ({ item, flavor: flavorBowl("quantum-fire"), href: "/shorts" })),
-  ...docs.map((item) => ({ item, flavor: flavorBowl("nebula-miso"), href: "/docs" })),
-  ...atmospheres.map((item) => ({ item, flavor: flavorBowl("zero-g"), href: "/atmospheres" })),
-].map(({ item, flavor, href }) => ({
-  key: item.slug,
-  href,
-  title: item.title,
-  kicker: `${flavor.short} · ${item.runtime}`,
-  hook: item.hook,
-  image: item.image,
-  bowl: flavor.id,
-}));
-
 function Index() {
+  const blackHole = pillarBowl("originals");
+  const timewarp = pillarBowl("public-domain");
+  const cyberpunk = pillarBowl("lab");
+  const originals = segmentCopy("home.originals");
+  const publicDomain = segmentCopy("home.public-domain");
+  const flight = segmentCopy("home.flavor-flight");
+  const lab = segmentCopy("home.lab");
+  const labImage = copyString(segmentLocked("home.lab"), "image");
+  const host = segmentCopy("home.host");
+  const hostImage = copyString(segmentLocked("home.host"), "image");
+  const newsletter = segmentCopy("home.newsletter");
+  const timewarpRail = classics.map((item) => ({
+    key: item.slug,
+    href: `/public-domain/${item.slug}`,
+    title: item.title,
+    kicker: `${item.date} · after ${item.creator}`,
+    hook: item.hook,
+    image: item.image,
+    bowl: cardBowl(item.flavors, "public-domain"),
+  }));
+  const flightRail = [
+    ...shorts.map((item) => ({ item, flavor: flavorBowl("quantum-fire"), href: "/shorts" })),
+    ...docs.map((item) => ({ item, flavor: flavorBowl("nebula-miso"), href: "/docs" })),
+    ...atmospheres.map((item) => ({ item, flavor: flavorBowl("zero-g"), href: "/atmospheres" })),
+  ].map(({ item, flavor, href }) => ({
+    key: item.slug,
+    href,
+    title: item.title,
+    kicker: `${flavor.short} · ${item.runtime}`,
+    hook: item.hook,
+    image: item.image,
+    bowl: flavor.id,
+  }));
+
   return (
     <SiteShell className="home-main">
       <CosmicHero menuId="menu" />
@@ -76,8 +81,8 @@ function Index() {
           <p className="bowl-kicker">
             <span>{blackHole.number} //</span> {blackHole.name}
           </p>
-          <h2 id="universes-title">{blackHole.category}</h2>
-          <p>{blackHole.tagline} Each world keeps its own story. The channel only shows you the door.</p>
+          <h2 id="universes-title">{copyString(originals, "header")}</h2>
+          <p>{copyString(originals, "subtitle")}</p>
         </div>
         <div className="universe-split">
           {universes.map((universe) => (
@@ -97,16 +102,16 @@ function Index() {
       <Rail
         bowl={timewarp.id}
         items={timewarpRail}
-        lede={`${timewarp.tagline} The book supplies the bones. The film asks what the story is about now.`}
-        seeAll={{ href: timewarp.href, label: "All Public Domain" }}
-        title={`${timewarp.name} // ${timewarp.category}`}
+        lede={copyString(publicDomain, "subtitle")}
+        seeAll={{ href: timewarp.href, label: copyString(publicDomain, "seeAll") }}
+        title={copyString(publicDomain, "header")}
       />
 
       <Rail
         items={flightRail}
-        lede="A tasting flight of the three flavors: Quantum Fire shorts, Nebula Miso lore, and Zero-G Shio ambience."
-        seeAll={{ href: "/watch", label: "Filter every flavor" }}
-        title="Flavor flight"
+        lede={copyString(flight, "subtitle")}
+        seeAll={{ href: "/watch", label: copyString(flight, "seeAll") }}
+        title={copyString(flight, "header")}
       />
 
       <section className="lab-tease" data-bowl={cyberpunk.id} data-reveal>
@@ -114,37 +119,32 @@ function Index() {
           <p className="bowl-kicker">
             <span>{cyberpunk.number} //</span> {cyberpunk.name}
           </p>
-          <h2>{cyberpunk.category}</h2>
-          <p>{cyberpunk.tagline} See how a shot gets cooked, and which experiments never leave the kitchen.</p>
-          <ExploreOrbit href={cyberpunk.href} title="the Lab" />
+          <h2>{copyString(lab, "header")}</h2>
+          <p>{copyString(lab, "subtitle")}</p>
+          <ExploreOrbit href={cyberpunk.href} title={copyString(lab, "cta")} />
         </div>
-        <img alt="A dark edit bay with a bowl of glowing noodles" src="/assets/stills/lab.png" />
+        {labImage ? <img alt={copyString(lab, "imageAlt")} src={labImage} /> : null}
       </section>
 
       <section className="host-tease" data-reveal>
-        <img alt="Katara in chill mode, the SCI-FI NOODLES host" src="/brand/katara-chill.png" />
+        {hostImage ? <img alt={copyString(host, "imageAlt")} src={hostImage} /> : null}
         <div>
-          <p className="kicker">Your host // At the counter</p>
-          <h2>Katara</h2>
-          <p>
-            Tell her your mood and she pours the bowl. Chill, crunk, or glam, she knows every flavor on the menu and
-            sends you straight to the film.
-          </p>
+          <p className="kicker">{copyString(host, "kicker")}</p>
+          <h2>{copyString(host, "header")}</h2>
+          <p>{copyString(host, "subtitle")}</p>
           <div className="host-tease-actions">
             <button className="host-ask" onClick={openKataraDock} type="button">
-              Ask Katara
+              {copyString(host, "primaryCta")}
             </button>
-            <SignalLink href="/host">Meet Katara</SignalLink>
+            <SignalLink href="/host">{copyString(host, "secondaryCta")}</SignalLink>
           </div>
         </div>
       </section>
 
       <section className="kitchen" data-reveal id="kitchen">
-        <p className="kicker">The Noodle Drop</p>
-        <h2>Join the kitchen</h2>
-        <p>
-          New premieres, strange experiments, and universe drops. You will not have to wait on the algorithm.
-        </p>
+        <p className="kicker">{copyString(newsletter, "kicker")}</p>
+        <h2>{copyString(newsletter, "header")}</h2>
+        <p>{copyString(newsletter, "subtitle")}</p>
         <JoinForm />
       </section>
     </SiteShell>
