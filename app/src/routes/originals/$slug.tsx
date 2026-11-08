@@ -60,6 +60,11 @@ function UniversePage() {
             <a className="cta-detail-jump" href="#episodes">
               All {episodeCount} episodes
             </a>
+            {universe.playlistHref ? (
+              <a className="cta-detail-jump" href={universe.playlistHref} target="_blank" rel="noopener noreferrer">
+                Watch the playlist
+              </a>
+            ) : null}
           </>
         }
         image={universe.image}

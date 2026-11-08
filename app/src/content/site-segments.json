@@ -447,6 +447,7 @@
       "kind": "series",
       "locked": {
         "slug": "tira-rift",
+        "playlistHref": "https://www.youtube.com/playlist?list=PLF2gPKQobpDU",
         "flavors": [],
         "image": "/assets/heroes/tira-rift.png",
         "heroSocial": {
@@ -629,6 +630,7 @@
       "kind": "series",
       "locked": {
         "slug": "the-stranger",
+        "playlistHref": "https://www.youtube.com/playlist?list=PLCVGPiOVbEo0",
         "flavors": [
           "quantum-fire"
         ],
@@ -775,6 +777,7 @@
       "kind": "series",
       "locked": {
         "slug": "bluff-city-immune",
+        "playlistHref": "https://www.youtube.com/playlist?list=PLCCLTQr1QtXQ",
         "flavors": [],
         "image": "/assets/heroes/bluff-city-immune.png",
         "heroSocial": {
@@ -1932,9 +1935,9 @@
         "placeholder": "you@domain.com",
         "submit": "Join",
         "help": "Release notes, not a weekly quota. Leave whenever you want.",
-        "success": "Saved in this browser. The studio inbox connects when the list goes live.",
+        "success": "Received. Your address is stored with the site.",
         "invalidEmail": "Use a full email address.",
-        "blocked": "This browser blocked saving the address."
+        "blocked": "That address was not saved. Try again in a moment."
       }
     },
     {
@@ -1950,12 +1953,12 @@
           "note": "Note"
         },
         "submit": "Send note",
-        "success": "Kept on this computer. A person reads partnership notes once the inbox is connected.",
+        "success": "Received. Your note is stored with the site.",
         "errors": {
           "name": "Add your name.",
           "email": "Use a full email address.",
           "note": "Tell us what you want in a sentence or two.",
-          "blocked": "This browser blocked saving the note."
+          "blocked": "That note was not saved. Try again in a moment."
         }
       }
     },
@@ -1968,10 +1971,10 @@
       "copy": {
         "title": "Privacy | SCI-FI NOODLES",
         "header": "Privacy",
-        "subtitle": "Short version: this preview keeps what you type in your own browser.",
+        "subtitle": "Short version: join and contact notes are stored with the site.",
         "description": "How the SCI-FI NOODLES site handles the email you type and the pages you visit.",
         "paragraphs": [
-          "The Noodle Drop form and the contact form save your note in local storage on this device. They are not sent to a studio server yet. Clearing site data removes them.",
+          "The Noodle Drop form and the contact form send what you type to this site and store it in the site database. The form does not send email.",
           "Watching a film sends you to YouTube. YouTube has its own privacy policy. This site does not run a second comment system.",
           "When a real mailing list is connected, this page will name the provider, what it stores, and how to leave."
         ]

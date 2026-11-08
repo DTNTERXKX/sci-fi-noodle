@@ -29,13 +29,25 @@ public sealed class KataraMenuTests : IClassFixture<WebApplicationFactory<Progra
     }
 
     [Fact]
-    public async Task Future_title_has_no_invented_youtube_url()
+    public async Task Frankenstein_uses_the_stored_video_url()
     {
         var payload = await Ask("When is Frankenstein: The Commit?", "chill");
         var reply = payload.GetProperty("reply").GetString()!;
-        Assert.Contains("Nov 7, 2026", reply);
+        Assert.Contains("https://youtu.be/8bp4f2vml6A", reply);
+        Assert.DoesNotContain("not live yet", reply, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("youtube.com/results", reply, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("search_query", reply, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task Future_title_has_no_invented_youtube_url()
+    {
+        var payload = await Ask("When is The Ball Crashers?", "chill");
+        var reply = payload.GetProperty("reply").GetString()!;
+        Assert.Contains("Nov 13, 2026", reply);
         Assert.Contains("not live yet", reply, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("youtube.com", reply, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("youtu.be", reply, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]

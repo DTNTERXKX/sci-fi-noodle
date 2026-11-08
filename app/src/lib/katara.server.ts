@@ -167,7 +167,7 @@ function publicVoicePath(mode: KataraMode) {
 
 function link(title: string, href: string) {
   const safe = href.startsWith("/") && !href.startsWith("//") ? href : "/watch";
-  return `[${title.replace(/[\[\]]/g, "")}](${safe})`;
+  return `[${title.replaceAll("[", "").replaceAll("]", "")}](${safe})`;
 }
 
 function titlePhrases(title: string) {
@@ -184,6 +184,7 @@ function titlePhrases(title: string) {
   return phrases.map((phrase) => phrase.trim()).filter((phrase) => phrase.length >= 4);
 }
 
+/** Sort key for the printed calendar date. Live versus coming soon uses isReleased (America/Chicago). */
 function calendarUtc(date: string) {
   const match = /^([A-Z][a-z]{2}) (\d{1,2}), (\d{4})$/.exec(date.trim());
   if (!match) return null;

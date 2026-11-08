@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 
 import { copyString, segmentCopy } from "@/content/catalog";
 
@@ -36,14 +36,27 @@ function contactCopy() {
   };
 }
 
+async function postInbox(body: Record<string, string>) {
+  const response = await fetch("/api/inbox", {
+    method: "POST",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const payload = (await response.json().catch(() => null)) as { ok?: boolean } | null;
+  return response.ok && payload?.ok === true;
+}
+
 export function JoinForm() {
   const form = newsletterCopy();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+  const pendingRef = useRef(false);
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pendingRef.current) return;
     const value = email.trim().toLowerCase();
     const form = newsletterCopy();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
@@ -51,15 +64,24 @@ export function JoinForm() {
       setMessage("");
       return;
     }
+    pendingRef.current = true;
+    setPending(true);
     try {
-      window.localStorage.setItem("noodle-drop-email", value);
+      const saved = await postInbox({ kind: "join", email: value });
+      if (!saved) {
+        setError(form.blocked);
+        setMessage("");
+        return;
+      }
+      setError("");
+      setMessage(form.success);
     } catch {
       setError(form.blocked);
       setMessage("");
-      return;
+    } finally {
+      pendingRef.current = false;
+      setPending(false);
     }
-    setError("");
-    setMessage(form.success);
   }
 
   return (
@@ -76,7 +98,7 @@ export function JoinForm() {
           type="email"
           value={email}
         />
-        <button className="cta-join" type="submit">
+        <button className="cta-join" disabled={pending} type="submit">
           {form.submit}
         </button>
       </div>
@@ -98,39 +120,50 @@ export function ContactForm() {
   const [note, setNote] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+  const pendingRef = useRef(false);
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pendingRef.current) return;
     const form = contactCopy();
-    if (name.trim().length < 2) {
+    const nextName = name.trim();
+    const nextEmail = email.trim();
+    const nextNote = note.trim();
+    if (nextName.length < 2) {
       setError(form.nameError);
       setMessage("");
       return;
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) {
       setError(form.emailError);
       setMessage("");
       return;
     }
-    if (note.trim().length < 12) {
+    if (nextNote.length < 12) {
       setError(form.noteError);
       setMessage("");
       return;
     }
+    pendingRef.current = true;
+    setPending(true);
     try {
-      const key = "noodle-contact-notes";
-      const prior = window.localStorage.getItem(key);
-      const notes = prior ? (JSON.parse(prior) as unknown[]) : [];
-      notes.push({ name: name.trim(), email: email.trim(), note: note.trim(), at: new Date().toISOString() });
-      window.localStorage.setItem(key, JSON.stringify(notes));
+      const saved = await postInbox({ kind: "contact", name: nextName, email: nextEmail, note: nextNote });
+      if (!saved) {
+        setError(form.blocked);
+        setMessage("");
+        return;
+      }
+      setError("");
+      setMessage(form.success);
+      setNote("");
     } catch {
-      setError(contactCopy().blocked);
+      setError(form.blocked);
       setMessage("");
-      return;
+    } finally {
+      pendingRef.current = false;
+      setPending(false);
     }
-    setError("");
-    setMessage(contactCopy().success);
-    setNote("");
   }
 
   return (
@@ -153,7 +186,7 @@ export function ContactForm() {
         </p>
       ) : null}
       {message ? <p className="form-ok">{message}</p> : null}
-      <button className="cta-note" type="submit">
+      <button className="cta-note" disabled={pending} type="submit">
         {form.submit}
       </button>
     </form>

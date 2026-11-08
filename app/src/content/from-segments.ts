@@ -86,6 +86,19 @@ export function realWatchHref(value: unknown): string | undefined {
   return undefined;
 }
 
+/** A YouTube playlist URL stored on a series segment (locked.playlistHref). */
+export function playlistHrefOf(value: unknown): string | undefined {
+  if (typeof value !== "string" || !value) return undefined;
+  try {
+    const url = new URL(value);
+    const host = url.hostname.replace(/^www\./, "");
+    if (host === "youtube.com" && url.pathname === "/playlist" && url.searchParams.get("list")) return value;
+  } catch {
+    return undefined;
+  }
+  return undefined;
+}
+
 /** Title key for watch lookup. A colon in "Series: Episode" is the same title as "Series Episode". */
 export function watchTitleKey(title: string) {
   return title.replace(/:\s+/g, " ").replace(/\s+/g, " ").trim();
@@ -247,6 +260,7 @@ export function buildCatalog(youtubeFor: (title: string) => string | undefined):
         imageAlt: altOf(segment),
         flavors: flavorsOf(segment.locked),
         episodes: episodesFor(file, slug),
+        playlistHref: playlistHrefOf(segment.locked.playlistHref),
       };
     });
 
