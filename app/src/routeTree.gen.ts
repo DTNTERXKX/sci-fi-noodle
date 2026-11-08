@@ -29,6 +29,7 @@ import { Route as DocsIndexRouteImport } from './routes/docs/index'
 import { Route as PublicDomainSlugRouteImport } from './routes/public-domain/$slug'
 import { Route as OriginalsSlugRouteImport } from './routes/originals/$slug'
 import { Route as LabSlugRouteImport } from './routes/lab/$slug'
+import { Route as ApiInboxRouteImport } from './routes/api/inbox'
 import { Route as ApiKataraTalkRouteImport } from './routes/api/katara/talk'
 
 const WatchRoute = WatchRouteImport.update({
@@ -131,6 +132,11 @@ const LabSlugRoute = LabSlugRouteImport.update({
   path: '/lab/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiInboxRoute = ApiInboxRouteImport.update({
+  id: '/api/inbox',
+  path: '/api/inbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiKataraTalkRoute = ApiKataraTalkRouteImport.update({
   id: '/api/katara/talk',
   path: '/api/katara/talk',
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/watch': typeof WatchRoute
+  '/api/inbox': typeof ApiInboxRoute
   '/lab/$slug': typeof LabSlugRoute
   '/originals/$slug': typeof OriginalsSlugRoute
   '/public-domain/$slug': typeof PublicDomainSlugRoute
@@ -174,6 +181,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/watch': typeof WatchRoute
+  '/api/inbox': typeof ApiInboxRoute
   '/lab/$slug': typeof LabSlugRoute
   '/originals/$slug': typeof OriginalsSlugRoute
   '/public-domain/$slug': typeof PublicDomainSlugRoute
@@ -198,6 +206,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/watch': typeof WatchRoute
+  '/api/inbox': typeof ApiInboxRoute
   '/lab/$slug': typeof LabSlugRoute
   '/originals/$slug': typeof OriginalsSlugRoute
   '/public-domain/$slug': typeof PublicDomainSlugRoute
@@ -223,6 +232,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/watch'
+    | '/api/inbox'
     | '/lab/$slug'
     | '/originals/$slug'
     | '/public-domain/$slug'
@@ -246,6 +256,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/watch'
+    | '/api/inbox'
     | '/lab/$slug'
     | '/originals/$slug'
     | '/public-domain/$slug'
@@ -269,6 +280,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/watch'
+    | '/api/inbox'
     | '/lab/$slug'
     | '/originals/$slug'
     | '/public-domain/$slug'
@@ -293,6 +305,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   WatchRoute: typeof WatchRoute
+  ApiInboxRoute: typeof ApiInboxRoute
   LabSlugRoute: typeof LabSlugRoute
   OriginalsSlugRoute: typeof OriginalsSlugRoute
   PublicDomainSlugRoute: typeof PublicDomainSlugRoute
@@ -445,6 +458,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LabSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/inbox': {
+      id: '/api/inbox'
+      path: '/api/inbox'
+      fullPath: '/api/inbox'
+      preLoaderRoute: typeof ApiInboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/katara/talk': {
       id: '/api/katara/talk'
       path: '/api/katara/talk'
@@ -469,6 +489,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   WatchRoute: WatchRoute,
+  ApiInboxRoute: ApiInboxRoute,
   LabSlugRoute: LabSlugRoute,
   OriginalsSlugRoute: OriginalsSlugRoute,
   PublicDomainSlugRoute: PublicDomainSlugRoute,

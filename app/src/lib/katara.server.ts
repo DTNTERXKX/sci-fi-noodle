@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 
+import { realWatchHref } from "@/content/from-segments";
 import {
   flavorBowls,
   isReleased,
@@ -11,22 +12,11 @@ import {
   studio,
   universes,
   watchLibrary,
+  youtubeFor,
   type ShelfItem,
 } from "@/content/catalog";
 
 export type KataraMode = "chill" | "crunk" | "glam";
-
-/**
- * Direct channel videos already listed in catalog.ts `liveVideos` (that map is not exported).
- * Titles that are not in this list stay on the site menu with no invented YouTube URL.
- */
-const LIVE_VIDEOS: Record<string, string> = {
-  "tira rift the key awakens": "https://www.youtube.com/watch?v=buCKa4pm0Rw",
-  "neo osaka rain": "https://www.youtube.com/watch?v=G-YEM6LOE8Y",
-  "the stranger part 1": "https://www.youtube.com/shorts/uu762gNCTXY",
-  "the stranger part 2": "https://www.youtube.com/shorts/15IGDVeL080",
-  "iron beats wood rise of the ironclad": "https://www.youtube.com/watch?v=sY7_WU6iOz0",
-};
 
 const VOICE_FILES: Record<KataraMode, string> = {
   chill: "katara_chill.mp3",
@@ -177,7 +167,7 @@ function publicVoicePath(mode: KataraMode) {
 
 function link(title: string, href: string) {
   const safe = href.startsWith("/") && !href.startsWith("//") ? href : "/watch";
-  return `[${title.replace(/[\[\]]/g, "")}](${safe})`;
+  return `[${title.replaceAll("[", "").replaceAll("]", "")}](${safe})`;
 }
 
 function titlePhrases(title: string) {
@@ -194,6 +184,7 @@ function titlePhrases(title: string) {
   return phrases.map((phrase) => phrase.trim()).filter((phrase) => phrase.length >= 4);
 }
 
+/** Sort key for the printed calendar date. Live versus coming soon uses isReleased (America/Chicago). */
 function calendarUtc(date: string) {
   const match = /^([A-Z][a-z]{2}) (\d{1,2}), (\d{4})$/.exec(date.trim());
   if (!match) return null;
@@ -204,7 +195,7 @@ function calendarUtc(date: string) {
 
 function liveUrl(title: string, date: string) {
   if (!isReleased(date)) return null;
-  return LIVE_VIDEOS[normalizeQuestion(title)] ?? null;
+  return realWatchHref(youtubeFor(title)) ?? null;
 }
 
 function titleBody(item: ShelfItem) {

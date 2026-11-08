@@ -1,6 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
-import { WatchMark } from "@/components/site/ctas";
+import { WatchAnchor, WatchMark } from "@/components/site/ctas";
 import { DetailHero, TitleNav } from "@/components/site/detail-hero";
 import { Rail } from "@/components/site/rail";
 import { NextShelf, SiteShell } from "@/components/site/site-frame";
@@ -38,30 +38,33 @@ function UniversePage() {
       <DetailHero
         actions={
           <>
-            {isReleased(firstEpisode.date) ? (
-              <a
-                className="cta-detail-watch"
-                href={youtubeFor(`${universe.title} ${firstEpisode.title}`)}
-                rel="noreferrer"
-                target="_blank"
-              >
-                <svg aria-hidden="true" viewBox="0 0 16 16">
-                  <path d="M4 2.5v11l9-5.5z" />
-                </svg>
-                Watch episode 1
-                <span className="sr-only">, {firstEpisode.title}, on YouTube</span>
-              </a>
-            ) : (
-              <button className="cta-detail-watch" disabled type="button">
-                <svg aria-hidden="true" viewBox="0 0 16 16">
-                  <path d="M4 2.5v11l9-5.5z" />
-                </svg>
-                Coming Soon!
-              </button>
-            )}
+            <WatchAnchor
+              className="cta-detail-watch"
+              href={youtubeFor(`${universe.title} ${firstEpisode.title}`)}
+              released={isReleased(firstEpisode.date)}
+              soon={
+                <>
+                  <svg aria-hidden="true" viewBox="0 0 16 16">
+                    <path d="M4 2.5v11l9-5.5z" />
+                  </svg>
+                  Coming Soon!
+                </>
+              }
+            >
+              <svg aria-hidden="true" viewBox="0 0 16 16">
+                <path d="M4 2.5v11l9-5.5z" />
+              </svg>
+              Watch episode 1
+              <span className="sr-only">, {firstEpisode.title}, on YouTube</span>
+            </WatchAnchor>
             <a className="cta-detail-jump" href="#episodes">
               All {episodeCount} episodes
             </a>
+            {universe.playlistHref ? (
+              <a className="cta-detail-jump" href={universe.playlistHref} target="_blank" rel="noopener noreferrer">
+                Watch the playlist
+              </a>
+            ) : null}
           </>
         }
         image={universe.image}

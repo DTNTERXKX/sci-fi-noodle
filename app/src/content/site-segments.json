@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exported": "2026-11-05",
+  "exported": "2026-11-06",
   "site": "SCI-FI NOODLES",
   "note": "The site reads this file. Local dev loads it from disk on each request, and a production build embeds the same JSON, so a save here is what visitors see after a refresh.",
   "instructions": [
@@ -50,7 +50,7 @@
       "An empty string means the image is not made yet. Never point a field at a file that does not exist in app/public."
     ]
   },
-  "segmentCount": 96,
+  "segmentCount": 95,
   "segments": [
     {
       "id": "studio",
@@ -60,12 +60,30 @@
       "locked": {
         "youtube": "https://www.youtube.com/@SCIFINOODLES",
         "socials": [
-          { "label": "Higgsfield", "href": "https://higgsfield.ai/@dtnterxkx" },
-          { "label": "TikTok", "href": "https://www.tiktok.com/@scifinoodles5289" },
-          { "label": "X", "href": "https://x.com/scifinoodles" },
-          { "label": "Instagram", "href": "https://www.instagram.com/scifinoodles2026/" },
-          { "label": "YouTube", "href": "https://www.youtube.com/@SCIFINOODLES" },
-          { "label": "Facebook", "href": "https://www.facebook.com/61595575268577" }
+          {
+            "label": "Higgsfield",
+            "href": "https://higgsfield.ai/@dtnterxkx"
+          },
+          {
+            "label": "TikTok",
+            "href": "https://www.tiktok.com/@scifinoodles5289"
+          },
+          {
+            "label": "X",
+            "href": "https://x.com/scifinoodles"
+          },
+          {
+            "label": "Instagram",
+            "href": "https://www.instagram.com/scifinoodles2026/"
+          },
+          {
+            "label": "YouTube",
+            "href": "https://www.youtube.com/@SCIFINOODLES"
+          },
+          {
+            "label": "Facebook",
+            "href": "https://www.facebook.com/61595575268577"
+          }
         ]
       },
       "copy": {
@@ -356,17 +374,17 @@
         "slug": "the-commit",
         "href": "/public-domain/the-commit",
         "bowl": "timewarp",
-        "watchHref": "https://www.youtube.com/results?search_query=SCI-FI%20NOODLES%20Frankenstein%3A%20The%20Commit"
+        "watchHref": "https://youtu.be/8bp4f2vml6A"
       },
       "copy": {
         "image": "/assets/heroes/the-commit.png",
         "imageAlt": "FRANKENSTEIN: THE COMMIT title over a 2D anime lab at night, rain on tall arched windows glowing orange and server racks lit blue.",
-        "kicker": "Next premiere · Nov 7, 2026",
+        "kicker": "Micro-series · Ep 1 out now · Ep 2 Nov 18, 2026",
         "title": "Frankenstein: The Commit",
         "description": "1:00 a.m. The lab pushes to production and the whole team goes home. Mary Shelley's 1818 novel, retold as a problem we have now.",
         "meta": [
           "Timewarp Shoyu",
-          "5 min",
+          "3-episode micro-series",
           "After Mary Shelley, 1818"
         ],
         "detailsLabel": "Source and rights"
@@ -429,6 +447,7 @@
       "kind": "series",
       "locked": {
         "slug": "tira-rift",
+        "playlistHref": "https://www.youtube.com/playlist?list=PLF2gPKQobpDU",
         "flavors": [],
         "image": "/assets/heroes/tira-rift.png",
         "heroSocial": {
@@ -480,7 +499,7 @@
         "title": "The Ball Crashers",
         "description": "The city sets a table for the squad that saved it, and Major Amara Kade can't taste a thing.",
         "runtime": "4 min",
-        "releaseDate": "Nov 6, 2026",
+        "releaseDate": "Nov 13, 2026",
         "thumbAlt": ""
       }
     },
@@ -500,7 +519,7 @@
         "title": "Echoes of Ngairo",
         "description": "On Cobblestone Landing, a seven-notched keystone turns to face her.",
         "runtime": "4 min",
-        "releaseDate": "Nov 20, 2026",
+        "releaseDate": "Nov 27, 2026",
         "thumbAlt": ""
       }
     },
@@ -520,7 +539,7 @@
         "title": "The Undercity Breach",
         "description": "Under Front Street the dig reaches the city's machinery, and the same girder falls again, this time over a friend.",
         "runtime": "4 min",
-        "releaseDate": "Dec 4, 2026",
+        "releaseDate": "Dec 11, 2026",
         "thumbAlt": ""
       }
     },
@@ -540,7 +559,7 @@
         "title": "Titan Warning",
         "description": "The quiet one. No fight, one number, a Titan beside the M bridge.",
         "runtime": "4 min",
-        "releaseDate": "Dec 18, 2026",
+        "releaseDate": "Dec 25, 2026",
         "thumbAlt": ""
       }
     },
@@ -560,7 +579,7 @@
         "title": "MAAT Protocol",
         "description": "One mech, one steel frame, one word said five times on the Chickasaw Bluffs.",
         "runtime": "",
-        "releaseDate": "Jan 1, 2027",
+        "releaseDate": "Jan 8, 2027",
         "thumbAlt": ""
       }
     },
@@ -580,7 +599,7 @@
         "title": "Rift Night",
         "description": "Seven breaches, four people, and one of them walks the wrong way on purpose.",
         "runtime": "",
-        "releaseDate": "Jan 15, 2027",
+        "releaseDate": "Jan 22, 2027",
         "thumbAlt": ""
       }
     },
@@ -600,7 +619,7 @@
         "title": "2027 Transmission",
         "description": "",
         "runtime": "",
-        "releaseDate": "Jan 29, 2027",
+        "releaseDate": "Feb 5, 2027",
         "thumbAlt": ""
       }
     },
@@ -611,6 +630,7 @@
       "kind": "series",
       "locked": {
         "slug": "the-stranger",
+        "playlistHref": "https://www.youtube.com/playlist?list=PLCVGPiOVbEo0",
         "flavors": [
           "quantum-fire"
         ],
@@ -636,7 +656,8 @@
       "locked": {
         "slug": "part-1",
         "series": "the-stranger",
-        "thumb": ""
+        "thumb": "",
+        "watchHref": "https://www.youtube.com/shorts/15IGDVeL080"
       },
       "copy": {
         "image": "",
@@ -656,7 +677,8 @@
       "locked": {
         "slug": "part-2",
         "series": "the-stranger",
-        "thumb": ""
+        "thumb": "",
+        "watchHref": "https://www.youtube.com/shorts/uu762gNCTXY"
       },
       "copy": {
         "image": "",
@@ -755,6 +777,7 @@
       "kind": "series",
       "locked": {
         "slug": "bluff-city-immune",
+        "playlistHref": "https://www.youtube.com/playlist?list=PLCCLTQr1QtXQ",
         "flavors": [],
         "image": "/assets/heroes/bluff-city-immune.png",
         "heroSocial": {
@@ -766,28 +789,8 @@
         "title": "Bluff City Immune",
         "subtitle": "A micro-drama about one immune family in Whitehaven, a minute at a time.",
         "description": "2:00 PM. Dad hands Kort the fob to Grace for the first time and doesn't let go right away. One job: Miss Pearl's insulin from the hospital on Elvis Presley Boulevard. In and out.",
-        "status": "Teaser Nov 29 · episodes from Dec 11",
+        "status": "EP01 Nov 7 · EP02 Nov 13 · EP03 Nov 20",
         "imageAlt": "BLUFF CITY IMMUNE title over a graphic-novel painting of a gated subdivision at golden hour, power lines against an orange sky."
-      }
-    },
-    {
-      "id": "originals.bluff-city-immune.teaser",
-      "page": "/originals/bluff-city-immune",
-      "source": "app/src/content/catalog.ts",
-      "kind": "episode",
-      "locked": {
-        "slug": "teaser",
-        "series": "bluff-city-immune",
-        "thumb": ""
-      },
-      "copy": {
-        "image": "",
-        "imageAlt": "",
-        "title": "Teaser",
-        "description": "",
-        "runtime": "",
-        "releaseDate": "Nov 29, 2026",
-        "thumbAlt": ""
       }
     },
     {
@@ -798,7 +801,8 @@
       "locked": {
         "slug": "in-and-out",
         "series": "bluff-city-immune",
-        "thumb": ""
+        "thumb": "",
+        "watchHref": "https://youtube.com/shorts/bi-EmlOjDhA"
       },
       "copy": {
         "image": "",
@@ -806,7 +810,7 @@
         "title": "EP01 · In and Out",
         "description": "",
         "runtime": "2 min 6 sec",
-        "releaseDate": "Dec 11, 2026",
+        "releaseDate": "Nov 7, 2026",
         "thumbAlt": ""
       }
     },
@@ -826,7 +830,7 @@
         "title": "EP02 · Deliverance",
         "description": "",
         "runtime": "1 min 54 sec",
-        "releaseDate": "Dec 12, 2026",
+        "releaseDate": "Nov 13, 2026",
         "thumbAlt": ""
       }
     },
@@ -845,8 +849,8 @@
         "imageAlt": "",
         "title": "EP03 · Back by Five",
         "description": "",
-        "runtime": "60–90 sec",
-        "releaseDate": "Dec 13, 2026",
+        "runtime": "1 min 53 sec",
+        "releaseDate": "Nov 20, 2026",
         "thumbAlt": ""
       }
     },
@@ -873,8 +877,8 @@
         "description": "1:00 a.m. The lab pushes to production and the whole team goes home. Nobody stays to see what it does next.",
         "creator": "Mary Shelley",
         "rights": "Built from the 1818 text. Later films, illustrations, and translations are not the source.",
-        "runtime": "5 min",
-        "releaseDate": "Nov 7, 2026",
+        "runtime": "3-episode micro-series",
+        "releaseDate": "Nov 6, 2026",
         "imageAlt": "FRANKENSTEIN: THE COMMIT title over a 2D anime lab at night, rain on tall arched windows glowing orange and server racks lit blue."
       }
     },
@@ -1082,7 +1086,7 @@
         "description": "Privacy curtains come down only with a pink ticket, at set times.",
         "creator": "Yevgeny Zamyatin",
         "rights": "Only the 1924 Zilboorg translation is treated as the source. Other translations stay out.",
-        "runtime": "8 min",
+        "runtime": "6 min 26 sec",
         "releaseDate": "Dec 9, 2026"
       }
     },
@@ -1336,9 +1340,9 @@
       "copy": {
         "image": "/assets/stills/atmosphere.png",
         "imageAlt": "",
-        "title": "One Tree, One Million Years",
+        "title": "ONE TREE: 1 MILLION YRS",
         "description": "One camera. One white oak. One rope swing. A million years on, the last oak still carries the knot.",
-        "runtime": "50 sec",
+        "runtime": "58 sec",
         "releaseDate": "Dec 23, 2026"
       }
     },
@@ -1931,9 +1935,9 @@
         "placeholder": "you@domain.com",
         "submit": "Join",
         "help": "Release notes, not a weekly quota. Leave whenever you want.",
-        "success": "Saved in this browser. The studio inbox connects when the list goes live.",
+        "success": "Received. Your address is stored with the site.",
         "invalidEmail": "Use a full email address.",
-        "blocked": "This browser blocked saving the address."
+        "blocked": "That address was not saved. Try again in a moment."
       }
     },
     {
@@ -1949,12 +1953,12 @@
           "note": "Note"
         },
         "submit": "Send note",
-        "success": "Kept on this computer. A person reads partnership notes once the inbox is connected.",
+        "success": "Received. Your note is stored with the site.",
         "errors": {
           "name": "Add your name.",
           "email": "Use a full email address.",
           "note": "Tell us what you want in a sentence or two.",
-          "blocked": "This browser blocked saving the note."
+          "blocked": "That note was not saved. Try again in a moment."
         }
       }
     },
@@ -1967,10 +1971,10 @@
       "copy": {
         "title": "Privacy | SCI-FI NOODLES",
         "header": "Privacy",
-        "subtitle": "Short version: this preview keeps what you type in your own browser.",
+        "subtitle": "Short version: join and contact notes are stored with the site.",
         "description": "How the SCI-FI NOODLES site handles the email you type and the pages you visit.",
         "paragraphs": [
-          "The Noodle Drop form and the contact form save your note in local storage on this device. They are not sent to a studio server yet. Clearing site data removes them.",
+          "The Noodle Drop form and the contact form send what you type to this site and store it in the site database. The form does not send email.",
           "Watching a film sends you to YouTube. YouTube has its own privacy policy. This site does not run a second comment system.",
           "When a real mailing list is connected, this page will name the provider, what it stores, and how to leave."
         ]
@@ -2035,12 +2039,30 @@
           "Rights"
         ],
         "socials": [
-          { "label": "Higgsfield", "href": "https://higgsfield.ai/@dtnterxkx" },
-          { "label": "TikTok", "href": "https://www.tiktok.com/@scifinoodles5289" },
-          { "label": "X", "href": "https://x.com/scifinoodles" },
-          { "label": "Instagram", "href": "https://www.instagram.com/scifinoodles2026/" },
-          { "label": "YouTube", "href": "https://www.youtube.com/@SCIFINOODLES" },
-          { "label": "Facebook", "href": "https://www.facebook.com/61595575268577" }
+          {
+            "label": "Higgsfield",
+            "href": "https://higgsfield.ai/@dtnterxkx"
+          },
+          {
+            "label": "TikTok",
+            "href": "https://www.tiktok.com/@scifinoodles5289"
+          },
+          {
+            "label": "X",
+            "href": "https://x.com/scifinoodles"
+          },
+          {
+            "label": "Instagram",
+            "href": "https://www.instagram.com/scifinoodles2026/"
+          },
+          {
+            "label": "YouTube",
+            "href": "https://www.youtube.com/@SCIFINOODLES"
+          },
+          {
+            "label": "Facebook",
+            "href": "https://www.facebook.com/61595575268577"
+          }
         ]
       }
     },

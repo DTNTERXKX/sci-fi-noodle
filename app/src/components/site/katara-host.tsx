@@ -160,7 +160,10 @@ export function KataraHost({
   const busyRef = useRef(false);
   const recognitionRef = useRef<BrowserSpeechRecognition | null>(null);
   const modeRef = useRef(mode);
-  modeRef.current = mode;
+
+  useEffect(() => {
+    modeRef.current = mode;
+  }, [mode]);
 
   useEffect(() => {
     feedRef.current?.scrollTo({ top: feedRef.current.scrollHeight });

@@ -1,4 +1,4 @@
-import { buildCatalog, explicitWatchTitle, type DerivedCatalog } from "./from-segments";
+import { buildCatalog, explicitWatchTitle, realWatchHref, watchTitleKey, type DerivedCatalog } from "./from-segments";
 import {
   copyString,
   copyStrings,
@@ -131,6 +131,7 @@ export type Universe = {
   image: string;
   imageAlt?: string;
   flavors: FlavorId[];
+  playlistHref?: string;
   episodes: {
     slug: string;
     title: string;
@@ -355,21 +356,27 @@ export function flavorCounts(items: { flavors: FlavorId[] }[]): Record<FlavorId,
   return counts;
 }
 
-// Direct links to videos that are live on the channel (checked Oct 29, 2026). Keys are the titles youtubeFor gets.
+// Direct links already checked on the channel. A title with no real video here, and none in
+// site-segments.json, has no visitor YouTube href. Search URLs are not a fallback.
 const liveVideos: Record<string, string> = {
   "T.I.R.A. // RIFT The Key Awakens": "https://www.youtube.com/watch?v=buCKa4pm0Rw",
   "Neo-Osaka Rain": "https://www.youtube.com/watch?v=G-YEM6LOE8Y",
-  "The Stranger Part 1": "https://www.youtube.com/shorts/uu762gNCTXY",
-  "The Stranger Part 2": "https://www.youtube.com/shorts/15IGDVeL080",
+  "The Stranger Part 1": "https://www.youtube.com/shorts/15IGDVeL080",
+  "The Stranger Part 2": "https://www.youtube.com/shorts/uu762gNCTXY",
   "Iron Beats Wood: Rise of the Ironclad": "https://www.youtube.com/watch?v=sY7_WU6iOz0",
+  "Frankenstein: The Commit": "https://youtu.be/8bp4f2vml6A",
+  "Bluff City Immune EP01 · In and Out": "https://youtube.com/shorts/bi-EmlOjDhA",
 };
 
-export function youtubeFor(title: string) {
-  return (
-    explicitWatchTitle(title) ??
-    liveVideos[title] ??
-    `https://www.youtube.com/results?search_query=${encodeURIComponent(`SCI-FI NOODLES ${title}`)}`
-  );
+const liveVideoByTitle = new Map<string, string>();
+for (const [title, href] of Object.entries(liveVideos)) {
+  const real = realWatchHref(href);
+  if (real) liveVideoByTitle.set(watchTitleKey(title), real);
+}
+
+/** Real watch or Shorts URL for a title, from site-segments.json first, then the checked live map. */
+export function youtubeFor(title: string): string | undefined {
+  return explicitWatchTitle(title) ?? liveVideoByTitle.get(watchTitleKey(title));
 }
 
 const releaseMonths: Record<string, number> = {
@@ -387,15 +394,43 @@ const releaseMonths: Record<string, number> = {
   Dec: 11,
 };
 
-/** A calendar date on or before today (UTC) is out. "Coming soon" and any other wording is not. */
-export function isReleased(date: string) {
+const CHICAGO = "America/Chicago";
+
+/** Calendar day in America/Chicago as YYYYMMDD. A date-only premiere uses this, not UTC midnight. */
+function chicagoDayNumber(now: Date) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: CHICAGO,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now);
+  const read = (type: Intl.DateTimeFormatPartTypes) => {
+    const value = parts.find((part) => part.type === type)?.value;
+    return value && /^\d+$/.test(value) ? Number(value) : null;
+  };
+  const year = read("year");
+  const month = read("month");
+  const day = read("day");
+  if (year == null || month == null || day == null) return null;
+  return year * 10000 + month * 100 + day;
+}
+
+/**
+ * A date-only premiere is live for the whole America/Chicago day it names, and stays
+ * Coming Soon until that day starts in Chicago. "Coming soon" and any other wording is not.
+ */
+export function isReleased(date: string, now = new Date()) {
   const match = /^([A-Z][a-z]{2}) (\d{1,2}), (\d{4})$/.exec(date.trim());
   if (!match) return false;
   const month = releaseMonths[match[1]];
   if (month === undefined) return false;
-  const now = new Date();
-  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  return Date.UTC(Number(match[3]), month, Number(match[2])) <= today;
+  const year = Number(match[3]);
+  const day = Number(match[2]);
+  const stamp = new Date(Date.UTC(year, month, day));
+  if (stamp.getUTCFullYear() !== year || stamp.getUTCMonth() !== month || stamp.getUTCDate() !== day) return false;
+  const today = chicagoDayNumber(now);
+  if (today == null) return false;
+  return year * 10000 + (month + 1) * 100 + day <= today;
 }
 
 export type Section = {
