@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>SciFiNoodles.Web</RootNamespace>
+    <AssemblyName>SciFiNoodles.Web</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\app\data\katara.sqlite" Link="Data\katara.sqlite" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="Data\sitemap-paths.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
