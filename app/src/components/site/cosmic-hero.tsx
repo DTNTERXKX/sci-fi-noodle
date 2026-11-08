@@ -1,22 +1,22 @@
-import { pillarBowls, studio } from "@/content/catalog";
-
-const plateAlt =
-  "A man in a rose-colored jacket sits in a chair on a reflective observation deck, facing a giant ringed planet through a tall arched window.";
+import { copyString, copyStrings, pillarBowls, segmentCopy, segmentLocked } from "@/content/catalog";
 
 /** Homepage title sequence: the observation deck plate with the wordmark, orbit, and pillar row drawn live on top. */
 export function CosmicHero({ menuId }: { menuId: string }) {
+  const hero = segmentCopy("home.hero");
+  const image = copyString(segmentLocked("home.hero"), "image");
+  const knownPlate = image === "/assets/hero/cosmic-horizon.jpg";
   return (
     <section aria-labelledby="cosmic-title" className="cosmic-hero">
       <div className="cosmic-stage">
         <img
-          alt={plateAlt}
+          alt={copyString(hero, "imageAlt")}
           className="cosmic-plate"
           decoding="async"
           fetchPriority="high"
           height={1152}
           sizes="100vw"
-          src="/assets/hero/cosmic-horizon.jpg"
-          srcSet="/assets/hero/cosmic-horizon-1024.jpg 1024w, /assets/hero/cosmic-horizon.jpg 2048w"
+          src={image}
+          srcSet={knownPlate ? "/assets/hero/cosmic-horizon-1024.jpg 1024w, /assets/hero/cosmic-horizon.jpg 2048w" : undefined}
           width={2048}
         />
         <span aria-hidden="true" className="cosmic-drift" />
@@ -25,27 +25,36 @@ export function CosmicHero({ menuId }: { menuId: string }) {
       </div>
 
       <p aria-hidden="true" className="cosmic-micro cosmic-micro-left">
-        <span>Bigger</span>
-        <span>Worlds</span>
-        <span>Better</span>
-        <span>Noodles</span>
+        {copyStrings(hero, "microLeft").map((word) => (
+          <span key={word}>{word}</span>
+        ))}
       </p>
       <p aria-hidden="true" className="cosmic-micro cosmic-micro-right">
-        <span>Space</span>
-        <span>Science</span>
-        <span>Stories</span>
-        <span>You</span>
+        {copyStrings(hero, "microRight").map((word) => (
+          <span key={word}>{word}</span>
+        ))}
       </p>
 
       <div className="cosmic-head">
-        <p className="cosmic-kicker">{studio.menu}</p>
+        <div className="cosmic-kicker-lockup">
+          <img
+            alt=""
+            aria-hidden="true"
+            className="cosmic-mark"
+            decoding="async"
+            height={819}
+            src="/brand/cosmic-bowl.png"
+            width={819}
+          />
+          <p className="cosmic-kicker">{copyString(hero, "kicker")}</p>
+        </div>
         <h1 className="cosmic-wordmark" id="cosmic-title">
           <svg aria-hidden="true" className="cosmic-orbit" preserveAspectRatio="none" viewBox="0 0 1000 200">
             <ellipse cx="500" cy="100" rx="497" ry="96" vectorEffect="non-scaling-stroke" />
           </svg>
           <span aria-hidden="true" className="cosmic-glint" />
           <span aria-hidden="true" className="cosmic-moon" />
-          <span className="cosmic-wordmark-text">{studio.name}</span>
+          <span className="cosmic-wordmark-text">{copyString(hero, "title")}</span>
         </h1>
         <nav aria-label="Pillars" className="cosmic-pillars">
           {pillarBowls.map((bowl) => (
@@ -59,9 +68,9 @@ export function CosmicHero({ menuId }: { menuId: string }) {
       </div>
 
       <div className="cosmic-foot">
-        <p className="cosmic-tagline">{studio.line}</p>
+        <p className="cosmic-tagline">{copyString(hero, "subtitle")}</p>
         <a className="cta-choose-flavor" href={`#${menuId}`}>
-          Choose your flavor
+          {copyString(hero, "cta")}
           <svg aria-hidden="true" viewBox="0 0 16 16">
             <path d="M8 2v11M4 9l4 4 4-4" />
           </svg>

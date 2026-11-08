@@ -76,7 +76,7 @@ export function Rail({
           <li className="rail-card" data-bowl={item.bowl} key={item.key}>
             <a href={item.href}>
               <span className="rail-card-still">
-                <img alt="" loading="lazy" src={item.image} />
+                {item.image ? <img alt="" loading="lazy" src={item.image} /> : null}
               </span>
               <span className="rail-card-body">
                 <span className="rail-card-kicker">{item.kicker}</span>

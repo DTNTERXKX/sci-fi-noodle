@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-import type { Feature } from "@/content/catalog";
+import { WatchAnchor } from "@/components/site/ctas";
+import { isReleased, type Feature } from "@/content/catalog";
 
 const SLIDE_MS = 8000;
 
@@ -77,13 +78,25 @@ export function FeatureHero({ features, id }: { features: Feature[]; id: string 
           ))}
         </p>
         <div className="feature-actions">
-          <a className="cta-feature-watch" href={feature.watchHref} rel="noreferrer" target="_blank">
+          <WatchAnchor
+            className="cta-feature-watch"
+            href={feature.watchHref}
+            released={isReleased(feature.date)}
+            soon={
+              <>
+                <svg aria-hidden="true" viewBox="0 0 16 16">
+                  <path d="M4 2.5v11l9-5.5z" />
+                </svg>
+                Coming Soon!
+              </>
+            }
+          >
             <svg aria-hidden="true" viewBox="0 0 16 16">
               <path d="M4 2.5v11l9-5.5z" />
             </svg>
             Watch now
             <span className="sr-only">, {feature.title} on YouTube</span>
-          </a>
+          </WatchAnchor>
           <a className="cta-feature-details" href={feature.href}>
             {feature.detailsLabel}
             <span className="sr-only">, {feature.title}</span>

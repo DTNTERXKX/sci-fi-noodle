@@ -1,32 +1,92 @@
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
+
+import { copyString, segmentCopy } from "@/content/catalog";
+
+function newsletterCopy() {
+  const copy = segmentCopy("forms.newsletter");
+  return {
+    label: copyString(copy, "label"),
+    placeholder: copyString(copy, "placeholder"),
+    submit: copyString(copy, "submit"),
+    help: copyString(copy, "help"),
+    success: copyString(copy, "success"),
+    invalidEmail: copyString(copy, "invalidEmail"),
+    blocked: copyString(copy, "blocked"),
+  };
+}
+
+function nestedText(source: unknown, key: string) {
+  if (!source || typeof source !== "object") return "";
+  const value = (source as Record<string, unknown>)[key];
+  return typeof value === "string" ? value : "";
+}
+
+function contactCopy() {
+  const copy = segmentCopy("forms.contact");
+  return {
+    name: nestedText(copy.labels, "name"),
+    email: nestedText(copy.labels, "email"),
+    note: nestedText(copy.labels, "note"),
+    submit: copyString(copy, "submit"),
+    success: copyString(copy, "success"),
+    nameError: nestedText(copy.errors, "name"),
+    emailError: nestedText(copy.errors, "email"),
+    noteError: nestedText(copy.errors, "note"),
+    blocked: nestedText(copy.errors, "blocked"),
+  };
+}
+
+async function postInbox(body: Record<string, string>) {
+  const response = await fetch("/api/inbox", {
+    method: "POST",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const payload = (await response.json().catch(() => null)) as { ok?: boolean } | null;
+  return response.ok && payload?.ok === true;
+}
 
 export function JoinForm() {
+  const form = newsletterCopy();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+  const pendingRef = useRef(false);
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pendingRef.current) return;
     const value = email.trim().toLowerCase();
+    const form = newsletterCopy();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      setError("Use a full email address.");
+      setError(form.invalidEmail);
       setMessage("");
       return;
     }
+    pendingRef.current = true;
+    setPending(true);
     try {
-      window.localStorage.setItem("noodle-drop-email", value);
+      const saved = await postInbox({ kind: "join", email: value });
+      if (!saved) {
+        setError(form.blocked);
+        setMessage("");
+        return;
+      }
+      setError("");
+      setMessage(form.success);
     } catch {
-      setError("This browser blocked saving the address.");
+      setError(form.blocked);
       setMessage("");
-      return;
+    } finally {
+      pendingRef.current = false;
+      setPending(false);
     }
-    setError("");
-    setMessage("Saved in this browser. The studio inbox connects when the list goes live.");
   }
 
   return (
     <form className="join-form" noValidate onSubmit={onSubmit}>
-      <label htmlFor="noodle-email">Email</label>
+      <label htmlFor="noodle-email">{form.label}</label>
       <div className="join-row">
         <input
           autoComplete="email"
@@ -34,12 +94,12 @@ export function JoinForm() {
           inputMode="email"
           name="email"
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@domain.com"
+          placeholder={form.placeholder}
           type="email"
           value={email}
         />
-        <button className="cta-join" type="submit">
-          Join
+        <button className="cta-join" disabled={pending} type="submit">
+          {form.submit}
         </button>
       </div>
       {error ? (
@@ -48,56 +108,69 @@ export function JoinForm() {
         </p>
       ) : null}
       {message ? <p className="form-ok">{message}</p> : null}
-      <p className="form-help">Release notes, not a weekly quota. Leave whenever you want.</p>
+      <p className="form-help">{form.help}</p>
     </form>
   );
 }
 
 export function ContactForm() {
+  const form = contactCopy();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+  const pendingRef = useRef(false);
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (name.trim().length < 2) {
-      setError("Add your name.");
+    if (pendingRef.current) return;
+    const form = contactCopy();
+    const nextName = name.trim();
+    const nextEmail = email.trim();
+    const nextNote = note.trim();
+    if (nextName.length < 2) {
+      setError(form.nameError);
       setMessage("");
       return;
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setError("Use a full email address.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) {
+      setError(form.emailError);
       setMessage("");
       return;
     }
-    if (note.trim().length < 12) {
-      setError("Tell us what you want in a sentence or two.");
+    if (nextNote.length < 12) {
+      setError(form.noteError);
       setMessage("");
       return;
     }
+    pendingRef.current = true;
+    setPending(true);
     try {
-      const key = "noodle-contact-notes";
-      const prior = window.localStorage.getItem(key);
-      const notes = prior ? (JSON.parse(prior) as unknown[]) : [];
-      notes.push({ name: name.trim(), email: email.trim(), note: note.trim(), at: new Date().toISOString() });
-      window.localStorage.setItem(key, JSON.stringify(notes));
+      const saved = await postInbox({ kind: "contact", name: nextName, email: nextEmail, note: nextNote });
+      if (!saved) {
+        setError(form.blocked);
+        setMessage("");
+        return;
+      }
+      setError("");
+      setMessage(form.success);
+      setNote("");
     } catch {
-      setError("This browser blocked saving the note.");
+      setError(form.blocked);
       setMessage("");
-      return;
+    } finally {
+      pendingRef.current = false;
+      setPending(false);
     }
-    setError("");
-    setMessage("Kept on this computer. A person reads partnership notes once the inbox is connected.");
-    setNote("");
   }
 
   return (
     <form className="contact-form" noValidate onSubmit={onSubmit}>
-      <label htmlFor="contact-name">Name</label>
+      <label htmlFor="contact-name">{form.name}</label>
       <input id="contact-name" onChange={(event) => setName(event.target.value)} value={name} />
-      <label htmlFor="contact-email">Email</label>
+      <label htmlFor="contact-email">{form.email}</label>
       <input
         autoComplete="email"
         id="contact-email"
@@ -105,7 +178,7 @@ export function ContactForm() {
         type="email"
         value={email}
       />
-      <label htmlFor="contact-note">Note</label>
+      <label htmlFor="contact-note">{form.note}</label>
       <textarea id="contact-note" onChange={(event) => setNote(event.target.value)} rows={5} value={note} />
       {error ? (
         <p className="form-error" role="alert">
@@ -113,8 +186,8 @@ export function ContactForm() {
         </p>
       ) : null}
       {message ? <p className="form-ok">{message}</p> : null}
-      <button className="cta-note" type="submit">
-        Send note
+      <button className="cta-note" disabled={pending} type="submit">
+        {form.submit}
       </button>
     </form>
   );

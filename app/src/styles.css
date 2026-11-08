@@ -9,20 +9,15 @@
 @source "../packages/quanta/src";
 @import "@higgsfield/quanta/tailwind.css";
 
-/* New in-app Quanta-style components (moved out of the quanta package). Their
- * CSS uses Tailwind v4 @utility/@source, so it must load through this tailwind
- * entry. Ordering mirrors quanta's components.css (composer after button;
- * media-card + generation-card after media). */
-@import "./components/composer/composer.css";
-@import "./components/media-card/media-card.css";
+/* In-app Quanta-style components still used by the Higgsfield workspace recipe.
+ * CSS uses Tailwind v4 @utility/@source, so it must load through this entry. */
 @import "./components/generation-card/generation-card.css";
-@import "./components/setting-trigger/setting-trigger.css";
 @import "./components/prompt-box/prompt-box.css";
 @import "./components/icon-tile/icon-tile.css";
 @import "./site.css";
 
 @import "tw-animate-css";
-/* shadcn v4 base (scrollbar/scroll-fade utilities, toast base) for src/components/ui */
+/* shadcn v4 base (scrollbar/scroll-fade utilities) */
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:where([data-theme="default-dark"], [data-theme="default-dark"] *));
@@ -120,45 +115,6 @@
   background-image:
     var(--hf-gradient-special-gloss-pink),
     linear-gradient(90deg, var(--hf-color-pink-500), var(--hf-color-pink-500));
-}
-
-/* Toast skin (Figma node 4085:2671): compact glass pill, kind-colored fills */
-[data-sonner-toast][data-styled="true"] {
-  width: fit-content;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  border: 1px solid var(--hf-color-transparent-light-05);
-  border-radius: var(--hf-radius-300, 12px);
-  background: var(--hf-color-glass-dark);
-  backdrop-filter: blur(40px);
-  box-shadow: 0 6px 6px rgb(0 0 0 / 0.25);
-  color: var(--hf-color-text-primary);
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-}
-[data-sonner-toast][data-type="success"] {
-  border-color: var(--hf-color-transparent-light-15);
-  background: #68b922; /* toast/success — raw value in Figma, no hf token */
-  backdrop-filter: none;
-}
-[data-sonner-toast].toast-new {
-  border-color: var(--hf-color-transparent-light-15);
-  background: #7a58ff; /* toast/new — raw value in Figma, no hf token */
-  backdrop-filter: none;
-}
-[data-sonner-toast] [data-close-button] {
-  position: static;
-  order: 9;
-  margin-left: 4px;
-  border: none;
-  background: transparent;
-  color: inherit;
-  transform: none;
-}
-[data-sonner-toast] [data-close-button]:hover {
-  background: var(--hf-color-overlay-hover);
 }
 
 :root {

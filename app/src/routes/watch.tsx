@@ -2,7 +2,8 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 import { SiteFrame } from "@/components/site/site-frame";
 import { WatchBoard } from "@/components/site/watch-board";
-import { isFlavorId, isPillarId, type FlavorId, type PillarId } from "@/content/catalog";
+import { isFlavorId, isPillarId, pageMeta, type FlavorId, type PillarId } from "@/content/catalog";
+import { seoHead } from "@/lib/seo";
 
 type WatchSearch = { pillar?: PillarId; flavor?: FlavorId };
 
@@ -11,20 +12,15 @@ export const Route = createFileRoute("/watch")({
     pillar: isPillarId(search.pillar) ? search.pillar : undefined,
     flavor: isFlavorId(search.flavor) ? search.flavor : undefined,
   }),
-  head: () => ({
-    meta: [
-      { title: "Watch // The Whole Menu | SCI-FI NOODLES" },
-      {
-        name: "description",
-        content:
-          "Every SCI-FI NOODLES film on one board. Filter by pillar, where it comes from, or by flavor, how it feels. Different Flavors. Infinite Universes.",
-      },
-    ],
-  }),
+  head: () => {
+    const page = pageMeta("page.watch");
+    return seoHead({ path: "/watch", title: page.title, description: page.description });
+  },
   component: WatchPage,
 });
 
 function WatchPage() {
+  const page = pageMeta("page.watch");
   const { pillar, flavor } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
   const update = (next: WatchSearch) =>
@@ -32,8 +28,8 @@ function WatchPage() {
 
   return (
     <SiteFrame
-      lede="The whole Cosmic Ramen menu on one board. Pick a pillar for where a film comes from, a flavor for how it feels, or both. Then watch on YouTube."
-      title="Watch"
+      lede={page.subtitle}
+      title={page.header}
     >
       <WatchBoard
         flavor={flavor}

@@ -1,5 +1,10 @@
 node_modules
 
+# Form submissions. Personal data, created when someone joins or writes in.
+**/inbox.sqlite
+**/inbox.sqlite-wal
+**/inbox.sqlite-shm
+
 # SadTalker clone, virtualenv, and checkpoints stay off this repo.
 /services/sadtalker/vendor/
 /services/sadtalker/.venv/

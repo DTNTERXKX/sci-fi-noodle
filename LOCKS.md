@@ -1,0 +1,22 @@
+# SCI-FI NOODLES site · LOCKS
+
+- Oct 27, 2026 · Brien: the Figma text-only hero drafts look nothing like the envisioned brand; the TIRA 9:16/4:5 do not match the concept art. Heroes, thumbs and title cards are built only from each project's approved concept art, key art, keyframes and sheets (or generated with those attached as references), never from a text prompt alone. Show one sample per series for approval before any batch.
+- Oct 28, 2026 · Brien: do not use the old Figma site file (8e9ELK0NJFEOCO0J7Und2O, wrong images); brand assets live in the new file ONE CREW · Brand Assets (o8kdXgMm7O97qpgmtFZlq3).
+- Oct 28, 2026 · Brien approved all 14 site heroes from ONE CREW · Brand Assets (o8kdXgMm7O97qpgmtFZlq3) as built; they are the live hero art.
+- Oct 29, 2026 · Brien: website heroes come in two versions, clean (`<slug>.png`, the site's default) and title-only (`<slug>-title.png`). No SCI-FI NOODLES logo on website heroes. The title sits in a padded, centered safe area so the site's cover crops never clip it (it fit awkwardly before). Leave room for the site's own copy.
+- Oct 29, 2026 · Brien: Watch buttons link straight to the live video when one exists (catalog.ts `liveVideos`; check https://www.youtube.com/@SCIFINOODLES). Use the search link only for titles not yet live.
+- Oct 29, 2026 · Release dates for live videos come from YouTube (publish date), not the plan: Stranger Pt 1 Oct 1, Pt 2 Oct 7, Neo-Osaka Rain Oct 17, Iron Beats Wood Oct 4 (added to /docs).
+- Oct 31, 2026 · Brien: Failed noodles shows bad takes directly, each with only what went wrong. No approved fix takes beside them. Clips live in `public/assets/failed-noodles`, captions in catalog.ts `failedTakes`. LIBBY takes stay off this site.
+- Oct 31, 2026 · Always read `app/src/content/site-segments.json` and apply its updates before editing site copy or Watch controls. Newest wins.
+- Nov 1, 2026 · Brien: the site will be a standalone site at www.scifinoodles.com. Launch is not approved yet ("not yet"); do not deploy without his go.
+- Nov 1, 2026 · Brien deploys the site himself in Cursor. Agents keep the site content current (site-segments.json) and never deploy it.
+- Nov 1, 2026 · The site loads site-segments.json dynamically. Edit that file to change site copy. Newest wins.
+- Nov 1, 2026 · Brien: TIRA is 7 episodes. The 2027 Transmission keeps its row on the page but is not counted as an episode.
+- Nov 5, 2026 · Hosting not yet chosen (never agreed on InterServer). InterServer works only as a static export; Cloudflare Workers runs it as built; Vercel not recommended. Katara live talk is local-only.
+- Nov 6, 2026 · Brien: TIRA "The Key Awakens" keeps "10 min" (live 9:56 cut) until the 5:00 cut is published.
+- Nov 6, 2026 · Brien: FRANKENSTEIN: THE COMMIT is a micro-series split into episodes; cards show "3-episode micro-series", not one runtime. EP01 live Nov 6 (https://youtu.be/8bp4f2vml6A).
+- Nov 6, 2026 · Brien: GLASS CITY runtime locked at 6 min 26 sec. BLUFF CITY EP03 "Back by Five" is 1 min 53 sec.
+- Nov 6, 2026 · Brien: ONE TREE retitled "ONE TREE: 1 MILLION YRS"; its release date moves (new date pending).
+- Nov 6, 2026 · Brien: THE ALERT line "Then the black metal starts to flow." stays. Slug freighter-night stays. Unsourced runtimes stay. TIRA kicker format stays.
+- Nov 7, 2026 · Brien: THE STRANGER Shorts map by episode number: EP02 = https://www.youtube.com/shorts/15IGDVeL080 (Part 2), EP03 = https://www.youtube.com/shorts/uu762gNCTXY (Part 3 · The Criteria). Part 1 has no link yet. BLUFF CITY IMMUNE EP01 = https://youtube.com/shorts/bi-EmlOjDhA. Watch links in catalog.ts liveVideos and katara.server.ts LIVE_VIDEOS.
+- Nov 7, 2026 · Brien: THE STRANGER Shorts are EP01 = https://www.youtube.com/shorts/15IGDVeL080 (Part 1) and EP02 = https://www.youtube.com/shorts/uu762gNCTXY (Part 2). EP03 (Part 3) is in progress, no link yet. Supersedes the earlier EP02/EP03 line.

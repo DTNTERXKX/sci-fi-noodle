@@ -1,10 +1,11 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 
-import { WatchMark } from "@/components/site/ctas";
+import { WatchAnchor, WatchMark } from "@/components/site/ctas";
 import { DetailHero, TitleNav } from "@/components/site/detail-hero";
 import { Rail } from "@/components/site/rail";
 import { NextShelf, SiteShell } from "@/components/site/site-frame";
-import { cardBowl, classics, neighbours, sections, universes, youtubeFor } from "@/content/catalog";
+import { cardBowl, classics, isReleased, neighbours, sections, universes, youtubeFor } from "@/content/catalog";
+import { seoHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/originals/$slug")({
   loader: ({ params }) => {
@@ -12,12 +13,13 @@ export const Route = createFileRoute("/originals/$slug")({
     if (!universe) throw notFound();
     return { universe };
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.universe.title ?? "Universe"} | SCI-FI NOODLES` },
-      { name: "description", content: loaderData?.universe.premise ?? "" },
-    ],
-  }),
+  head: ({ loaderData, params }) =>
+    seoHead({
+      path: `/originals/${params.slug}`,
+      title: `${loaderData?.universe.title ?? "Universe"} | SCI-FI NOODLES`,
+      description: loaderData?.universe.premise ?? "",
+      image: loaderData?.universe.image,
+    }),
   component: UniversePage,
 });
 
@@ -28,27 +30,41 @@ function UniversePage() {
   const sibling = (item?: (typeof universes)[number]) =>
     item ? { href: `/originals/${item.slug}`, title: item.title, image: item.image } : undefined;
   const firstEpisode = universe.episodes[0];
+  // TIRA's 2027 Transmission keeps its row but isn't counted as an episode.
+  const episodeCount = universe.episodes.filter((episode) => episode.slug !== "2027-transmission").length;
 
   return (
     <SiteShell className="detail-main">
       <DetailHero
         actions={
           <>
-            <a
+            <WatchAnchor
               className="cta-detail-watch"
               href={youtubeFor(`${universe.title} ${firstEpisode.title}`)}
-              rel="noreferrer"
-              target="_blank"
+              released={isReleased(firstEpisode.date)}
+              soon={
+                <>
+                  <svg aria-hidden="true" viewBox="0 0 16 16">
+                    <path d="M4 2.5v11l9-5.5z" />
+                  </svg>
+                  Coming Soon!
+                </>
+              }
             >
               <svg aria-hidden="true" viewBox="0 0 16 16">
                 <path d="M4 2.5v11l9-5.5z" />
               </svg>
               Watch episode 1
               <span className="sr-only">, {firstEpisode.title}, on YouTube</span>
-            </a>
+            </WatchAnchor>
             <a className="cta-detail-jump" href="#episodes">
-              All {universe.episodes.length} episodes
+              All {episodeCount} episodes
             </a>
+            {universe.playlistHref ? (
+              <a className="cta-detail-jump" href={universe.playlistHref} target="_blank" rel="noopener noreferrer">
+                Watch the playlist
+              </a>
+            ) : null}
           </>
         }
         image={universe.image}
@@ -56,7 +72,7 @@ function UniversePage() {
         bowl="black-hole"
         kicker="01 // Black Hole Tonkotsu"
         logline={universe.logline}
-        meta={["Original Universes", `${universe.episodes.length} episodes`, universe.status]}
+        meta={["Original Universes", `${episodeCount} episodes`, universe.status]}
         title={universe.title}
         trail={{ href: "/originals", label: "Original Universes" }}
       />
@@ -75,13 +91,15 @@ function UniversePage() {
               <li key={episode.slug}>
                 <span className="episode-number">{String(number + 1).padStart(2, "0")}</span>
                 <div>
-                  <p className="meta-line">
-                    {episode.date} · {episode.runtime}
-                  </p>
+                  <p className="meta-line">{[episode.date, episode.runtime].filter(Boolean).join(" · ")}</p>
                   <h3>{episode.title}</h3>
-                  <p>{episode.hook}</p>
+                  {episode.hook ? <p>{episode.hook}</p> : null}
                 </div>
-                <WatchMark href={youtubeFor(`${universe.title} ${episode.title}`)} title={episode.title} />
+                <WatchMark
+                  href={youtubeFor(`${universe.title} ${episode.title}`)}
+                  released={isReleased(episode.date)}
+                  title={episode.title}
+                />
               </li>
             ))}
           </ol>
