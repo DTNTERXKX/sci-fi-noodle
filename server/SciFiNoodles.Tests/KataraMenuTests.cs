@@ -51,6 +51,29 @@ public sealed class KataraMenuTests : IClassFixture<WebApplicationFactory<Progra
     }
 
     [Fact]
+    public async Task Greeting_uses_the_mode_welcome()
+    {
+        var chill = await Ask("Hi!", "chill");
+        var chillReply = chill.GetProperty("reply").GetString()!;
+        Assert.StartsWith("Hey bestie.", chillReply);
+        Assert.Contains("Welcome to SCI-FI NOODLES", chillReply);
+        Assert.Equal("/voices/katara_chill.mp3", chill.GetProperty("voice").GetString());
+
+        var glam = await Ask("good evening", "glam");
+        Assert.StartsWith("Darlings.", glam.GetProperty("reply").GetString()!);
+        Assert.Equal("/voices/katara_glam.mp3", glam.GetProperty("voice").GetString());
+    }
+
+    [Fact]
+    public async Task Greeting_plus_a_title_still_answers_the_title()
+    {
+        var payload = await Ask("hey where can I watch Neo-Osaka Rain?", "chill");
+        var reply = payload.GetProperty("reply").GetString()!;
+        Assert.Contains("https://www.youtube.com/watch?v=G-YEM6LOE8Y", reply);
+        Assert.DoesNotContain("Welcome to SCI-FI NOODLES", reply);
+    }
+
+    [Fact]
     public async Task Unknown_question_points_at_watch_board()
     {
         var payload = await Ask("How many moons does the shop cat have?", "crunk");

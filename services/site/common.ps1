@@ -26,7 +26,8 @@ function New-SidecarDef([string]$Key, [string]$Label, [int]$Port) {
   }
 }
 
-# MuseTalk is the live lip-sync sidecar. SadTalker is optional and off by default.
+# MuseTalk is an optional lip-sync sidecar. The menu database does not need it.
+# SadTalker is optional and off by default. Pass -MuseTalk or -SadTalker to start.ps1.
 $script:MuseTalkDef = New-SidecarDef "musetalk" "MuseTalk sidecar" 8788
 $script:SadTalkerDef = New-SidecarDef "sadtalker" "SadTalker sidecar" 8787
 

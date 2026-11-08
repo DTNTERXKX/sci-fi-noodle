@@ -1,14 +1,17 @@
-# Start the SCI-FI NOODLES site and the MuseTalk lip-sync sidecar together.
+# Start the SCI-FI NOODLES site. Katara answers from the SQLite menu and the
+# locked mp3 files, so MuseTalk is off unless you pass -MuseTalk.
 # Reuses a piece that is already running and healthy. Does not install weights.
-# The site starts even while MuseTalk is still warming up; Katara just talks
-# on the still face until MuseTalk reports ready.
 #
 #   powershell -NoProfile -ExecutionPolicy Bypass -File services\site\start.ps1
-#   powershell -NoProfile -ExecutionPolicy Bypass -File services\site\start.ps1 -SadTalker   (also start the old SadTalker sidecar)
-#   services\site\restart.cmd   (stop then start; pass -SadTalker to include SadTalker)
+#   powershell -NoProfile -ExecutionPolicy Bypass -File services\site\start.ps1 -MuseTalk
+#   powershell -NoProfile -ExecutionPolicy Bypass -File services\site\start.ps1 -SadTalker
+#   services\site\restart.cmd   (stop then start; pass -MuseTalk or -SadTalker to include that sidecar)
 
 #Requires -Version 5.1
-param([switch]$SadTalker)
+param(
+  [switch]$MuseTalk,
+  [switch]$SadTalker
+)
 $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "common.ps1")
 
@@ -278,12 +281,16 @@ try {
 
   $state = @{ version = 2 }
   $musetalk = $null
-  try {
-    $musetalk = Start-SidecarService $script:MuseTalkDef $prior.musetalk
-    $state.musetalk = $musetalk
-  } catch {
-    Write-Host $_.Exception.Message
-    Write-Host "Continuing without lip-sync."
+  if ($MuseTalk) {
+    try {
+      $musetalk = Start-SidecarService $script:MuseTalkDef $prior.musetalk
+      $state.musetalk = $musetalk
+    } catch {
+      Write-Host $_.Exception.Message
+      Write-Host "Continuing without lip-sync."
+    }
+  } elseif (Test-PriorOwned $prior.musetalk) {
+    Stop-OwnedEntry $prior.musetalk $script:MuseTalkDef.Label | Out-Null
   }
 
   if ($SadTalker) {
@@ -307,18 +314,21 @@ try {
     $siteReady = Test-SitePageText (Invoke-CurlText -Url $site.url -TimeoutSec 20).Text
   }
 
-  $warm = Wait-SidecarWarm $script:MuseTalkDef $musetalk
+  $warm = $false
+  if ($MuseTalk) {
+    $warm = Wait-SidecarWarm $script:MuseTalkDef $musetalk
+  }
 
   Write-Host ""
   Write-Host "Site:     $($site.url)"
-  if ($null -ne $musetalk) {
+  if ($MuseTalk -and $null -ne $musetalk) {
     $status = "warming up or unavailable"
     if ($warm) {
       $status = "ready"
     }
     Write-Host "MuseTalk: $($musetalk.url) ($status)"
   } else {
-    Write-Host "MuseTalk: not started"
+    Write-Host "MuseTalk: off. Katara answers from the menu database."
   }
   if ($null -ne $state.sadtalker) {
     Write-Host "SadTalker: $($state.sadtalker.url)"
@@ -327,7 +337,7 @@ try {
   if (-not $siteReady) {
     Write-Host "Site did not start. Run services\site\stop.ps1 to stop anything this script launched."
     $exitCode = 1
-  } elseif (-not $warm) {
+  } elseif ($MuseTalk -and -not $warm) {
     Write-Host "Site is up. Lip-sync is not ready, so Katara stays on the still face."
   }
 } catch {

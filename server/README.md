@@ -49,5 +49,5 @@ dotnet test server\SciFiNoodles.sln
 ## Still to do (conversion roadmap)
 
 - [ ] **Per-route titles/SEO** in the shell (today the shell uses a fixed `<title>`; crawlers still see real URLs with the same bootstrap).
-- [ ] Optional: MuseTalk sidecar on the VPS if streaming lip-sync returns.
+- [ ] Optional: MuseTalk sidecar on the VPS only if streaming lip-sync returns. The SQLite menu and locked mp3s answer without it. Local start leaves it off unless `-MuseTalk`.
 - [ ] CI job: `build-production.ps1` + artifact upload.

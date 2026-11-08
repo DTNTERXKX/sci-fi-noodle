@@ -30,6 +30,19 @@ const MODE_LABEL: Record<KataraMode, string> = {
   glam: "Glam",
 };
 
+const GREETING_REPLY: Record<KataraMode, string> = {
+  chill: "Hey bestie. Welcome to SCI-FI NOODLES. I'm Katara. Tell me a flavor or a title and I'll pour you a bowl.",
+  crunk: "YOOO! Welcome in. I'm Katara. Name a bowl and lock in.",
+  glam: "Darlings. Welcome to the counter. I'm Katara. Tell me the mood and I'll find your bowl.",
+};
+
+const GREETING =
+  /^(?:hi|hey|hello|yo|hiya|howdy|sup|greetings|welcome|hi there|hey there|hello there|hi katara|hey katara|hello katara|good morning|good afternoon|good evening|good night|good day|how are you|how are you doing|hows it going|whats up|what is up|whats good)$/;
+
+export function isKataraGreeting(question: string) {
+  return GREETING.test(question);
+}
+
 type Seed = {
   intent: string;
   phrases: string[];
@@ -440,6 +453,12 @@ function voiceFor(mode: KataraMode) {
 
 export async function answerKatara(message: string, mode: KataraMode) {
   const question = normalizeQuestion(message);
+  if (isKataraGreeting(question)) {
+    return {
+      reply: GREETING_REPLY[mode],
+      ...voiceFor(mode),
+    };
+  }
   const rows = await loadAnswers();
   let best: Stored | undefined;
   let bestScore = 0;

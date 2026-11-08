@@ -62,6 +62,23 @@ test("a released title with no video is not handed a youtube search", async () =
   expect(payload.reply).not.toContain("youtu.be");
 });
 
+test("a greeting gets the mode welcome", async () => {
+  const chill = await ask("Hi!");
+  expect(chill.reply.startsWith("Hey bestie.")).toBe(true);
+  expect(chill.reply).toContain("Welcome to SCI-FI NOODLES");
+  expect(chill.voice).toBe("/voices/katara_chill.mp3");
+
+  const glam = await ask("good evening", "glam");
+  expect(glam.reply.startsWith("Darlings.")).toBe(true);
+  expect(glam.voice).toBe("/voices/katara_glam.mp3");
+});
+
+test("a greeting plus a title still answers the title", async () => {
+  const payload = await ask("hey where can I watch Neo-Osaka Rain?");
+  expect(payload.reply).toContain("https://www.youtube.com/watch?v=G-YEM6LOE8Y");
+  expect(payload.reply).not.toContain("Welcome to SCI-FI NOODLES");
+});
+
 test("an unknown question points at the menu", async () => {
   const payload = await ask("How many moons does the shop cat have?", "crunk");
   expect(payload.reply.startsWith("YOOO!")).toBe(true);

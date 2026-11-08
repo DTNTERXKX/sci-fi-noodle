@@ -24,6 +24,18 @@ public sealed class KataraService
         [KataraMode.Glam] = "Glam",
     };
 
+    private static readonly Dictionary<KataraMode, string> GreetingReplies = new()
+    {
+        [KataraMode.Chill] = "Hey bestie. Welcome to SCI-FI NOODLES. I'm Katara. Tell me a flavor or a title and I'll pour you a bowl.",
+        [KataraMode.Crunk] = "YOOO! Welcome in. I'm Katara. Name a bowl and lock in.",
+        [KataraMode.Glam] = "Darlings. Welcome to the counter. I'm Katara. Tell me the mood and I'll find your bowl.",
+    };
+
+    private static readonly Regex GreetingPattern = new(
+        @"^(?:hi|hey|hello|yo|hiya|howdy|sup|greetings|welcome|hi there|hey there|hello there|hi katara|hey katara|hello katara|good morning|good afternoon|good evening|good night|good day|how are you|how are you doing|hows it going|whats up|what is up|whats good)$",
+        RegexOptions.CultureInvariant,
+        TimeSpan.FromMilliseconds(100));
+
     private readonly string _dbPath;
     private readonly IWebHostEnvironment _env;
     private readonly ILogger<KataraService> _logger;
@@ -99,8 +111,14 @@ public sealed class KataraService
     {
         try
         {
-            var rows = await LoadAnswersAsync(cancellationToken);
             var question = NormalizeQuestion(message);
+            if (GreetingPattern.IsMatch(question))
+            {
+                var (greetingVoice, greetingNote) = VoiceFor(mode);
+                return KataraTalkResponse.Success(GreetingReplies[mode], greetingVoice, greetingNote);
+            }
+
+            var rows = await LoadAnswersAsync(cancellationToken);
             AnswerRow? best = null;
             var bestScore = 0;
 

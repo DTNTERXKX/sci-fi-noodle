@@ -1,11 +1,15 @@
-# Stop then start the SCI-FI NOODLES site and MuseTalk sidecar (full local stack).
+# Stop then start the SCI-FI NOODLES site. MuseTalk stays off unless -MuseTalk.
 # Same options as start.ps1. PIDs: services\site\.run\pids.json
 #
 #   powershell -NoProfile -ExecutionPolicy Bypass -File services\site\restart.ps1
+#   powershell -NoProfile -ExecutionPolicy Bypass -File services\site\restart.ps1 -MuseTalk
 #   powershell -NoProfile -ExecutionPolicy Bypass -File services\site\restart.ps1 -SadTalker
 
 #Requires -Version 5.1
-param([switch]$SadTalker)
+param(
+  [switch]$MuseTalk,
+  [switch]$SadTalker
+)
 $ErrorActionPreference = "Stop"
 
 $here = $PSScriptRoot
@@ -24,6 +28,9 @@ Start-Sleep -Seconds 2
 Write-Host ""
 Write-Host "Starting SCI-FI NOODLES local stack..."
 $startArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $startScript)
+if ($MuseTalk) {
+  $startArgs += "-MuseTalk"
+}
 if ($SadTalker) {
   $startArgs += "-SadTalker"
 }

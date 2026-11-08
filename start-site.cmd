@@ -1,6 +1,7 @@
 @echo off
-rem Start the SCI-FI NOODLES site and the MuseTalk sidecar.
+rem Start the SCI-FI NOODLES site. MuseTalk stays off unless -MuseTalk.
 rem   start-site.cmd
+rem   start-site.cmd -MuseTalk
 rem   start-site.cmd -SadTalker
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0services\site\start.ps1" %*
 set ERR=%ERRORLEVEL%
