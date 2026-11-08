@@ -403,9 +403,9 @@
       },
       "copy": {
         "image": "/assets/heroes/tira-rift.png",
-        "imageAlt": "T.I.R.A. // RIFT title over a dark luxury apartment great room: marble kitchen island, pendant lights, red roses, a river skyline at dusk through the windows.",
+        "imageAlt": "T.I.R.A. title over a dark luxury apartment great room: marble kitchen island, pendant lights, red roses, a river skyline at dusk through the windows.",
         "kicker": "Black Hole Tonkotsu · Season one",
-        "title": "T.I.R.A. // RIFT",
+        "title": "T.I.R.A.",
         "description": "Memphis, 2099. Major Amara Kade is off duty at 06:43. Something under the bluff is waking up, and Dimension N wants it first.",
         "meta": [
           "Original series",
@@ -456,11 +456,11 @@
         }
       },
       "copy": {
-        "title": "T.I.R.A. // RIFT",
+        "title": "T.I.R.A.",
         "subtitle": "Something under the bluff is waking up, and Dimension N wants it first.",
         "description": "Memphis, 2099. Major Amara Kade is off duty at 06:43. By 07:40 she has lost the good couch, caught a nine-metre girder over a full bus, and climbed into MAAT-77.",
         "status": "Season one in production",
-        "imageAlt": "T.I.R.A. // RIFT title over a dark luxury apartment great room: marble kitchen island, pendant lights, red roses, a river skyline at dusk through the windows."
+        "imageAlt": "T.I.R.A. title over a dark luxury apartment great room: marble kitchen island, pendant lights, red roses, a river skyline at dusk through the windows."
       }
     },
     {
@@ -1758,7 +1758,7 @@
         "releaseDate": "Oct 5, 2026",
         "paragraphs": [
           "SCI-FI NOODLES owns the channel: the mark, the shelves, the newsletter, the way a visitor finds a second film.",
-          "Each universe owns its canon. T.I.R.A. // RIFT does not lend its history to The Stranger. A public-domain retelling does not become channel lore.",
+          "Each universe owns its canon. T.I.R.A. does not lend its history to The Stranger. A public-domain retelling does not become channel lore.",
           "If a page here feels like a poster and not an encyclopedia, that is the point. The deep map lives with the series."
         ]
       }

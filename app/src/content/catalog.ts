@@ -217,14 +217,14 @@ export const shorts: ShortEntry[] = liveArray(() => derived().shorts);
 
 // Clips on /lab/failed-noodles; files are /assets/failed-noodles/<slug>.mp4 + .jpg poster.
 export const failedTakes = [
-  { slug: "tira-wrong-battleship", project: "T.I.R.A. // RIFT", title: "The wrong battleship", width: 854, height: 480, wrong: "Our alien battleship is a kilometre-long slab with stalactite spires. This take flew in a flat wedge cruiser nobody designed, copied from a bad start frame." },
-  { slug: "tira-synced-grunts", project: "T.I.R.A. // RIFT", title: "The boy band", width: 854, height: 480, wrong: "The breach worked on the terrace. Inside, Amara turned to face the camera, three grunts hovered in perfect sync, and the scout ship vanished." },
-  { slug: "tira-wrong-room", project: "T.I.R.A. // RIFT", title: "Wrong apartment", width: 854, height: 480, wrong: "Better fight, wrong room. The reference image of the great room got dropped in a trim, so the model designed a new apartment." },
-  { slug: "tira-bus-reversed", project: "T.I.R.A. // RIFT", title: "The bus turned around", width: 854, height: 480, wrong: "The bus is pinned in one lane, nose north. The camera turned around and the bus came with it: reversed and on the wrong side of the street." },
-  { slug: "tira-guideway-intact", project: "T.I.R.A. // RIFT", title: "A bridge with no hole", width: 854, height: 480, wrong: "A span of guideway just fell on this bus. The guideway above it never got the gap, so the broken piece came from nowhere." },
-  { slug: "tira-rescue-vanishes", project: "T.I.R.A. // RIFT", title: "Where did the rescue go?", width: 854, height: 480, wrong: "We asked for a wider angle. The model cut to a quiet riverwalk copied from the location image. The bus, the girder and the hero were gone." },
-  { slug: "tira-helmet-swap", project: "T.I.R.A. // RIFT", title: "New helmet, same shot", width: 854, height: 480, wrong: "Amara's helmet changed design inside one clip. The full helmet became a smaller open-face cap." },
-  { slug: "tira-bare-arms", project: "T.I.R.A. // RIFT", title: "No sleeves, no voice", width: 854, height: 480, wrong: "The prompt went out without a description of her voice, so the model picked one. Her flight suit also lost its sleeves." },
+  { slug: "tira-wrong-battleship", project: "T.I.R.A.", title: "The wrong battleship", width: 854, height: 480, wrong: "Our alien battleship is a kilometre-long slab with stalactite spires. This take flew in a flat wedge cruiser nobody designed, copied from a bad start frame." },
+  { slug: "tira-synced-grunts", project: "T.I.R.A.", title: "The boy band", width: 854, height: 480, wrong: "The breach worked on the terrace. Inside, Amara turned to face the camera, three grunts hovered in perfect sync, and the scout ship vanished." },
+  { slug: "tira-wrong-room", project: "T.I.R.A.", title: "Wrong apartment", width: 854, height: 480, wrong: "Better fight, wrong room. The reference image of the great room got dropped in a trim, so the model designed a new apartment." },
+  { slug: "tira-bus-reversed", project: "T.I.R.A.", title: "The bus turned around", width: 854, height: 480, wrong: "The bus is pinned in one lane, nose north. The camera turned around and the bus came with it: reversed and on the wrong side of the street." },
+  { slug: "tira-guideway-intact", project: "T.I.R.A.", title: "A bridge with no hole", width: 854, height: 480, wrong: "A span of guideway just fell on this bus. The guideway above it never got the gap, so the broken piece came from nowhere." },
+  { slug: "tira-rescue-vanishes", project: "T.I.R.A.", title: "Where did the rescue go?", width: 854, height: 480, wrong: "We asked for a wider angle. The model cut to a quiet riverwalk copied from the location image. The bus, the girder and the hero were gone." },
+  { slug: "tira-helmet-swap", project: "T.I.R.A.", title: "New helmet, same shot", width: 854, height: 480, wrong: "Amara's helmet changed design inside one clip. The full helmet became a smaller open-face cap." },
+  { slug: "tira-bare-arms", project: "T.I.R.A.", title: "No sleeves, no voice", width: 854, height: 480, wrong: "The prompt went out without a description of her voice, so the model picked one. Her flight suit also lost its sleeves." },
   { slug: "commit-one-four", project: "Frankenstein: The Commit", title: "One-four", width: 1280, height: 732, wrong: "The narrator read \"1:04\" as \"one-four.\" A clock on the page is not a clock in the mouth." },
   { slug: "commit-lips-move", project: "Frankenstein: The Commit", title: "The borrowed mouth", width: 1280, height: 732, wrong: "The pronunciation got fixed, and then Victor mouthed the off-screen narrator's lines. The model gave the voice to the only face in the room." },
   { slug: "bluff-stepped-1", project: "Bluff City Immune", title: "Stop-start motion", width: 1120, height: 480, wrong: "Stepped motion with freezes: hold, snap, settle. It looked limited, not cinematic." },
@@ -359,7 +359,7 @@ export function flavorCounts(items: { flavors: FlavorId[] }[]): Record<FlavorId,
 // Direct links already checked on the channel. A title with no real video here, and none in
 // site-segments.json, has no visitor YouTube href. Search URLs are not a fallback.
 const liveVideos: Record<string, string> = {
-  "T.I.R.A. // RIFT The Key Awakens": "https://www.youtube.com/watch?v=buCKa4pm0Rw",
+  "T.I.R.A. The Key Awakens": "https://www.youtube.com/watch?v=buCKa4pm0Rw",
   "Neo-Osaka Rain": "https://www.youtube.com/watch?v=G-YEM6LOE8Y",
   "The Stranger Part 1": "https://www.youtube.com/shorts/15IGDVeL080",
   "The Stranger Part 2": "https://www.youtube.com/shorts/uu762gNCTXY",

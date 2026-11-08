@@ -17,8 +17,8 @@ test("a youtube search url is not a watch link", () => {
 
 test("stored videos stay direct links, including the colon title the watch board uses", () => {
   expect(youtubeFor("Neo-Osaka Rain")).toBe("https://www.youtube.com/watch?v=G-YEM6LOE8Y");
-  expect(youtubeFor("T.I.R.A. // RIFT: The Key Awakens")).toBe("https://www.youtube.com/watch?v=buCKa4pm0Rw");
-  expect(youtubeFor("T.I.R.A. // RIFT The Key Awakens")).toBe("https://www.youtube.com/watch?v=buCKa4pm0Rw");
+  expect(youtubeFor("T.I.R.A.: The Key Awakens")).toBe("https://www.youtube.com/watch?v=buCKa4pm0Rw");
+  expect(youtubeFor("T.I.R.A. The Key Awakens")).toBe("https://www.youtube.com/watch?v=buCKa4pm0Rw");
   expect(youtubeFor("Frankenstein: The Commit")).toBe("https://youtu.be/8bp4f2vml6A");
   expect(youtubeFor("The Stranger: Part 1")).toBe("https://www.youtube.com/shorts/15IGDVeL080");
   expect(youtubeFor("The Stranger Part 2")).toBe("https://www.youtube.com/shorts/uu762gNCTXY");
@@ -47,7 +47,7 @@ test("a passed date with no stored video does not fall back to search", () => {
   expect(isReleased("Oct 5, 2026")).toBe(true);
   expect(youtubeFor("Failed noodles")).toBeUndefined();
   expect(youtubeFor("How a shot is cooked")).toBeUndefined();
-  expect(youtubeFor("T.I.R.A. // RIFT: The Ball Crashers")).toBeUndefined();
+  expect(youtubeFor("T.I.R.A.: The Ball Crashers")).toBeUndefined();
 });
 
 test("no visitor title or feature resolves to a youtube search", () => {

@@ -51,8 +51,8 @@ if (customLayout != null) {
 }
 
 const catalog = read("src/content/catalog.ts");
-if (catalog != null && !catalog.includes("T.I.R.A. // RIFT")) {
-  failures.push("src/content/catalog.ts must keep the T.I.R.A. // RIFT series lockup");
+if (catalog != null && !catalog.includes("T.I.R.A.")) {
+  failures.push("src/content/catalog.ts must keep the T.I.R.A. series lockup");
 }
 
 for (const asset of [
