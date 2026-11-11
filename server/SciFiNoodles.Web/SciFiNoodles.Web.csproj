@@ -6,6 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>SciFiNoodles.Web</RootNamespace>
     <AssemblyName>SciFiNoodles.Web</AssemblyName>
+    <!-- Plesk leaves the site pool on the .NET Framework CLR. In-process hosting then fails to load inside w3wp. Out-of-process starts dotnet.exe for this folder. -->
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <EnvironmentName>Production</EnvironmentName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,5 +19,10 @@
     <Content Include="..\..\app\data\katara.sqlite" Link="Data\katara.sqlite" CopyToOutputDirectory="PreserveNewest" />
     <Content Update="Data\sitemap-paths.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <!-- ANCM only writes stdout under this path, and only if the directory already exists. -->
+  <Target Name="CreatePublishLogsDirectory" AfterTargets="Publish">
+    <MakeDir Directories="$([System.IO.Path]::Combine('$(PublishDir)', 'logs'))" />
+  </Target>
 
 </Project>

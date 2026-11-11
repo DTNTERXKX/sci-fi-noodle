@@ -49,16 +49,34 @@ if (Test-Path $ClientDist) {
   throw "app\dist\client missing after build."
 }
 
-Write-Host "SPA shell and static route copies..."
+Write-Host "Prerender pages through the TanStack server bundle..."
 $WwwIndex = Join-Path $Www "index.html"
-& $Bun (Join-Path $Root "deploy\spa-shell.mjs") $WwwIndex
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-& $Bun (Join-Path $Root "deploy\prerender-static.mjs") $Www
+& $Bun (Join-Path $Root "deploy\prerender-pages.mjs") $Www
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if (-not (Test-Path $WwwIndex)) {
-  throw "Missing wwwroot\index.html after spa-shell."
+  throw "Missing wwwroot\index.html after prerender."
 }
+
+function Assert-HydratableShell {
+  param([Parameter(Mandatory = $true)][string]$Path)
+  if (-not (Test-Path -LiteralPath $Path)) {
+    throw "Missing hydratable shell at ${Path}"
+  }
+  $html = Get-Content -LiteralPath $Path -Raw -Encoding UTF8
+  $tsrMarker = [string][char]36 + "_TSR"
+  if ($html.IndexOf($tsrMarker) -lt 0) {
+    throw "Refusing to ship ${Path}: missing SSR hydration payload (empty SPA shells paint black)."
+  }
+  if ($html.IndexOf('id="root"') -ge 0) {
+    throw "Refusing to ship ${Path}: empty #root SPA shell (client hydrate needs the prerendered document)."
+  }
+  if ($html.Length -lt 2000) {
+    throw "Refusing to ship ${Path}: only $($html.Length) bytes; prerendered homepage must be full HTML."
+  }
+}
+
+Assert-HydratableShell -Path $WwwIndex
 
 Write-Host "dotnet publish..."
 Push-Location (Join-Path $Root "server")
@@ -69,4 +87,25 @@ try {
   Pop-Location
 }
 
-Write-Host "Done. Deploy the publish/ folder to InterServer (see server/README.md)."
+# Kestrel serves the shell for any default-document name IIS forwards, and static
+# files are read only from wwwroot, so the copies live there. None go next to the
+# DLL: IIS default documents would remap / to that file, and on the Plesk host IIS
+# answers files in the site folder itself with a 404 instead of forwarding them.
+Write-Host "Copy prerendered shell for IIS default documents..."
+$Publish = Join-Path $Root "publish"
+$PublishWww = Join-Path $Publish "wwwroot"
+$PublishWwwIndex = Join-Path $PublishWww "index.html"
+Assert-HydratableShell -Path $PublishWwwIndex
+$DefaultDocs = @("Default.htm", "Default.asp", "index.htm", "iisstart.htm", "default.aspx")
+foreach ($name in $DefaultDocs) {
+  Copy-Item -Path $PublishWwwIndex -Destination (Join-Path $PublishWww $name) -Force
+}
+foreach ($name in (@("index.html") + $DefaultDocs)) {
+  $Stale = Join-Path $Publish $name
+  if (Test-Path $Stale) { Remove-Item -Path $Stale -Force }
+}
+
+Assert-HydratableShell -Path (Join-Path $PublishWww "404.html")
+Assert-HydratableShell -Path (Join-Path $PublishWww "watch\index.html")
+
+Write-Host "Done. Brien copies publish/ onto the Plesk document root (see server/README.md)."

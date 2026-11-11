@@ -47,6 +47,7 @@ function FooterBowls({ label, items }: { label: string; items: Bowl[] }) {
 export function SiteFooter() {
   const footer = segmentCopy("site.footer");
   const labels = copyStrings(footer, "labels");
+  const contactEmail = copyString(footer, "contactEmail");
   const featured = atmospheres.find((item) => item.featured);
   const nowShowing = [
     ...universes.map((item) => ({ href: `/originals/${item.slug}`, title: item.title })),
@@ -82,6 +83,11 @@ export function SiteFooter() {
             <li>
               <a href="/contact">Contact</a>
             </li>
+            {contactEmail ? (
+              <li>
+                <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+              </li>
+            ) : null}
             <li>
               <a href="/#kitchen">The Noodle Drop</a>
             </li>

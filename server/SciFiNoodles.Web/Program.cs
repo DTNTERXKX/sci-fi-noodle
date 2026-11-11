@@ -20,12 +20,15 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 
 app.UseMiddleware<SecurityHeadersMiddleware>();
 
+// Wraps static files and endpoints so it can turn their 404s into the shell.
+app.UseMiddleware<SpaHtmlMiddleware>();
 app.UseDefaultFiles();
 app.UseStaticFiles();
-app.UseMiddleware<SpaHtmlMiddleware>();
+// Explicit so endpoints match the path after SpaHtmlMiddleware honors X-Original-URL.
+app.UseRouting();
 
+// Routing ignores the trailing slash, so this one route also answers /app/.
 app.MapGet("/app", () => Results.Redirect("/", permanent: true));
-app.MapGet("/app/", () => Results.Redirect("/", permanent: true));
 
 app.MapGet("/robots.txt", (SitemapService sitemap) =>
     Results.Text(sitemap.BuildRobotsTxt(), "text/plain; charset=utf-8"));
@@ -99,8 +102,6 @@ app.MapPost("/api/inbox", async (HttpRequest request, InboxService inbox, Cancel
 
     return Results.Json(InboxResponse.Received());
 });
-
-app.MapFallbackToFile("index.html");
 
 app.Run();
 

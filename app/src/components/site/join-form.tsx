@@ -1,6 +1,8 @@
 import { useRef, useState, type FormEvent } from "react";
 
+import { ContactAddressText } from "@/components/site/contact-address";
 import { copyString, segmentCopy } from "@/content/catalog";
+import { contactMailto, contactSubject, openContactMailto } from "@/lib/contact-mail";
 
 function newsletterCopy() {
   const copy = segmentCopy("forms.newsletter");
@@ -28,6 +30,10 @@ function contactCopy() {
     email: nestedText(copy.labels, "email"),
     note: nestedText(copy.labels, "note"),
     submit: copyString(copy, "submit"),
+    address: copyString(copy, "address"),
+    subject: copyString(copy, "subject"),
+    mailHint: copyString(copy, "mailHint"),
+    mailOpened: copyString(copy, "mailOpened"),
     success: copyString(copy, "success"),
     nameError: nestedText(copy.errors, "name"),
     emailError: nestedText(copy.errors, "email"),
@@ -119,6 +125,7 @@ export function ContactForm() {
   const [email, setEmail] = useState("");
   const [note, setNote] = useState("");
   const [message, setMessage] = useState("");
+  const [mailed, setMailed] = useState(false);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const pendingRef = useRef(false);
@@ -133,18 +140,30 @@ export function ContactForm() {
     if (nextName.length < 2) {
       setError(form.nameError);
       setMessage("");
+      setMailed(false);
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) {
       setError(form.emailError);
       setMessage("");
+      setMailed(false);
       return;
     }
     if (nextNote.length < 12) {
       setError(form.noteError);
       setMessage("");
+      setMailed(false);
       return;
     }
+    const mailto = form.address
+      ? contactMailto({
+          address: form.address,
+          name: nextName,
+          email: nextEmail,
+          note: nextNote,
+          subject: contactSubject(form.subject, nextName),
+        })
+      : "";
     pendingRef.current = true;
     setPending(true);
     try {
@@ -152,11 +171,11 @@ export function ContactForm() {
       if (!saved) {
         setError(form.blocked);
         setMessage("");
-        return;
+      } else {
+        setError("");
+        setMessage(form.success);
+        setNote("");
       }
-      setError("");
-      setMessage(form.success);
-      setNote("");
     } catch {
       setError(form.blocked);
       setMessage("");
@@ -164,31 +183,55 @@ export function ContactForm() {
       pendingRef.current = false;
       setPending(false);
     }
+    if (mailto) {
+      setMailed(true);
+      openContactMailto(mailto);
+      return;
+    }
+    setMailed(false);
   }
 
   return (
-    <form className="contact-form" noValidate onSubmit={onSubmit}>
+    <form
+      action={form.address ? `mailto:${form.address}` : undefined}
+      className="contact-form"
+      encType="text/plain"
+      method="post"
+      noValidate
+      onSubmit={onSubmit}
+    >
       <label htmlFor="contact-name">{form.name}</label>
-      <input id="contact-name" onChange={(event) => setName(event.target.value)} value={name} />
+      <input id="contact-name" name="name" onChange={(event) => setName(event.target.value)} value={name} />
       <label htmlFor="contact-email">{form.email}</label>
       <input
         autoComplete="email"
         id="contact-email"
+        name="email"
         onChange={(event) => setEmail(event.target.value)}
         type="email"
         value={email}
       />
       <label htmlFor="contact-note">{form.note}</label>
-      <textarea id="contact-note" onChange={(event) => setNote(event.target.value)} rows={5} value={note} />
+      <textarea id="contact-note" name="note" onChange={(event) => setNote(event.target.value)} rows={5} value={note} />
       {error ? (
         <p className="form-error" role="alert">
           {error}
         </p>
       ) : null}
       {message ? <p className="form-ok">{message}</p> : null}
+      {mailed && form.mailOpened ? (
+        <p className="form-help">
+          <ContactAddressText address={form.address} text={form.mailOpened} />
+        </p>
+      ) : null}
       <button className="cta-note" disabled={pending} type="submit">
         {form.submit}
       </button>
+      {form.mailHint ? (
+        <p className="form-help">
+          <ContactAddressText address={form.address} text={form.mailHint} />
+        </p>
+      ) : null}
     </form>
   );
 }

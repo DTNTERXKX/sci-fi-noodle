@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "exported": "2026-11-06",
+  "exported": "2026-11-10",
   "site": "SCI-FI NOODLES",
   "note": "The site reads this file. Local dev loads it from disk on each request, and a production build embeds the same JSON, so a save here is what visitors see after a refresh.",
   "instructions": [
@@ -50,7 +50,7 @@
       "An empty string means the image is not made yet. Never point a field at a file that does not exist in app/public."
     ]
   },
-  "segmentCount": 95,
+  "segmentCount": 97,
   "segments": [
     {
       "id": "studio",
@@ -855,6 +855,49 @@
       }
     },
     {
+      "id": "originals.eight-minutes-a-night",
+      "page": "/originals/eight-minutes-a-night",
+      "source": "app/src/content/catalog.ts",
+      "kind": "series",
+      "locked": {
+        "slug": "eight-minutes-a-night",
+        "playlistHref": "",
+        "flavors": [],
+        "image": "/assets/stills/eight-minutes-a-night.png",
+        "heroSocial": {
+          "9x16": "/assets/heroes/social/eight-minutes-a-night-9x16.png",
+          "4x5": "/assets/heroes/social/eight-minutes-a-night-4x5.png"
+        }
+      },
+      "copy": {
+        "title": "EIGHT MINUTES A NIGHT",
+        "subtitle": "Every visit costs him a memory.",
+        "description": "A sci-fi romance from Memphis, 2099. New episodes Thursdays, 8 PM CT.",
+        "status": "In production · Coming Thu Dec 3, 2026, 8:00 PM CT",
+        "imageAlt": "A woman in a grey cardigan and headset sits in a steel-walled booth, a small wired-glass window glowing amber on the back wall, a lit green-shaded lamp on a shelf at right."
+      }
+    },
+    {
+      "id": "originals.eight-minutes-a-night.eight-minutes",
+      "page": "/originals/eight-minutes-a-night",
+      "source": "app/src/content/catalog.ts",
+      "kind": "episode",
+      "locked": {
+        "slug": "eight-minutes",
+        "series": "eight-minutes-a-night",
+        "thumb": ""
+      },
+      "copy": {
+        "image": "",
+        "imageAlt": "",
+        "title": "EP01 · Eight Minutes",
+        "description": "11:58 PM. A routine maintenance visit to drawer 2-114 turns into pie, a car named Lucille and a receipt Ida can't unread. Then she checks the ledger.",
+        "runtime": "About 2 min 24 sec",
+        "releaseDate": "Dec 3, 2026",
+        "thumbAlt": ""
+      }
+    },
+    {
       "id": "public-domain.the-commit",
       "page": "/public-domain/the-commit",
       "source": "app/src/content/catalog.ts",
@@ -1080,10 +1123,10 @@
         }
       },
       "copy": {
-        "image": "/assets/stills/docs.png",
-        "imageAlt": "A dark observatory: a large telescope, an empty chair, and star charts on a console under a domed window onto a spiral galaxy.",
+        "image": "/assets/stills/public-domain/glass-city.jpg",
+        "imageAlt": "A glass apartment block at dusk, every room lit and visible from the street, a glass-tower skyline behind it.",
         "title": "Glass City",
-        "description": "Privacy curtains come down only with a pink ticket, at set times.",
+        "description": "7:00 a.m. D-503 wakes in a glass apartment, and twelve thousand neighbors watch him brush his teeth. Privacy curtains come down only with a pink ticket, at set times.",
         "creator": "Yevgeny Zamyatin",
         "rights": "Only the 1924 Zilboorg translation is treated as the source. Other translations stay out.",
         "runtime": "6 min 26 sec",
@@ -1338,10 +1381,10 @@
         }
       },
       "copy": {
-        "image": "/assets/stills/atmosphere.png",
-        "imageAlt": "",
+        "image": "/assets/stills/shorts/one-tree.jpg",
+        "imageAlt": "Three panels of the same oak: 1,000,000 B.C. volcanic dawn, 2026 with a rope swing and an acorn on the seat, and 3026 burning in a sea of fire.",
         "title": "ONE TREE: 1 MILLION YRS",
-        "description": "One camera. One white oak. One rope swing. A million years on, the last oak still carries the knot.",
+        "description": "One camera. One oak. One acorn. From 1,000,000 B.C. through mammoths, a rope swing, a war and a visit from something very big. Then the end of everything. Then the acorn.",
         "runtime": "58 sec",
         "releaseDate": "Dec 23, 2026"
       }
@@ -1360,10 +1403,10 @@
         }
       },
       "copy": {
-        "image": "",
-        "imageAlt": "",
+        "image": "/assets/stills/shorts/sure-lol.jpg",
+        "imageAlt": "A woman at a laptop late at night beside a note that reads: I agree to the Terms of Service, 11:42 PM.",
         "title": "The Archon Files: SURE. LOL.",
-        "description": "",
+        "description": "The signature that ended the world: \"Sure. lol.\" Five files, one question: who approved this? Fiction.",
         "runtime": "",
         "releaseDate": "Jan 10, 2027"
       }
@@ -1409,10 +1452,10 @@
         }
       },
       "copy": {
-        "image": "/assets/stills/docs.png",
-        "imageAlt": "",
+        "image": "/assets/stills/docs/the-archon-files.jpg",
+        "imageAlt": "A document on a desk under a lamp with a handwritten note, Who approved this?, and the title THE ARCHON FILES.",
         "title": "The Archon Files",
-        "description": "2031 to 2140, in declassified paper. Five documents, five eras, one question at the end of every chapter: who approved this?",
+        "description": "2031 to 2140, in declassified paper. Five documents, five eras, one question at the end of every chapter: who approved this? The last signature line answers it.",
         "runtime": "8 min",
         "releaseDate": "Jan 8, 2027"
       }
@@ -1433,11 +1476,11 @@
         }
       },
       "copy": {
-        "image": "",
-        "imageAlt": "",
+        "image": "/assets/stills/docs/glass-city-noodle-doc.jpg",
+        "imageAlt": "Split image under the words 1921 → NOW: a man in a pale blue uniform in a glass city on the left, a doorbell-camera view of a delivery driver on the right, captioned How a glass city watches you.",
         "title": "Glass City: Noodle Doc",
-        "description": "",
-        "runtime": "6 min",
+        "description": "Your doorbell sees the street. Your phone knows where you slept. In 1921, a Russian engineer wrote a city where every wall is glass, and called it paradise. Here's how close we've built it.",
+        "runtime": "6 min 26 sec",
         "releaseDate": "Dec 16, 2026"
       }
     },
@@ -1878,7 +1921,8 @@
         "title": "Contact | SCI-FI NOODLES",
         "header": "Contact",
         "subtitle": "Press, sponsors, and collaborators. Say what you want to make, and which shelf it belongs on.",
-        "description": "Press, partnerships, and collaboration notes for SCI-FI NOODLES."
+        "description": "Press, partnerships, and collaboration notes for SCI-FI NOODLES.",
+        "email": "contact@scifinoodles.com"
       }
     },
     {
@@ -1953,6 +1997,10 @@
           "note": "Note"
         },
         "submit": "Send note",
+        "address": "contact@scifinoodles.com",
+        "subject": "SCI-FI NOODLES note from {name}",
+        "mailHint": "Sending stores the note here and opens your mail app to contact@scifinoodles.com. This site does not send the email.",
+        "mailOpened": "Your mail app opens with this note addressed to contact@scifinoodles.com. This site does not send the email.",
         "success": "Received. Your note is stored with the site.",
         "errors": {
           "name": "Add your name.",
@@ -1974,7 +2022,7 @@
         "subtitle": "Short version: join and contact notes are stored with the site.",
         "description": "How the SCI-FI NOODLES site handles the email you type and the pages you visit.",
         "paragraphs": [
-          "The Noodle Drop form and the contact form send what you type to this site and store it in the site database. The form does not send email.",
+          "The Noodle Drop form and the contact form send what you type to this site and store it in the site database. The contact form also opens your mail app to contact@scifinoodles.com. This site does not send the email.",
           "Watching a film sends you to YouTube. YouTube has its own privacy policy. This site does not run a second comment system.",
           "When a real mailing list is connected, this page will name the provider, what it stores, and how to leave."
         ]
@@ -2030,6 +2078,7 @@
       "locked": {},
       "copy": {
         "legal": "© 2026 NVESTED REALITY LLC. All rights reserved. SCI-FI NOODLES is the channel. Each series keeps its own story.",
+        "contactEmail": "contact@scifinoodles.com",
         "copyrightOwner": "NVESTED REALITY LLC",
         "labels": [
           "Pillars",
