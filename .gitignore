@@ -1,5 +1,8 @@
 node_modules
 
+# Production publish output (Brien deploys; never commit)
+/publish/
+
 # Form submissions. Personal data, created when someone joins or writes in.
 **/inbox.sqlite
 **/inbox.sqlite-wal

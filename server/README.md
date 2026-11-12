@@ -45,6 +45,24 @@ The app is running on Plesk. IIS can change the path of `/` before it reaches Ke
 
 Brien deploys. Upload the whole `publish/` (DLL, `web.config`, `wwwroot/`, `Data/`). `build-production.ps1` no longer puts shell copies (`index.html`, `Default.htm`, `Default.asp`, `index.htm`, `iisstart.htm`, `default.aspx`) next to the DLL; delete those from the server folder too, since IIS remaps `/` to them and 404s them itself. The .NET 8 ASP.NET Core Hosting Bundle stays required.
 
+### Build + Distro Hub deploy (Brien only)
+
+Agents never run the live FTP upload. Credentials stay in Distro Hub and are read at runtime only (never committed).
+
+```powershell
+# 1) Build → publish/
+powershell -NoProfile -ExecutionPolicy Bypass -File deploy\build-production.ps1
+
+# 2) Dry-run (lists remote paths; no upload)
+powershell -NoProfile -ExecutionPolicy Bypass -File deploy\deploy-production.ps1 -WhatIf
+
+# 3) Upload publish/ via Distro Hub FTP for scifinoodles.com
+powershell -NoProfile -ExecutionPolicy Bypass -File deploy\deploy-production.ps1
+# optional: -Build  -Domain scifinoodles.com  -DistroHubPath "C:\Users\booba\Downloads\distro_hub\distro.json"
+```
+
+Distro Hub path default tries `distro_hub.json`, then falls back to `distro.json` in the same folder. Site match uses `Sites` / `site.domain`; remote document root is `site.dir` (parent of `SciFiNoodles.Web.dll`, not wwwroot alone). Shared FTP fields: `ftp.Host`, `ftp.Port`, `ftp.Username`, `ftp.Password`. After upload: recycle the app pool, then confirm `wwwroot/index.html` is ~62KB with `$_TSR`.
+
 `web.config` clears inherited URL Rewrite rules (`<rewrite><rules><clear /></rules>…</rewrite>`) because rules from the Plesk site config 404 the homepage; if the site then shows HTTP 500.19, the URL Rewrite module is missing on the server, so remove the `<rewrite>` block.
 
 Do not use nginx, certbot, `/var/www/scifinoodles`, or a systemd unit on port 5000 for this domain. Hosting was not agreed as InterServer (`LOCKS.md`, Nov 5).
