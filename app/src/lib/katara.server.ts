@@ -1,7 +1,3 @@
-import { copyFileSync, existsSync, mkdirSync } from "node:fs";
-import { createHash } from "node:crypto";
-import { resolve } from "node:path";
-import { fileURLToPath } from "node:url";
 import { z } from "zod";
 
 import { realWatchHref } from "@/content/from-segments";
@@ -63,84 +59,6 @@ const talkSchema = z.object({
   history: z.unknown().optional(),
 });
 
-type SqlStatement<T> = {
-  all(...params: unknown[]): T[];
-  get(...params: unknown[]): T | null;
-  run(...params: unknown[]): void;
-};
-
-type SqlDatabase = {
-  exec(sql: string): void;
-  query<T = Record<string, unknown>>(sql: string): SqlStatement<T>;
-};
-
-const globalStore = globalThis as typeof globalThis & {
-  __kataraDb?: SqlDatabase;
-  __kataraOpening?: Promise<SqlDatabase>;
-};
-
-const SCHEMA = `
-  CREATE TABLE IF NOT EXISTS meta (
-    key TEXT PRIMARY KEY,
-    value TEXT NOT NULL
-  );
-  CREATE TABLE IF NOT EXISTS answers (
-    id INTEGER PRIMARY KEY,
-    intent TEXT NOT NULL,
-    keywords TEXT NOT NULL,
-    weight INTEGER NOT NULL,
-    body TEXT NOT NULL
-  );
-`;
-
-function wrapStatements(db: {
-  exec(sql: string): void;
-  query(sql: string): {
-    all(...params: unknown[]): unknown[];
-    get(...params: unknown[]): unknown;
-    run(...params: unknown[]): void;
-  };
-}): SqlDatabase {
-  return {
-    exec(sql) {
-      db.exec(sql);
-    },
-    query<T>(sql: string): SqlStatement<T> {
-      const statement = db.query(sql);
-      return {
-        all: (...params) => statement.all(...params) as T[],
-        get: (...params) => (statement.get(...params) as T | null | undefined) ?? null,
-        run: (...params) => {
-          statement.run(...params);
-        },
-      };
-    },
-  };
-}
-
-async function openDatabase(path: string): Promise<SqlDatabase> {
-  const runtime = globalThis as typeof globalThis & { Bun?: unknown };
-  if (runtime.Bun) {
-    const specifier = ["bun", "sqlite"].join(":");
-    const sqlite = (await import(specifier)) as typeof import("bun:sqlite");
-    const db = new sqlite.Database(path);
-    return wrapStatements({
-      exec: (sql) => db.exec(sql),
-      query: (sql) => db.query(sql),
-    });
-  }
-  const { DatabaseSync } = await import("node:sqlite");
-  const db = new DatabaseSync(path);
-  return wrapStatements({
-    exec: (sql) => {
-      db.exec(sql);
-    },
-    query: (sql) => db.prepare(sql),
-  });
-}
-
-let seededFingerprint = "";
-let voicesReady = false;
 
 export function normalizeQuestion(input: string) {
   return input
@@ -150,32 +68,6 @@ export function normalizeQuestion(input: string) {
     .replace(/[^a-z0-9]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-}
-
-function findAppRoot() {
-  const starts = [process.cwd(), fileURLToPath(new URL(".", import.meta.url))];
-  for (const start of starts) {
-    let dir = start;
-    for (let hop = 0; hop < 6; hop += 1) {
-      if (existsSync(resolve(dir, "src", "content", "catalog.ts"))) return dir;
-      const parent = resolve(dir, "..");
-      if (parent === dir) break;
-      dir = parent;
-    }
-  }
-  return process.cwd();
-}
-
-export function kataraDbPath() {
-  return resolve(findAppRoot(), "data", "katara.sqlite");
-}
-
-function studioVoicePath(mode: KataraMode) {
-  return resolve(findAppRoot(), "..", "..", "UGC", "voices", VOICE_FILES[mode]);
-}
-
-function publicVoicePath(mode: KataraMode) {
-  return resolve(findAppRoot(), "public", "voices", VOICE_FILES[mode]);
 }
 
 function link(title: string, href: string) {
@@ -371,52 +263,8 @@ function buildSeed(): Stored[] {
 }
 
 const seedRows = buildSeed();
-const seedFingerprint = createHash("sha256").update(JSON.stringify(seedRows)).digest("hex").slice(0, 16);
-
-function database() {
-  if (globalStore.__kataraDb) return Promise.resolve(globalStore.__kataraDb);
-  if (!globalStore.__kataraOpening) {
-    const path = kataraDbPath();
-    mkdirSync(resolve(path, ".."), { recursive: true });
-    globalStore.__kataraOpening = openDatabase(path)
-      .then((db) => {
-        db.exec(SCHEMA);
-        globalStore.__kataraDb = db;
-        return db;
-      })
-      .catch((error: unknown) => {
-        globalStore.__kataraOpening = undefined;
-        throw error;
-      });
-  }
-  return globalStore.__kataraOpening;
-}
-
-function writeSeed(db: SqlDatabase) {
-  const insert = db.query("INSERT INTO answers (intent, keywords, weight, body) VALUES (?, ?, ?, ?)");
-  const save = db.query(
-    "INSERT INTO meta (key, value) VALUES ('seed', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value",
-  );
-  db.exec("BEGIN IMMEDIATE");
-  try {
-    db.exec("DELETE FROM answers");
-    for (const row of seedRows) insert.run(row.intent, row.keywords, row.weight, row.body);
-    save.run(seedFingerprint);
-    db.exec("COMMIT");
-  } catch (error) {
-    db.exec("ROLLBACK");
-    throw error;
-  }
-}
-
-async function loadAnswers() {
-  const db = await database();
-  if (seededFingerprint !== seedFingerprint) {
-    const current = db.query<{ value: string }>("SELECT value FROM meta WHERE key = 'seed'").get();
-    if (current?.value !== seedFingerprint) writeSeed(db);
-    seededFingerprint = seedFingerprint;
-  }
-  return db.query<Stored>("SELECT intent, keywords, weight, body FROM answers").all();
+async function loadAnswers(): Promise<Stored[]> {
+  return seedRows;
 }
 
 function scoreRow(question: string, row: Stored) {
@@ -428,26 +276,8 @@ function scoreRow(question: string, row: Stored) {
   return best;
 }
 
-function ensureVoices() {
-  if (voicesReady) return;
-  voicesReady = true;
-  const dir = resolve(findAppRoot(), "public", "voices");
-  mkdirSync(dir, { recursive: true });
-  for (const mode of Object.keys(VOICE_FILES) as KataraMode[]) {
-    const source = studioVoicePath(mode);
-    if (!existsSync(source)) continue;
-    copyFileSync(source, publicVoicePath(mode));
-  }
-}
-
 function voiceFor(mode: KataraMode) {
-  ensureVoices();
-  if (!existsSync(publicVoicePath(mode))) {
-    return {
-      voice: null as string | null,
-      voiceNote: `No locked voice file for ${MODE_LABEL[mode]} is on this machine.`,
-    };
-  }
+  // Voice clips ship as static files in public/voices.
   return { voice: `/voices/${VOICE_FILES[mode]}`, voiceNote: null as string | null };
 }
 

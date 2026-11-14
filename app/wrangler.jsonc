@@ -14,12 +14,17 @@
   // uncomment the matching block in the OPT-IN INFRA section below.
   //
   // `name` must stay a valid Cloudflare name (lowercase + dashes, 3–63 chars).
-  "name": "app-slug-placeholder",
+  "name": "scifinoodles",
 
   // The Worker entry is the TanStack Start SSR server bundle — `vite build`
   // emits dist/server/server.js (`export default { fetch }`). The deploy CI
   // rediscovers the real built entry and points `main` at it.
   "main": "dist/server/server.js",
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "www.scifinoodles.com", "custom_domain": true },
+    { "pattern": "preview.scifinoodles.com", "custom_domain": true }
+  ],
   "compatibility_date": "2025-05-01",
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
@@ -38,7 +43,12 @@
   // Non-secret identity for local dev/build; the deploy sets the real values.
   // SECRETS (e.g. the fnf token) are NEVER here and NEVER in the Worker — the
   // platform Outbound Worker injects them on server-side egress.
-  "vars": { "HF_ENV": "dev", "APP_SLUG": "app-slug-placeholder" },
+  "vars": { "HF_ENV": "prod", "APP_SLUG": "scifinoodles" },
+
+  // Inbox submissions (contact + join forms) live in this D1 database.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "scifinoodles-inbox", "database_id": "b5f1719e-4b1f-46dd-b976-579d9509f154" }
+  ],
 
   // ── OPT-IN INFRA (off by default) ────────────────────────────────
   // Declare the service in app.manifest.json; the deploy injects the real

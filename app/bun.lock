@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "tanstack_start_ts",
@@ -112,7 +113,7 @@
         "@testing-library/react": "^16.1.0",
         "@testing-library/user-event": "^14.5.2",
         "@types/node": "^20.11.0",
-        "@types/react": "19.2.1",
+        "@types/react": "19.2.15",
         "@types/react-dom": "^19.0.0",
         "@typescript/native-preview": "7.0.0-dev.20260619.1",
         "@vitejs/plugin-react": "^4.3.0",
@@ -133,9 +134,6 @@
         "react-dom": "^19.0.0",
       },
     },
-  },
-  "overrides": {
-    "@types/react": "19.2.15",
   },
   "packages": {
     "@adobe/css-tools": ["@adobe/css-tools@4.5.0", "", {}, "sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q=="],

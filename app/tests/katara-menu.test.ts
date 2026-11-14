@@ -1,9 +1,9 @@
 import { createHash } from "node:crypto";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { expect, test } from "bun:test";
 
-import { createKataraTalkResponse, kataraDbPath } from "../src/lib/katara.server";
+import { createKataraTalkResponse } from "../src/lib/katara.server";
 
 const appRoot = resolve(import.meta.dir, "..");
 const shippedVoices = ["katara_chill.mp3", "katara_crunk.mp3", "katara_glam.mp3"].map((name) =>
@@ -23,7 +23,7 @@ async function ask(message: string, mode: "chill" | "crunk" | "glam" = "chill") 
   return (await response.json()) as { ok: boolean; reply: string; voice: string | null; voiceNote: string | null };
 }
 
-test("answers from sqlite and plays the locked chill voice", async () => {
+test("answers from the in-memory menu and plays the locked chill voice", async () => {
   const payload = await ask("Where can I watch Neo-Osaka Rain?");
   expect(payload.ok).toBe(true);
   expect(payload.reply.startsWith("Hey bestie.")).toBe(true);
@@ -31,7 +31,6 @@ test("answers from sqlite and plays the locked chill voice", async () => {
   expect(payload.reply).toContain("https://www.youtube.com/watch?v=G-YEM6LOE8Y");
   expect(payload.voice).toBe("/voices/katara_chill.mp3");
   expect(payload.voiceNote).toBeNull();
-  expect(existsSync(kataraDbPath())).toBe(true);
 
   const hashes = shippedVoices.map((file) => createHash("sha256").update(readFileSync(file)).digest("hex"));
   for (const hash of hashes) expect(hash).toMatch(/^[a-f0-9]{64}$/);
@@ -46,10 +45,11 @@ test("frankenstein uses the stored video url and never a youtube search", async 
   expect(payload.reply).not.toContain("search_query");
 });
 
-test("a future title is not given a made-up youtube url", async () => {
+test("a dated title with no stored video is not given a made-up youtube url", async () => {
+  // The Ball Crashers is dated Nov 13, 2026, which is now past, so the menu lists it as released.
   const payload = await ask("When is The Ball Crashers?");
   expect(payload.reply).toContain("Nov 13, 2026");
-  expect(payload.reply.toLowerCase()).toContain("not live yet");
+  expect(payload.reply).toContain("is on the menu");
   expect(payload.reply).not.toContain("youtube.com");
   expect(payload.reply).not.toContain("youtu.be");
 });

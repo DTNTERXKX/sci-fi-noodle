@@ -1,7 +1,29 @@
-import { Database } from "bun:sqlite";
-import { expect, test } from "bun:test";
+import { beforeAll, expect, test } from "bun:test";
 
-import { createInboxResponse, inboxDbPath } from "../src/lib/inbox.server";
+import { createInboxResponse, setInboxDatabaseForTests } from "../src/lib/inbox.server";
+
+type Row = { kind: string; name: string; email: string; note: string; created_at: string };
+const rows: Row[] = [];
+
+// In-memory stand-in for the D1 binding (env.DB): records the INSERT the module runs.
+const fakeDb = {
+  prepare(sql: string) {
+    if (!sql.startsWith("INSERT INTO submissions")) throw new Error(`unexpected SQL: ${sql}`);
+    return {
+      bind(...params: unknown[]) {
+        return {
+          run: async () => {
+            const [kind, name, email, note, created_at] = params as string[];
+            rows.push({ kind, name, email, note, created_at });
+            return {};
+          },
+        };
+      },
+    };
+  },
+};
+
+beforeAll(() => setInboxDatabaseForTests(fakeDb));
 
 function stamp() {
   return `inbox-${Date.now()}-${Math.random().toString(16).slice(2)}@example.com`;
@@ -18,23 +40,12 @@ async function post(body: unknown) {
 }
 
 function stored(email: string) {
-  const db = new Database(inboxDbPath(), { readonly: true });
-  try {
-    return db.query("SELECT kind, name, email, note FROM submissions WHERE email = ?").get(email) as
-      | { kind: string; name: string; email: string; note: string }
-      | null;
-  } finally {
-    db.close();
-  }
+  const row = rows.find((item) => item.email === email);
+  return row ? { kind: row.kind, name: row.name, email: row.email, note: row.note } : null;
 }
 
 function forget(email: string) {
-  const db = new Database(inboxDbPath());
-  try {
-    db.query("DELETE FROM submissions WHERE email = ?").run(email);
-  } finally {
-    db.close();
-  }
+  for (let i = rows.length - 1; i >= 0; i -= 1) if (rows[i].email === email) rows.splice(i, 1);
 }
 
 test("a join address is stored and a bad address is refused", async () => {
@@ -69,4 +80,12 @@ test("a contact note is stored with the fields the form already sends", async ()
   const shortNote = await post({ kind: "contact", name: "Noodle Guest", email, note: "too short" });
   expect(shortNote.status).toBe(400);
   forget(email);
+});
+
+test("without a D1 binding the save reports unavailable", async () => {
+  setInboxDatabaseForTests(null);
+  const response = await post({ kind: "join", email: stamp() });
+  expect(response.status).toBe(500);
+  expect(await response.json()).toEqual({ ok: false, error: "unavailable" });
+  setInboxDatabaseForTests(fakeDb);
 });

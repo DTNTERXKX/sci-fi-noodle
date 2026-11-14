@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS submissions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  kind TEXT NOT NULL,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  note TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);

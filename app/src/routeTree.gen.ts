@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WatchRouteImport } from './routes/watch'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as StudioRouteImport } from './routes/studio'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShortsRouteImport } from './routes/shorts'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
@@ -40,6 +41,11 @@ const WatchRoute = WatchRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudioRoute = StudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/shorts': typeof ShortsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/studio': typeof StudioRoute
   '/terms': typeof TermsRoute
   '/watch': typeof WatchRoute
   '/api/inbox': typeof ApiInboxRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/robots.txt': typeof RobotsDottxtRoute
   '/shorts': typeof ShortsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/studio': typeof StudioRoute
   '/terms': typeof TermsRoute
   '/watch': typeof WatchRoute
   '/api/inbox': typeof ApiInboxRoute
@@ -204,6 +212,7 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/shorts': typeof ShortsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/studio': typeof StudioRoute
   '/terms': typeof TermsRoute
   '/watch': typeof WatchRoute
   '/api/inbox': typeof ApiInboxRoute
@@ -230,6 +239,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/shorts'
     | '/sitemap.xml'
+    | '/studio'
     | '/terms'
     | '/watch'
     | '/api/inbox'
@@ -254,6 +264,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/shorts'
     | '/sitemap.xml'
+    | '/studio'
     | '/terms'
     | '/watch'
     | '/api/inbox'
@@ -278,6 +289,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/shorts'
     | '/sitemap.xml'
+    | '/studio'
     | '/terms'
     | '/watch'
     | '/api/inbox'
@@ -303,6 +315,7 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   ShortsRoute: typeof ShortsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  StudioRoute: typeof StudioRoute
   TermsRoute: typeof TermsRoute
   WatchRoute: typeof WatchRoute
   ApiInboxRoute: typeof ApiInboxRoute
@@ -330,6 +343,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/studio': {
+      id: '/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof StudioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -487,6 +507,7 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   ShortsRoute: ShortsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  StudioRoute: StudioRoute,
   TermsRoute: TermsRoute,
   WatchRoute: WatchRoute,
   ApiInboxRoute: ApiInboxRoute,

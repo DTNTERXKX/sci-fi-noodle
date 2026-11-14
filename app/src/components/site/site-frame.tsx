@@ -78,6 +78,9 @@ export function SiteFooter() {
               <a href="/host">Katara</a>
             </li>
             <li>
+              <a href="/studio">Studio</a>
+            </li>
+            <li>
               <a href="/about">About</a>
             </li>
             <li>
